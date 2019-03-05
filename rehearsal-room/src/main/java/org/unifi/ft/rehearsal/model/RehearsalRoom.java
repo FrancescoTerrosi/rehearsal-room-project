@@ -1,7 +1,8 @@
 package org.unifi.ft.rehearsal.model;
 
-public enum RehearsalRooms {
+public enum RehearsalRoom {
 
 	FIRSTROOM, SECONDROOM, THIRDROOM
+	
 	
 }

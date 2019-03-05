@@ -1,31 +1,36 @@
 package org.unifi.ft.rehearsal.model;
 
-import java.util.Date;
-
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Schedule {
 
-	private String bandName;
-	private Date date;
-	private RehearsalRooms room;
+	private Band band;
+	private DateTime startDate;
+	private DateTime endDate;
+	private RehearsalRoom room;
 	
-	public Schedule(String bandName, Date date, RehearsalRooms room) {
-		this.bandName = bandName;
-		this.date = date;
+	public Schedule(Band band, DateTime startDate, DateTime endDate, RehearsalRoom room) {
+		this.band = band;
+		this.startDate = startDate;
+		this.endDate = endDate;
 		this.room = room;
 	}
 
-	public String getBandName() {
-		return bandName;
+	public Band getBand() {
+		return this.band;
 	}
 
-	public Date getDate() {
-		return date;
+	public DateTime getStartDate() {
+		return this.startDate;
 	}
 	
-	public RehearsalRooms getRoom() {
+	public DateTime getEndDate() {
+		return this.endDate;
+	}
+	
+	public RehearsalRoom getRoom() {
 		return this.room;
 	}
 	
