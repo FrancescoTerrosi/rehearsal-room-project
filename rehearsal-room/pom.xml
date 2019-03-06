@@ -74,10 +74,11 @@
     <dependency>
       <groupId>joda-time</groupId>
       <artifactId>joda-time</artifactId>
-      <version>2.10.1</version>
     </dependency>
 
   </dependencies>
+
+  <!-- PLUGINS -->
 
   <build>
     <plugins>
@@ -85,7 +86,67 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
       </plugin>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.pitest</groupId>
+        <artifactId>pitest-maven</artifactId>
+        <version>1.3.2</version>
+        <configuration>
+          <targetClasses>
+            <param>org.unifi.ft.rehearsal.services.*</param>
+          </targetClasses>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>jacoco</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eluder.coveralls</groupId>
+            <artifactId>coveralls-maven-plugin</artifactId>
+            <version>4.3.0</version>
+            <configuration>
+              <jacocoReports>
+                <jacocoReport>${project.reporting.outputDirectory}/jacoco/jacoco.xml</jacocoReport>
+              </jacocoReports>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.0</version>
+            <configuration>
+              <excludes>
+                <exclude>org/unifi/ft/rehearsal/model/*</exclude>
+                <exclude>org/unifi/ft/rehearsal/RehearsalRoomApplication.class </exclude>
+                <exclude>org/unifi/ft/chat/mongo/*</exclude>
+              </excludes>
+            </configuration>
+            <executions>
+              <execution>
+                <goals>
+                  <!-- binds by default to the phase "initialize" -->
+                  <goal>prepare-agent</goal>
+                  <!-- binds by default to the phase "verify" -->
+                  <goal>report</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+  </profiles>
 
 </project>
