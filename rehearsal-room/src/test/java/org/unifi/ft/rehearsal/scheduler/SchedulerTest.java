@@ -31,7 +31,7 @@ public class SchedulerTest {
 	public void testCreateSchedule() {
 		when(repository.findAll()).thenReturn(new ArrayList<Schedule>());
 
-		DateTime start = new DateTime(new Date());
+		DateTime start = new DateTime(new DateTime(2121, 12, 12, 12, 12, 12));
 		DateTime end = start.plusHours(Scheduler.HOURDURATION).plusMinutes(Scheduler.MINUTEDURATION);
 		Band b = new Band("ProvaBand", "ProvaPw");
 
@@ -42,6 +42,7 @@ public class SchedulerTest {
 		assertEquals(b, result.getBand());
 		assertEquals(RehearsalRoom.FIRSTROOM, result.getRoom());
 		verify(repository,times(1)).findAll();
+		verify(repository,times(1)).save(result);
 	}
 	
 	@Test
@@ -59,6 +60,7 @@ public class SchedulerTest {
 		assertEquals(b, result.getBand());
 		assertEquals(RehearsalRoom.SECONDROOM, result.getRoom());
 		verify(repository,times(1)).findAll();
+		verify(repository,times(1)).save(result);
 	}
 	
 	@Test
@@ -76,8 +78,20 @@ public class SchedulerTest {
 		assertEquals(b, result.getBand());
 		assertEquals(RehearsalRoom.FIRSTROOM, result.getRoom());
 		verify(repository,times(1)).findAll();
+		verify(repository,times(1)).save(result);
 	}
 
+	@Test(expected = RuntimeException.class)
+	public void testCreateScheduleWhenItIsTooLate() {
+		when(repository.findAll()).thenReturn(notEmptyList());
+
+		DateTime start = new DateTime(new Date());
+		Band b = new Band("ProvaBand", "ProvaPw");
+
+		Schedule result = scheduler.createSchedule(b, start, RehearsalRoom.FIRSTROOM);
+		assertNull(result);
+	}
+	
 	@Test(expected = RuntimeException.class)
 	public void testCreateScheduleWhenAnotherExistsOnStartDate() {
 		when(repository.findAll()).thenReturn(notEmptyList());
