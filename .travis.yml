@@ -10,4 +10,4 @@ cache:
     - '$HOME/.m2/repository'
 
 script:
-  - mvn -f rehearsal-room/pom.xml clean verify
+  - mvn -f rehearsal-room/pom.xml clean verify -Pjacoco coveralls:report
