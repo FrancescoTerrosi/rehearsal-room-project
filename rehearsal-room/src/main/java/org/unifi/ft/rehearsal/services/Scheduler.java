@@ -23,13 +23,13 @@ public class Scheduler {
 		this.repository = repository;
 	}
 	
-	public Schedule createSchedule(Band band, DateTime startDate, RehearsalRoom room) throws Exception {
+	public Schedule createSchedule(Band band, DateTime startDate, RehearsalRoom room) {
 		DateTime endDate = setEndTime(startDate);
 		Schedule result = new Schedule(band, startDate, endDate, room);
 		if (checkFreeRoom(result)) {
 			return result;
 		} else {
-			throw new Exception();
+			throw new RuntimeException();
 		}
 	}
 	
