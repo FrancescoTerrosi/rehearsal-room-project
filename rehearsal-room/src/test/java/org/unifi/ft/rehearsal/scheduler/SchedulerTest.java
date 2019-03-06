@@ -10,6 +10,8 @@ import java.util.List;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
+import org.unifi.ft.rehearsal.exceptions.InvalidTimeException;
+import org.unifi.ft.rehearsal.exceptions.RoomNotFreeException;
 import org.unifi.ft.rehearsal.model.Band;
 import org.unifi.ft.rehearsal.model.RehearsalRoom;
 import org.unifi.ft.rehearsal.model.Schedule;
@@ -32,7 +34,7 @@ public class SchedulerTest {
 		when(repository.findAll()).thenReturn(new ArrayList<Schedule>());
 
 		DateTime start = new DateTime(new DateTime(2121, 12, 12, 12, 12, 12));
-		DateTime end = start.plusHours(Scheduler.HOURDURATION).plusMinutes(Scheduler.MINUTEDURATION);
+		DateTime end = start.plusHours(Scheduler.HOUR_DURATION).plusMinutes(Scheduler.MINUTE_DURATION);
 		Band b = new Band("ProvaBand", "ProvaPw");
 
 		Schedule result = scheduler.createSchedule(b, start, RehearsalRoom.FIRSTROOM);
@@ -50,7 +52,7 @@ public class SchedulerTest {
 		when(repository.findAll()).thenReturn(notEmptyList());
 
 		DateTime start = new DateTime(2121, 12, 12, 12, 12, 12);
-		DateTime end = start.plusHours(Scheduler.HOURDURATION).plusMinutes(Scheduler.MINUTEDURATION);
+		DateTime end = start.plusHours(Scheduler.HOUR_DURATION).plusMinutes(Scheduler.MINUTE_DURATION);
 		Band b = new Band("ProvaBand", "ProvaPw");
 
 		Schedule result = scheduler.createSchedule(b, start, RehearsalRoom.SECONDROOM);
@@ -68,7 +70,7 @@ public class SchedulerTest {
 		when(repository.findAll()).thenReturn(notEmptyList());
 
 		DateTime start = new DateTime(2121, 12, 12, 16, 12, 12);
-		DateTime end = start.plusHours(Scheduler.HOURDURATION).plusMinutes(Scheduler.MINUTEDURATION);
+		DateTime end = start.plusHours(Scheduler.HOUR_DURATION).plusMinutes(Scheduler.MINUTE_DURATION);
 		Band b = new Band("ProvaBand", "ProvaPw");
 
 		Schedule result = scheduler.createSchedule(b, start, RehearsalRoom.FIRSTROOM);
@@ -81,7 +83,7 @@ public class SchedulerTest {
 		verify(repository,times(1)).save(result);
 	}
 
-	@Test(expected = RuntimeException.class)
+	@Test(expected = InvalidTimeException.class)
 	public void testCreateScheduleWhenItIsTooLate() {
 		when(repository.findAll()).thenReturn(notEmptyList());
 
@@ -92,7 +94,7 @@ public class SchedulerTest {
 		assertNull(result);
 	}
 	
-	@Test(expected = RuntimeException.class)
+	@Test(expected = RoomNotFreeException.class)
 	public void testCreateScheduleWhenAnotherExistsOnStartDate() {
 		when(repository.findAll()).thenReturn(notEmptyList());
 
@@ -103,7 +105,7 @@ public class SchedulerTest {
 		assertNull(result);
 	}
 	
-	@Test(expected = RuntimeException.class)
+	@Test(expected = RoomNotFreeException.class)
 	public void testCreateScheduleWhenAnotherExistsOnEndDate() {
 		when(repository.findAll()).thenReturn(notEmptyList());
 
@@ -118,7 +120,7 @@ public class SchedulerTest {
 		List<Schedule> result = new ArrayList<>();
 		Band b = new Band("name", "pw");
 		DateTime start = new DateTime(2121, 12, 12, 12, 12, 12);
-		DateTime end = start.plusHours(Scheduler.HOURDURATION).plusMinutes(Scheduler.MINUTEDURATION);
+		DateTime end = start.plusHours(Scheduler.HOUR_DURATION).plusMinutes(Scheduler.MINUTE_DURATION);
 		Schedule s = new Schedule(b, start, end, RehearsalRoom.FIRSTROOM);
 		result.add(s);
 		return result;
