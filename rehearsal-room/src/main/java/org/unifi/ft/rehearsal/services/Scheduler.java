@@ -6,6 +6,8 @@ import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.unifi.ft.rehearsal.exceptions.InvalidTimeException;
+import org.unifi.ft.rehearsal.exceptions.RoomNotFreeException;
 import org.unifi.ft.rehearsal.model.Band;
 import org.unifi.ft.rehearsal.model.RehearsalRoom;
 import org.unifi.ft.rehearsal.model.Schedule;
@@ -14,10 +16,15 @@ import org.unifi.ft.rehearsal.mongo.IScheduleMongoRepository;
 @Service("Scheduler")
 public class Scheduler {
 
-	private IScheduleMongoRepository repository;
-	public static final int HOURDURATION = 2;
-	public static final int MINUTEDURATION = 30;
+	public static final String ROOM_NOT_FREE = "The requested room is not free at that time!";
+	public static final String REQUESTED_DATE_IS_BEFORE_NOW = "The date you request for is not valid! The cause could be: it is in the past or it is 5 minutes ahead this right moment!";
+	
+	public static final int HOUR_DURATION = 2;
+	public static final int MINUTE_DURATION = 30;
 
+	private IScheduleMongoRepository repository;
+	
+	
 	@Autowired
 	public Scheduler(IScheduleMongoRepository repository) {
 		this.repository = repository;
@@ -25,7 +32,7 @@ public class Scheduler {
 
 	public Schedule createSchedule(Band band, DateTime startDate, RehearsalRoom room) {
 		if (startDate.isBefore(DateTime.now().plusMinutes(5))) {
-			throw new RuntimeException();
+			throw new InvalidTimeException(REQUESTED_DATE_IS_BEFORE_NOW);
 		}
 		DateTime endDate = setEndTime(startDate);
 		Schedule result = new Schedule(band, startDate, endDate, room);
@@ -37,7 +44,7 @@ public class Scheduler {
 			repository.save(result);
 			return result;
 		} else {
-			throw new RuntimeException();
+			throw new RoomNotFreeException(ROOM_NOT_FREE);
 		}
 	}
 
@@ -55,7 +62,7 @@ public class Scheduler {
 	}
 
 	private DateTime setEndTime(DateTime time) {
-		DateTime result = time.plusHours(HOURDURATION).plusMinutes(MINUTEDURATION);
+		DateTime result = time.plusHours(HOUR_DURATION).plusMinutes(MINUTE_DURATION);
 		return result;
 	}
 

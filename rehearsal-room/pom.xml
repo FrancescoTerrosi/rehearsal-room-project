@@ -125,7 +125,8 @@
               <excludes>
                 <exclude>org/unifi/ft/rehearsal/model/*</exclude>
                 <exclude>org/unifi/ft/rehearsal/RehearsalRoomApplication.class </exclude>
-                <exclude>org/unifi/ft/chat/mongo/*</exclude>
+                <exclude>org/unifi/ft/rehearsal/mongo/*</exclude>
+                <eclude>org/unifi/ft/rehearsal/exceptions/*</eclude>
               </excludes>
             </configuration>
             <executions>
