@@ -4,4 +4,3 @@ The goal of the project is to implement a service for scheduling bands in
 Rehearsal Rooms.
 
 [![Build Status](https://travis-ci.org/FrancescoTerrosi/rehearsal-room-project.svg?branch=master)](https://travis-ci.org/FrancescoTerrosi/rehearsal-room-project)
-[![Coverage Status](https://coveralls.io/repos/github/FrancescoTerrosi/rehearsal-room-project/badge.svg?branch=master)](https://coveralls.io/github/FrancescoTerrosi/rehearsal-room-project?branch=master)
