@@ -1,10 +1,10 @@
 package org.unifi.ft.rehearsal.mongo;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
-import org.unifi.ft.rehearsal.model.Band;
 
 @Repository("BandRepository")
-public interface IBandDetailsMongoRepository extends MongoRepository<Band, String> {
+public interface IBandDetailsMongoRepository extends MongoRepository<UserDetails, String> {
 
 }

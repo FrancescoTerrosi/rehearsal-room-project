@@ -1,24 +1,53 @@
 package org.unifi.ft.rehearsal.model;
 
+import java.util.Collection;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Band {
+public class BandDetails implements UserDetails {
 
+	private static final long serialVersionUID = 1L;
 	private String username;
 	private String passw;
+	private String[] authorities;
 	
-	public Band(String username, String passw) {
+	public BandDetails(String username, String passw, String... authorities) {
 		this.username = username;
 		this.passw = passw;
+		this.authorities = authorities;
 	}
 
 	public String getUsername() {
 		return username;
 	}
 
-	public String getPassw() {
+	public String getPassword() {
 		return passw;
+	}
+	
+
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return AuthorityUtils.createAuthorityList(authorities);
+	}
+
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	public boolean isEnabled() {
+		return true;
 	}
 
 	@Override
@@ -38,7 +67,7 @@ public class Band {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Band other = (Band) obj;
+		BandDetails other = (BandDetails) obj;
 		if (passw == null) {
 			if (other.passw != null)
 				return false;
