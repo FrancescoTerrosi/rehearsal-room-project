@@ -6,19 +6,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class Schedule {
 
-	private Band band;
+	private BandDetails band;
 	private DateTime startDate;
 	private DateTime endDate;
 	private RehearsalRoom room;
 	
-	public Schedule(Band band, DateTime startDate, DateTime endDate, RehearsalRoom room) {
+	public Schedule(BandDetails band, DateTime startDate, DateTime endDate, RehearsalRoom room) {
 		this.band = band;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.room = room;
 	}
 
-	public Band getBand() {
+	public BandDetails getBand() {
 		return this.band;
 	}
 

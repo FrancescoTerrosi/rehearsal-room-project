@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.unifi.ft.rehearsal.exceptions.InvalidTimeException;
 import org.unifi.ft.rehearsal.exceptions.RoomNotFreeException;
 import org.unifi.ft.rehearsal.exceptions.ScheduleNotFoundException;
-import org.unifi.ft.rehearsal.model.Band;
+import org.unifi.ft.rehearsal.model.BandDetails;
 import org.unifi.ft.rehearsal.model.RehearsalRoom;
 import org.unifi.ft.rehearsal.model.Schedule;
 import org.unifi.ft.rehearsal.mongo.IScheduleMongoRepository;
@@ -33,7 +33,7 @@ public class Scheduler {
 		this.repository = repository;
 	}
 	
-	public List<Schedule> findSchedulesByBand(Band band) {
+	public List<Schedule> findSchedulesByBand(BandDetails band) {
 		List<Schedule> schedules = repository.findAll();
 		List<Schedule> result = new ArrayList<>();
 		for (int i = 0; i < schedules.size(); i++) {
@@ -72,7 +72,7 @@ public class Scheduler {
 		return result;
 	}
 	
-	public Schedule deleteSchedule(Band band, DateTime startDate, RehearsalRoom room) {
+	public Schedule deleteSchedule(BandDetails band, DateTime startDate, RehearsalRoom room) {
 		List<Schedule> schedules = repository.findAll();
 		Schedule toDelete = createSchedule(band, startDate, room);
 		for (int i = 0; i < schedules.size(); i++) {
@@ -85,7 +85,7 @@ public class Scheduler {
 		throw new ScheduleNotFoundException(SCHEDULE_NOT_FOUND);
 	}
 
-	public Schedule initAndSaveSchedule(Band band, DateTime startDate, RehearsalRoom room) {
+	public Schedule initAndSaveSchedule(BandDetails band, DateTime startDate, RehearsalRoom room) {
 		if (startDate.isBefore(DateTime.now().plusMinutes(5))) {
 			throw new InvalidTimeException(REQUESTED_DATE_IS_BEFORE_NOW);
 		}
@@ -98,7 +98,7 @@ public class Scheduler {
 		}
 	}
 
-	private Schedule createSchedule(Band band, DateTime startDate, RehearsalRoom room) {
+	private Schedule createSchedule(BandDetails band, DateTime startDate, RehearsalRoom room) {
 		DateTime endDate = setEndTime(startDate);
 		Schedule result = new Schedule(band, startDate, endDate, room);
 		return result;
