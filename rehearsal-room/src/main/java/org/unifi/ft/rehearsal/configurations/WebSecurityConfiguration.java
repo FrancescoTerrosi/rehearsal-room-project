@@ -18,7 +18,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	private static final String[] PUBLIC_ACCESS_URIS = { "/", "/register" };
 
-	@Autowired
 	private BandService bandService;
 
 	@Override
@@ -58,6 +57,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	}
 
 	@Bean
+	@Autowired
 	public DaoAuthenticationProvider authProvider() {
 		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 		authProvider.setUserDetailsService(bandService);
