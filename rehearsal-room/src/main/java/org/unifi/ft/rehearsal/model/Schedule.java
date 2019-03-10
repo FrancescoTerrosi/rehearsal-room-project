@@ -2,7 +2,6 @@ package org.unifi.ft.rehearsal.model;
 
 import org.joda.time.DateTime;
 import org.springframework.data.annotation.Id;
-import org.springframework.stereotype.Component;
 
 public class Schedule {
 
