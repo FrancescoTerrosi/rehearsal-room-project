@@ -20,6 +20,14 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>1.8</java.version>
+    <sonar.jacoco.reportPaths>target/jacoco.exec</sonar.jacoco.reportPaths>
+    <sonar.junit.reportPaths>target/surefire-reports,target/failsafe-reports</sonar.junit.reportPaths>
+    <sonar.coverage.exclusions>
+      src/main/java/org/unifi/ft/rehearsal/RehearsalRoomApplication.java,
+      src/main/java/org/unifi/ft/rehearsal/model/*,
+      src/main/java/org/unifi/ft/rehearsal/repository/mongo/*,
+      src/main/java/org/unifi/ft/rehearsal/exceptions/*
+    </sonar.coverage.exclusions>
   </properties>
 
   <!-- SPRING BOOT DEPENDENCIES -->

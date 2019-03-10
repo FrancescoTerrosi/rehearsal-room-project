@@ -15,7 +15,7 @@ import org.unifi.ft.rehearsal.exceptions.ScheduleNotFoundException;
 import org.unifi.ft.rehearsal.model.BandDetails;
 import org.unifi.ft.rehearsal.model.RehearsalRoom;
 import org.unifi.ft.rehearsal.model.Schedule;
-import org.unifi.ft.rehearsal.mongo.IScheduleMongoRepository;
+import org.unifi.ft.rehearsal.repository.mongo.IScheduleMongoRepository;
 
 @Service("Scheduler")
 public class Scheduler {
