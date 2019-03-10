@@ -2,14 +2,14 @@ package org.unifi.ft.rehearsal.model;
 
 import java.util.Collection;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 
-@Component
 public class BandDetails implements UserDetails {
 
+	@Id
 	private static final long serialVersionUID = 1L;
 	private String username;
 	private String passw;
@@ -28,7 +28,6 @@ public class BandDetails implements UserDetails {
 	public String getPassword() {
 		return passw;
 	}
-	
 
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return AuthorityUtils.createAuthorityList(authorities);

@@ -29,7 +29,8 @@
       src/main/java/org/unifi/ft/rehearsal/RehearsalRoomApplication.java,
       src/main/java/org/unifi/ft/rehearsal/model/*,
       src/main/java/org/unifi/ft/rehearsal/repository/mongo/*,
-      src/main/java/org/unifi/ft/rehearsal/exceptions/*
+      src/main/java/org/unifi/ft/rehearsal/exceptions/*,
+      src/main/java/org/unifi/ft/rehearsal/configurations/*
     </sonar.coverage.exclusions>
   </properties>
 
@@ -138,6 +139,7 @@
                 <exclude>org/unifi/ft/rehearsal/RehearsalRoomApplication.class </exclude>
                 <exclude>org/unifi/ft/rehearsal/mongo/*</exclude>
                 <eclude>org/unifi/ft/rehearsal/exceptions/*</eclude>
+                <exclude>org/unifi/ft/rehearsal/configurations/*</exclude>
               </excludes>
             </configuration>
             <executions>
