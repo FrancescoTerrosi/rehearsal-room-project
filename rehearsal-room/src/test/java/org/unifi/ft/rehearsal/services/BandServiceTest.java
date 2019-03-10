@@ -17,11 +17,11 @@ import org.junit.Test;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.unifi.ft.rehearsal.mongo.IBandDetailsMongoRepository;
 import org.unifi.ft.rehearsal.services.BandService;
 import org.unifi.ft.rehearsal.exceptions.PasswordNotMatchingException;
 import org.unifi.ft.rehearsal.exceptions.UsernameAlreadyExistsException;
 import org.unifi.ft.rehearsal.model.BandDetails;
+import org.unifi.ft.rehearsal.repository.mongo.IBandDetailsMongoRepository;
 
 public class BandServiceTest {
 

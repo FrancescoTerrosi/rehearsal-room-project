@@ -1,4 +1,4 @@
-package org.unifi.ft.rehearsal.mongo;
+package org.unifi.ft.rehearsal.repository.mongo;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;

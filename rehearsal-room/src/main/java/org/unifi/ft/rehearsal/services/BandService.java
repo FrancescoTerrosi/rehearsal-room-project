@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.unifi.ft.rehearsal.exceptions.UsernameAlreadyExistsException;
 import org.unifi.ft.rehearsal.exceptions.PasswordNotMatchingException;
 import org.unifi.ft.rehearsal.model.BandDetails;
-import org.unifi.ft.rehearsal.mongo.IBandDetailsMongoRepository;
+import org.unifi.ft.rehearsal.repository.mongo.IBandDetailsMongoRepository;
 
 @Service("BandService")
 public class BandService {
