@@ -1,11 +1,13 @@
 package org.unifi.ft.rehearsal.model;
 
 import org.joda.time.DateTime;
+import org.springframework.data.annotation.Id;
 import org.springframework.stereotype.Component;
 
-@Component
 public class Schedule {
 
+	@Id
+	private static final long serialVersionUID = 1L;
 	private BandDetails band;
 	private DateTime startDate;
 	private DateTime endDate;
