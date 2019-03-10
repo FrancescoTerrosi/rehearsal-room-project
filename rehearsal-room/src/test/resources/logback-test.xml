@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <property name="DEV_HOME" value="./test-logs/"/>  
+  
+  <appender name="STDOUTBAND" class="ch.qos.logback.core.ConsoleAppender">
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <fileHeader>RUNNING BAND SERVICE TESTS</fileHeader>
+      <Pattern>
+        %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
+      </Pattern>
+    </layout>
+  </appender>
+
+<appender name="STDOUTSCHEDULER" class="ch.qos.logback.core.ConsoleAppender">
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <fileHeader>RUNNING SCHEDULER TESTS</fileHeader>
+      <Pattern>
+        %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
+      </Pattern>
+    </layout>
+  </appender>
+
+   <logger name="org.unifi.ft.rehearsal.services.BandService" level="debug"
+    additivity="false">
+    <appender-ref ref="STDOUTBAND"/>
+  </logger>
+  
+   <logger name="org.unifi.ft.rehearsal.services.Scheduler" level="debug"
+    additivity="false">
+    <appender-ref ref="STDOUTSCHEDULER"/>
+  </logger>
+  
+  <statusListener class="ch.qos.logback.core.status.NopStatusListener"/>
+
+<include resource="org/springframework/boot/logging/logback/base.xml"/>
+	<logger name="org.springframework.web" level="DEBUG"/>
+  
+  <root level="off">
+  </root>
+</configuration>

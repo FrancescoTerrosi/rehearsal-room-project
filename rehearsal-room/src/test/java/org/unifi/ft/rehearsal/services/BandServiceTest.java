@@ -19,6 +19,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.unifi.ft.rehearsal.mongo.IBandDetailsMongoRepository;
 import org.unifi.ft.rehearsal.services.BandService;
+import org.unifi.ft.rehearsal.exceptions.PasswordNotMatchingException;
+import org.unifi.ft.rehearsal.exceptions.UsernameAlreadyExistsException;
 import org.unifi.ft.rehearsal.model.BandDetails;
 
 public class BandServiceTest {
@@ -47,7 +49,7 @@ public class BandServiceTest {
 		verify(repository, times(1)).save(isA(UserDetails.class));
 	}
 
-	@Test(expected = RuntimeException.class)
+	@Test(expected = UsernameAlreadyExistsException.class)
 	public void testInvalidRegistrationUsernameAlreadyExists() {
 		UserDetails c = createUser("band", "pass1");
 		when(repository.findAll()).thenReturn(notEmptyList());
@@ -57,7 +59,7 @@ public class BandServiceTest {
 		verify(repository, times(1)).save(isA(UserDetails.class));
 	}
 	
-	@Test(expected = RuntimeException.class)
+	@Test(expected = PasswordNotMatchingException.class)
 	public void testInvalidRegistrationPasswordNotMatching() {
 		service.register("band", "bandPassword", "errorPassword");
 	}
