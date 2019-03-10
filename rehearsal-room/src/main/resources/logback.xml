@@ -12,8 +12,7 @@
       </Pattern>
     </layout>
   </appender>
-
-
+  
   <appender name="FILE-INSERT-WARN-BANDSERVICE"
     class="ch.qos.logback.core.rolling.RollingFileAppender">
     <filter class="ch.qos.logback.classic.filter.LevelFilter">
@@ -21,7 +20,7 @@
       <onMismatch>DENY</onMismatch>
     </filter>
 
-    <file>${DEV_HOME}BAND-SERVICE-WARN.log</file>
+    <file>${DEV_HOME}BAND-SERVICE-WARNS.log</file>
     <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
       <Pattern>
         %d{yyyy-MM-dd HH:mm:ss} - %msg%n
@@ -30,7 +29,7 @@
 
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
       <!-- rollover daily -->
-      <fileNamePattern>archived/warningz.%d{yyyy-MM-dd}.%i.log.zip
+      <fileNamePattern>archived/band-service-warningz.%d{yyyy-MM-dd}.%i.log.zip
       </fileNamePattern>
       <timeBasedFileNamingAndTriggeringPolicy
         class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
@@ -50,7 +49,7 @@
       <level>WARN</level>
       <onMatch>DENY</onMatch>
     </filter>
-    <file>${DEV_HOME}BAND-SERVICE-INFO.log</file>
+    <file>${DEV_HOME}BAND-SERVICE-INFOS.log</file>
     <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
       <Pattern>
         %d{yyyy-MM-dd HH:mm:ss} - %msg%n
@@ -59,7 +58,35 @@
 
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
       <!-- rollover daily -->
-      <fileNamePattern>archived/INFO.%d{yyyy-MM-dd}.%i.log.zip
+      <fileNamePattern>archived/band-service-infoz.%d{yyyy-MM-dd}.%i.log.zip
+      </fileNamePattern>
+      <timeBasedFileNamingAndTriggeringPolicy
+        class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+        <maxFileSize>5MB</maxFileSize>
+      </timeBasedFileNamingAndTriggeringPolicy>
+    </rollingPolicy>
+
+  </appender>
+  
+  <!-- SCHEDULER LOGGER -->
+  
+    <appender name="FILE-INSERT-WARN-SCHEDULER"
+    class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>WARN</level>
+      <onMismatch>DENY</onMismatch>
+    </filter>
+
+    <file>${DEV_HOME}SCHEDULER-WARNS.log</file>
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <Pattern>
+        %d{yyyy-MM-dd HH:mm:ss} - %msg%n
+      </Pattern>
+    </encoder>
+
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <!-- rollover daily -->
+      <fileNamePattern>archived/schedule-warningz.%d{yyyy-MM-dd}.%i.log.zip
       </fileNamePattern>
       <timeBasedFileNamingAndTriggeringPolicy
         class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
@@ -69,10 +96,47 @@
 
   </appender>
 
+  <appender name="FILE-INSERT-INFO-SCHEDULER"
+    class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>INFO</level>
+      <onMatch>ACCEPT</onMatch>
+    </filter>
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>WARN</level>
+      <onMatch>DENY</onMatch>
+    </filter>
+    <file>${DEV_HOME}SCHEDULER-INFO.log</file>
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <Pattern>
+        %d{yyyy-MM-dd HH:mm:ss} - %msg%n
+      </Pattern>
+    </encoder>
+
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <!-- rollover daily -->
+      <fileNamePattern>archived/schedule-infoz.%d{yyyy-MM-dd}.%i.log.zip
+      </fileNamePattern>
+      <timeBasedFileNamingAndTriggeringPolicy
+        class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+        <maxFileSize>5MB</maxFileSize>
+      </timeBasedFileNamingAndTriggeringPolicy>
+    </rollingPolicy>
+
+  </appender>
+  
+  <!-- APPEND LOGGER TO CLASSES -->
+
   <logger name="org.unifi.ft.rehearsal.services.BandService" level="info,warn"
     additivity="false">
     <appender-ref ref="FILE-INSERT-WARN-BANDSERVICE" />
     <appender-ref ref="FILE-INSERT-INFO-BANDSERVICE" />
+  </logger>
+  
+  <logger name="org.unifi.ft.rehearsal.services.Scheduler" level="info,warn"
+    additivity="false">
+    <appender-ref ref="FILE-INSERT-WARN-SCHEDULER" />
+    <appender-ref ref="FILE-INSERT-INFO-SCHEDULER" />
   </logger>
 
   <root level="INFO">
