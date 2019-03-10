@@ -2,12 +2,21 @@ language: java
 
 sudo: required
 
+addons:
+  sonarcloud:
+    organization: francescoterrosi-github
+    token:
+      secure: "KSQ53r2FdIpRQ869Y/NdlhMV9vv7GxeOriG2VaVv4G9dC2n1lgwTwVk9VQLX6qQIgiOy4qtVIzuj/qYBnfs8JYU8GB3ynowpIjyhXaoiP9cAr8ACVZRwbr8xi6cFAOOXBoSNGD1ibl1y7ZZlWe1EuqDjxOu9aCFz9CpTHywbBHvn7Jssvg3N1UYEFQfbH+z9aQ6YySxhGVsFEU4SPY23/J2fPENj2cE+suYsEkDIsAUyEF04RsdRF0Ag6ECFX9E8J6JJ5po+G6QuGk/0g+qOYtOT7ajzZ7tp5n85grpOWb1YJy8FjNb2jMB0yaPIBb5sI5JcHS0oKJGDJw4stZ+gl4vBiiLgu0ZXDvvKlmBFWnrl7dhEhsYkZfAb6wQf0T5I6++yWn4Zmi9qcC29lRtnwfbbx/1O+6QtrO051tjc4ImBPwORBuOSb97JJAKC+LLYpIjZcuwjYEhq14UFpyISZWdrUKmEhobEhkjZ8VhH8PWnKgex245m66pHFOFDNVuJYpVlQgm6n/ZRHn74H/d/Lm766r4XLhzlYOC6qPAOzYEgGzYtqamaA9capL5OH9HKCZhsLFpwF6s9OkfMiL3mKX5JaK6j/6hVyYoeNhD47/cuyDAmW0dHfv95OIRpGcId7tEDNMCrMRkbUfFCS7wQ1p+qTsgcX1HD6NCkV9Yl6Bs="
+
+token:	
+
 jdk:
   - oraclejdk8
 
 cache:
   directories:
     - '$HOME/.m2/repository'
+    - '$HOME/.sonar/cache'
 
 script:
-  - mvn -f rehearsal-room/pom.xml clean verify -Pjacoco coveralls:report
+  - mvn -f rehearsal-room/pom.xml clean verify -Pjacoco coveralls:report sonar:sonar
