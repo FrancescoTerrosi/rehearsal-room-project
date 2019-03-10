@@ -151,7 +151,7 @@ public class SchedulerTest {
 		List<Schedule> result = scheduler.findSchedulesByBand(b);
 		assertNotNull(result);
 		assertEquals(1,result.size());
-		assertEquals(result.get(0).getBand(),b);
+		assertEquals(b, result.get(0).getBand());
 		verify(repository,times(1)).findAll();
 	}
 	
@@ -175,9 +175,9 @@ public class SchedulerTest {
 		
 		assertNotNull(result);
 		assertEquals(1, result.size());
-		assertEquals(result.get(0).getStartDate().getYear(), 2121);
-		assertEquals(result.get(0).getStartDate().getDayOfMonth(), 12);
-		assertEquals(result.get(0).getStartDate().getMonthOfYear(), 12);
+		assertEquals(2121, result.get(0).getStartDate().getYear());
+		assertEquals(12, result.get(0).getStartDate().getDayOfMonth());
+		assertEquals(12, result.get(0).getStartDate().getMonthOfYear());
 		verify(repository,times(1)).findAll();
 	}
 	

@@ -104,8 +104,7 @@ public class Scheduler {
 
 	private Schedule createSchedule(BandDetails band, DateTime startDate, RehearsalRoom room) {
 		DateTime endDate = setEndTime(startDate);
-		Schedule result = new Schedule(band, startDate, endDate, room);
-		return result;
+		return new Schedule(band, startDate, endDate, room);
 	}
 
 	private boolean checkFreeRoom(Schedule s) {
@@ -121,8 +120,7 @@ public class Scheduler {
 	}
 
 	private DateTime setEndTime(DateTime time) {
-		DateTime result = time.plusHours(HOUR_DURATION).plusMinutes(MINUTE_DURATION);
-		return result;
+		return time.plusHours(HOUR_DURATION).plusMinutes(MINUTE_DURATION);
 	}
 
 }

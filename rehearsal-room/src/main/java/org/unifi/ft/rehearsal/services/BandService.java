@@ -19,7 +19,7 @@ public class BandService {
 
 	public static final String USER_NOT_FOUND = "There is no user with that name!";
 	public static final String ALREADY_EXISTING_USERNAME = "There is already a user with that name!";
-	public static final String PASSWORD_NOT_MATCHING = "The two passwords do not match!";
+	public static final String PASSW_NOT_MATCHING = "The two passwords do not match!";
 
 	private static final Logger LOGGER = LogManager.getLogger(BandService.class);
 
@@ -49,8 +49,8 @@ public class BandService {
 			LOGGER.info("User " + name + " just joined our system!");
 			return user;
 		} else {
-			LOGGER.warn(name + " - "+PASSWORD_NOT_MATCHING);
-			throw new PasswordNotMatchingException(PASSWORD_NOT_MATCHING);
+			LOGGER.warn(name + " - "+PASSW_NOT_MATCHING);
+			throw new PasswordNotMatchingException(PASSW_NOT_MATCHING);
 		}
 	}
 
