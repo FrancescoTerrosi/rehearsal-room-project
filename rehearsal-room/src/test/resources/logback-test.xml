@@ -2,18 +2,8 @@
 <configuration>
   <property name="DEV_HOME" value="./test-logs/"/>  
   
-  <appender name="STDOUTBAND" class="ch.qos.logback.core.ConsoleAppender">
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
     <layout class="ch.qos.logback.classic.PatternLayout">
-      <fileHeader>RUNNING BAND SERVICE TESTS</fileHeader>
-      <Pattern>
-        %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
-      </Pattern>
-    </layout>
-  </appender>
-
-<appender name="STDOUTSCHEDULER" class="ch.qos.logback.core.ConsoleAppender">
-    <layout class="ch.qos.logback.classic.PatternLayout">
-      <fileHeader>RUNNING SCHEDULER TESTS</fileHeader>
       <Pattern>
         %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
       </Pattern>
@@ -22,12 +12,12 @@
 
    <logger name="org.unifi.ft.rehearsal.services.BandService" level="debug"
     additivity="false">
-    <appender-ref ref="STDOUTBAND"/>
+    <appender-ref ref="STDOUT"/>
   </logger>
   
    <logger name="org.unifi.ft.rehearsal.services.Scheduler" level="debug"
     additivity="false">
-    <appender-ref ref="STDOUTSCHEDULER"/>
+    <appender-ref ref="STDOUT"/>
   </logger>
   
   <statusListener class="ch.qos.logback.core.status.NopStatusListener"/>
