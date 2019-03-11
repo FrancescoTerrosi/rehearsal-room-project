@@ -44,7 +44,7 @@ public class BandServiceRepoIT {
 	}
 
 	@Test
-	public void testRegister() {
+	public void testValidRegistration() {
 		UserDetails c = service.register("bandName", "bandPassword", "bandPassword");
 		assertEquals(1, repository.count());
 		UserDetails result = repository.findAll().get(0);
@@ -52,8 +52,20 @@ public class BandServiceRepoIT {
 		assertEquals(c.getPassword(), result.getPassword());
 	}
 
+	@Test(expected = UsernameAlreadyExistsException.class)
+	public void testInvalidRegistrationUsernameAlreadyExists() {
+		UserDetails toStore = createUser("bandName", "bandPassword");
+		repository.save(toStore);
+		service.register("bandName", "bandPassword","bandPassword");
+	}
+	
+	@Test(expected=PasswordNotMatchingException.class)
+	public void testInvalidRegistrationPasswordsNotMatching() {
+		service.register("bandName", "bandPassword", "errorPassword");
+	}
+
 	@Test
-	public void loadOneByNameTest() {
+	public void testLoadByUsername() {
 		UserDetails c1 = createUser("bandName1", "bandPassword");
 		UserDetails c2 = createUser("bandName2", "bandPassword");
 		repository.save(c1);
@@ -72,18 +84,6 @@ public class BandServiceRepoIT {
 		UserDetails result = service.loadUserByUsername("error");
 		assertNull(result);
 	}
-
-	@Test(expected = UsernameAlreadyExistsException.class)
-	public void testInvalidRegistrationUsernameAlreadyExists() {
-		UserDetails toStore = createUser("bandName", "bandPassword");
-		repository.save(toStore);
-		service.register("bandName", "bandPassword","bandPassword");
-	}
-	
-	@Test(expected=PasswordNotMatchingException.class)
-	public void testInvalidRegistrationPasswordsNotMatching() {
-		service.register("bandName", "bandPassword", "errorPassword");
-	}
 	
 	@Test
 	public void existsUserByUsername() {
@@ -98,7 +98,7 @@ public class BandServiceRepoIT {
 	}
 	
 	@Test
-	public void existsUserByUserNameWhenEmptyTest() {
+	public void existsUserByUserNameWhenRepositoryIsEmptyTest() {
 		assertFalse(service.existsUserByUsername("anything"));
 	}
 
