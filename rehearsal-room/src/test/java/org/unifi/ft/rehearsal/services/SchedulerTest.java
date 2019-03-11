@@ -11,6 +11,7 @@ import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.unifi.ft.rehearsal.services.Scheduler;
+
 import org.unifi.ft.rehearsal.exceptions.InvalidTimeException;
 import org.unifi.ft.rehearsal.exceptions.RoomNotFreeException;
 import org.unifi.ft.rehearsal.exceptions.ScheduleNotFoundException;
@@ -21,8 +22,8 @@ import org.unifi.ft.rehearsal.repository.mongo.IScheduleMongoRepository;
 
 public class SchedulerTest {
 
-	private Scheduler scheduler;
 	private IScheduleMongoRepository repository;
+	private Scheduler scheduler;
 
 	@Before
 	public void init() {
@@ -86,8 +87,6 @@ public class SchedulerTest {
 
 	@Test(expected = InvalidTimeException.class)
 	public void testCreateScheduleWhenItIsTooLate() {
-		when(repository.findAll()).thenReturn(notEmptyList(1));
-
 		DateTime start = new DateTime(new Date());
 		BandDetails b = new BandDetails("ProvaBand0", "ProvaPw0");
 
@@ -140,6 +139,7 @@ public class SchedulerTest {
 		Schedule result = scheduler.deleteSchedule(b, start, RehearsalRoom.FIRSTROOM);
 		assertNull(result);
 		verify(repository, times(1)).findAll();
+		verify(repository, times(1)).delete(result);
 	}
 
 	@Test
