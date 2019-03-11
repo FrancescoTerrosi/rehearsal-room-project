@@ -1,5 +1,6 @@
 package org.unifi.ft.rehearsal.model;
 
+import java.math.BigInteger;
 import java.util.Collection;
 
 import org.springframework.data.annotation.Id;
@@ -10,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class BandDetails implements UserDetails {
 
 	@Id
+	private BigInteger id;
 	private static final long serialVersionUID = 1L;
 	private String username;
 	private String passw;
