@@ -44,10 +44,10 @@ public class SchedulerTest {
 		assertEquals(end, result.getEndDate());
 		assertEquals(b, result.getBand());
 		assertEquals(RehearsalRoom.FIRSTROOM, result.getRoom());
-		verify(repository,times(1)).findAll();
-		verify(repository,times(1)).save(result);
+		verify(repository, times(1)).findAll();
+		verify(repository, times(1)).save(result);
 	}
-	
+
 	@Test
 	public void testCreateScheduleSameTimeDifferentRooms() {
 		when(repository.findAll()).thenReturn(notEmptyList(1));
@@ -55,17 +55,17 @@ public class SchedulerTest {
 		DateTime start = new DateTime(2121, 12, 12, 12, 12, 12);
 		DateTime end = start.plusHours(Scheduler.HOUR_DURATION).plusMinutes(Scheduler.MINUTE_DURATION);
 		BandDetails b = new BandDetails("ProvaBand0", "ProvaPw0");
-		
+
 		Schedule result = scheduler.initAndSaveSchedule(b, start, RehearsalRoom.SECONDROOM);
 		assertNotNull(result);
 		assertEquals(start, result.getStartDate());
 		assertEquals(end, result.getEndDate());
 		assertEquals(b, result.getBand());
 		assertEquals(RehearsalRoom.SECONDROOM, result.getRoom());
-		verify(repository,times(1)).findAll();
-		verify(repository,times(1)).save(result);
+		verify(repository, times(1)).findAll();
+		verify(repository, times(1)).save(result);
 	}
-	
+
 	@Test
 	public void testCreateScehduleSameRoomDifferentTimes() {
 		when(repository.findAll()).thenReturn(notEmptyList(1));
@@ -80,8 +80,8 @@ public class SchedulerTest {
 		assertEquals(end, result.getEndDate());
 		assertEquals(b, result.getBand());
 		assertEquals(RehearsalRoom.FIRSTROOM, result.getRoom());
-		verify(repository,times(1)).findAll();
-		verify(repository,times(1)).save(result);
+		verify(repository, times(1)).findAll();
+		verify(repository, times(1)).save(result);
 	}
 
 	@Test(expected = InvalidTimeException.class)
@@ -94,7 +94,7 @@ public class SchedulerTest {
 		Schedule result = scheduler.initAndSaveSchedule(b, start, RehearsalRoom.FIRSTROOM);
 		assertNull(result);
 	}
-	
+
 	@Test(expected = RoomNotFreeException.class)
 	public void testCreateScheduleWhenAnotherExistsOnStartDate() {
 		when(repository.findAll()).thenReturn(notEmptyList(1));
@@ -105,7 +105,7 @@ public class SchedulerTest {
 		Schedule result = scheduler.initAndSaveSchedule(b, start, RehearsalRoom.FIRSTROOM);
 		assertNull(result);
 	}
-	
+
 	@Test(expected = RoomNotFreeException.class)
 	public void testCreateScheduleWhenAnotherExistsOnEndDate() {
 		when(repository.findAll()).thenReturn(notEmptyList(1));
@@ -116,155 +116,155 @@ public class SchedulerTest {
 		Schedule result = scheduler.initAndSaveSchedule(b, start, RehearsalRoom.FIRSTROOM);
 		assertNull(result);
 	}
-	
+
 	@Test
 	public void testDeleteSchedule() {
 		when(repository.findAll()).thenReturn(notEmptyList(1));
-		
+
 		DateTime start = new DateTime(2121, 12, 12, 12, 12, 12);
 		BandDetails b = new BandDetails("ProvaBand0", "ProvaPw0");
-		
+
 		Schedule result = scheduler.deleteSchedule(b, start, RehearsalRoom.FIRSTROOM);
 		assertNotNull(result);
-		verify(repository,times(1)).findAll();
-		verify(repository,times(1)).delete(result);
+		verify(repository, times(1)).findAll();
+		verify(repository, times(1)).delete(result);
 	}
-	
+
 	@Test(expected = ScheduleNotFoundException.class)
 	public void testDeleteScheduleWhenItIsNotFound() {
 		when(repository.findAll()).thenReturn(notEmptyList(1));
 
 		DateTime start = new DateTime(2121, 12, 12, 10, 12, 12);
 		BandDetails b = new BandDetails("ProvaBand0", "ProvaPw0");
-		
+
 		Schedule result = scheduler.deleteSchedule(b, start, RehearsalRoom.FIRSTROOM);
 		assertNull(result);
-		verify(repository,times(1)).findAll();
+		verify(repository, times(1)).findAll();
 	}
-	
+
 	@Test
 	public void testFindSchedulesByBand() {
 		when(repository.findAll()).thenReturn(notEmptyList(1));
 
 		BandDetails b = new BandDetails("ProvaBand0", "ProvaPw0");
-		
+
 		List<Schedule> result = scheduler.findSchedulesByBand(b);
 		assertNotNull(result);
-		assertEquals(1,result.size());
+		assertEquals(1, result.size());
 		assertEquals(b, result.get(0).getBand());
-		verify(repository,times(1)).findAll();
+		verify(repository, times(1)).findAll();
 	}
-	
+
 	@Test
 	public void testFindSchedulesByBandWhenThereIsNot() {
 		when(repository.findAll()).thenReturn(notEmptyList(1));
 
 		BandDetails b = new BandDetails("ProvaBand1", "ProvaPw1");
-		
+
 		List<Schedule> result = scheduler.findSchedulesByBand(b);
 		assertNotNull(result);
-		assertEquals(0,result.size());
-		verify(repository,times(1)).findAll();
+		assertEquals(0, result.size());
+		verify(repository, times(1)).findAll();
 	}
 
 	@Test
 	public void testFindSchedulesByDate() {
 		when(repository.findAll()).thenReturn(notEmptyList(1));
-		
+
 		List<Schedule> result = scheduler.findSchedulesByDate(2121, 12, 12);
-		
+
 		assertNotNull(result);
 		assertEquals(1, result.size());
 		assertEquals(2121, result.get(0).getStartDate().getYear());
 		assertEquals(12, result.get(0).getStartDate().getDayOfMonth());
 		assertEquals(12, result.get(0).getStartDate().getMonthOfYear());
-		verify(repository,times(1)).findAll();
+		verify(repository, times(1)).findAll();
 	}
-	
+
 	@Test
 	public void testFindSchedulesByDateWrongDay() {
 		when(repository.findAll()).thenReturn(notEmptyList(1));
-		
+
 		List<Schedule> result = scheduler.findSchedulesByDate(2121, 12, 10);
-		
+
 		assertNotNull(result);
 		assertEquals(0, result.size());
-		verify(repository,times(1)).findAll();
+		verify(repository, times(1)).findAll();
 	}
-	
+
 	@Test
 	public void testFindSchedulesByDateWrongMonth() {
 		when(repository.findAll()).thenReturn(notEmptyList(1));
-		
+
 		List<Schedule> result = scheduler.findSchedulesByDate(2121, 10, 12);
-		
+
 		assertNotNull(result);
 		assertEquals(0, result.size());
-		verify(repository,times(1)).findAll();
+		verify(repository, times(1)).findAll();
 	}
 
 	@Test
 	public void testFindSchedulesByDateWrongYear() {
 		when(repository.findAll()).thenReturn(notEmptyList(1));
-		
+
 		List<Schedule> result = scheduler.findSchedulesByDate(2120, 12, 12);
-		
+
 		assertNotNull(result);
 		assertEquals(0, result.size());
-		verify(repository,times(1)).findAll();
+		verify(repository, times(1)).findAll();
 	}
-	
+
 	@Test
 	public void testFindSchedulesByRoom() {
 		when(repository.findAll()).thenReturn(notEmptyList(1));
-		
+
 		List<Schedule> result = scheduler.findSchedulesByRoom(RehearsalRoom.FIRSTROOM);
-		
+
 		assertNotNull(result);
 		assertEquals(1, result.size());
 		assertEquals(RehearsalRoom.FIRSTROOM, result.get(0).getRoom());
-		verify(repository,times(1)).findAll();
+		verify(repository, times(1)).findAll();
 	}
-	
+
 	@Test
 	public void testFindSchedulesByRoomWhenItIsTooLate() {
 		when(repository.findAll()).thenReturn(notEmptySpecialList(3));
-		
+
 		List<Schedule> result = scheduler.findSchedulesByRoom(RehearsalRoom.FIRSTROOM);
-		
+
 		assertNotNull(result);
 		assertEquals(0, result.size());
 		verify(repository, times(1)).findAll();
 	}
-	
+
 	@Test
 	public void testFindSchedulesByRoomWhenRoomIsEmpty() {
 		when(repository.findAll()).thenReturn(notEmptyList(3));
-		
+
 		List<Schedule> result = scheduler.findSchedulesByRoom(RehearsalRoom.SECONDROOM);
-		
+
 		assertNotNull(result);
 		assertEquals(0, result.size());
 		verify(repository, times(1)).findAll();
 	}
-	
+
 	private List<Schedule> notEmptyList(int size) {
 		List<Schedule> result = new ArrayList<>();
 		for (int i = 0; i < size; i++) {
-			BandDetails b = new BandDetails("ProvaBand"+i, "ProvaPw"+i);
-			DateTime start = new DateTime(2121, 12, 12, 12, 12+i, 12);
+			BandDetails b = new BandDetails("ProvaBand" + i, "ProvaPw" + i);
+			DateTime start = new DateTime(2121, 12, 12, 12, 12 + i, 12);
 			DateTime end = start.plusHours(Scheduler.HOUR_DURATION).plusMinutes(Scheduler.MINUTE_DURATION);
 			Schedule s = new Schedule(b, start, end, RehearsalRoom.FIRSTROOM);
 			result.add(s);
 		}
 		return result;
 	}
-	
+
 	private List<Schedule> notEmptySpecialList(int size) {
 		List<Schedule> result = new ArrayList<>();
 		for (int i = 0; i < size; i++) {
-			BandDetails b = new BandDetails("ProvaBand"+i, "ProvaPw"+i);
-			DateTime start = new DateTime(2001, 12, 12, 12, 12+3*i, 12);
+			BandDetails b = new BandDetails("ProvaBand" + i, "ProvaPw" + i);
+			DateTime start = new DateTime(2001, 12, 12, 12, 12 + 3 * i, 12);
 			DateTime end = start.plusHours(Scheduler.HOUR_DURATION).plusMinutes(Scheduler.MINUTE_DURATION);
 			Schedule s = new Schedule(b, start, end, RehearsalRoom.FIRSTROOM);
 			result.add(s);

@@ -1,12 +1,14 @@
 package org.unifi.ft.rehearsal.model;
 
+import java.math.BigInteger;
+
 import org.joda.time.DateTime;
 import org.springframework.data.annotation.Id;
 
 public class Schedule {
 
 	@Id
-	private static final long serialVersionUID = 1L;
+	private BigInteger id;
 	private BandDetails band;
 	private DateTime startDate;
 	private DateTime endDate;
