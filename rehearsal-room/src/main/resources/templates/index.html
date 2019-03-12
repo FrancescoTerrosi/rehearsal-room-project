@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Rehearsal Rooms</title>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" href="/css/index.css" />
+</head>
+<body>
+	<h1>Hello</h1>
+
+	<div class="align-middle" id="wrapper">
+		<div class="container container-fluid" id="cont">
+			<form method="GET" action="/login">
+				<br> <br>
+				<button type='submit' class="btn btn-primary" id="login"
+					name="login" value=execute>Login</button>
+				<br> <br>
+			</form>
+			<form method="GET" action="/register">
+				<button type='submit' value=execute>Register</button>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

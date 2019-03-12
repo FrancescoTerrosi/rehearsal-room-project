@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:security="http://www.springframework.org/security/tags">
+
+<head>
+<title>Registration Page</title>
+</head>
+<body onload='document.registrationForm.username.focus();'>
+	<h3>Sign up for Rehearsals!</h3>
+
+	<form name='registrationForm' th:action="@{/register}" method="post">
+
+		<div id="error" th:if="${error}"><font color="red"><span th:text="${error}"></span></font><br/><br/></div>
+
+		<fieldset>
+			<label for="username">Username:</label>
+			<input type="text" id="username" name="username"/>
+			<label for="password">Password:</label>
+			<input type="password" id="password" name="password"/>
+			<label for="confirmPassword">Confirm password:</label>
+			<input type="password" id="confirmPassword" name="confirmPassword"/>
+			<button type="submit" name="submit" class="btn">Register</button>
+		</fieldset>
+	</form>
+</body>
+</html>

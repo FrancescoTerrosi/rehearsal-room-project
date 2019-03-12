@@ -4,7 +4,9 @@ import java.math.BigInteger;
 
 import org.joda.time.DateTime;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document("Schedule")
 public class Schedule {
 
 	@Id
