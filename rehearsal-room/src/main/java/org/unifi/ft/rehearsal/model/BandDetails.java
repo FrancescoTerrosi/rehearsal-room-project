@@ -30,6 +30,10 @@ public class BandDetails implements UserDetails {
 	public String getPassword() {
 		return passw;
 	}
+	
+	public BigInteger getId() {
+		return this.id;
+	}
 
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return AuthorityUtils.createAuthorityList(authorities);

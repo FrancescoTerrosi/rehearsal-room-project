@@ -39,24 +39,24 @@ public class BandServiceTest {
 	@Test
 	public void testValidRegistration() {
 		when(repository.findAll()).thenReturn(notEmptyList());
-		UserDetails c = createUser("bandName", "bandPassword");
-		when(repository.save(isA(UserDetails.class))).thenReturn(c);
+		BandDetails c = createUser("bandName", "bandPassword");
+		when(repository.save(isA(BandDetails.class))).thenReturn(c);
 		when(encoder.encode(anyString())).thenReturn("bandPassword");
 		
 		UserDetails result = service.register("bandName","bandPassword","bandPassword");
 		assertEquals("bandName", result.getUsername());
 		assertEquals("bandPassword", result.getPassword());
-		verify(repository, times(1)).save(isA(UserDetails.class));
+		verify(repository, times(1)).save(isA(BandDetails.class));
 	}
 
 	@Test(expected = UsernameAlreadyExistsException.class)
 	public void testInvalidRegistrationUsernameAlreadyExists() {
-		UserDetails c = createUser("band", "pass1");
+		BandDetails c = createUser("band", "pass1");
 		when(repository.findAll()).thenReturn(notEmptyList());
-		when(repository.save(isA(UserDetails.class))).thenReturn(c);
+		when(repository.save(isA(BandDetails.class))).thenReturn(c);
 		
 		service.register("band1","pass1","pass1");
-		verify(repository, times(1)).save(isA(UserDetails.class));
+		verify(repository, times(1)).save(isA(BandDetails.class));
 	}
 	
 	@Test(expected = PasswordNotMatchingException.class)
@@ -83,7 +83,7 @@ public class BandServiceTest {
 	}
 	
 	@Test
-	public void existsUserByUsername() {
+	public void testExistsUserByUsername() {
 		when(repository.findAll()).thenReturn(notEmptyList());
 
 		assertTrue(service.existsUserByUsername("band1"));
@@ -92,24 +92,24 @@ public class BandServiceTest {
 	}
 	
 	@Test
-	public void existsUserByUsernameWhenNotExists() {
+	public void testExistsUserByUsernameWhenNotExists() {
 		when(repository.findAll()).thenReturn(notEmptyList());
 		
 		assertFalse(service.existsUserByUsername("band4"));
 	}
 	
 	
-	private List<UserDetails> notEmptyList() {
-		List<UserDetails> result = new LinkedList<>();
+	private List<BandDetails> notEmptyList() {
+		List<BandDetails> result = new LinkedList<>();
 		result.add(createUser("band1","pass1"));
 		result.add(createUser("band2","pass2"));
 		result.add(createUser("band3","pass3"));
 		return result;
 }
 
-	private UserDetails createUser(String name, String password) {
+	private BandDetails createUser(String name, String password) {
 		String[] authorities = {"USER"};
-		UserDetails result = new BandDetails(name,password,authorities);
+		BandDetails result = new BandDetails(name,password,authorities);
 		return result;
 	}
 
