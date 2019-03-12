@@ -1,7 +1,10 @@
 package org.unifi.ft.rehearsal.web;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -31,10 +34,10 @@ public class HomePageWebControllerTest {
 
 	@MockBean
 	private BandService bandService;
-	
+
 	@MockBean
 	private IScheduleMongoRepository schedulesRepository;
-	
+
 	@MockBean
 	private IBandDetailsMongoRepository bandRepository;
 
@@ -46,9 +49,15 @@ public class HomePageWebControllerTest {
 	@Test
 	@WithMockUser("username")
 	public void testGetIndex() throws Exception {
-		mvc.perform(get("/home").sessionAttr("user", "username"))
-			.andExpect(view().name("home"))
-			.andExpect(status().isOk());
+		mvc.perform(get("/home").sessionAttr("user", "username")).andExpect(view().name("home"))
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	@WithMockUser("username")
+	public void testClearSession() throws Exception {
+		mvc.perform(post("/clear_session").with(csrf())).andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/"));
 	}
 
 }

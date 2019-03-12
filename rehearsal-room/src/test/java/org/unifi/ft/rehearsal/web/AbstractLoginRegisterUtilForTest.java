@@ -30,7 +30,7 @@ public abstract class AbstractLoginRegisterUtilForTest {
 
 	@MockBean
 	private BandService service;
-	
+
 	@Before
 	public void setup() {
 		mvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();

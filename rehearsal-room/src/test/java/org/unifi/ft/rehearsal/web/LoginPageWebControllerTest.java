@@ -87,6 +87,6 @@ public class LoginPageWebControllerTest extends AbstractLoginRegisterUtilForTest
 			.andExpect(view().name(LoginWebController.LOGIN_PAGE))
 					.andExpect(model().attribute("error", LoginWebController.INVALID_USERNAME_OR_PASSW))
 					.andExpect(status().is4xxClientError());
-	}	
+	}
 	
 }
