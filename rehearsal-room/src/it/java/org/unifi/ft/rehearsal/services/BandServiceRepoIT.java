@@ -9,8 +9,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -54,7 +52,7 @@ public class BandServiceRepoIT {
 
 	@Test(expected = UsernameAlreadyExistsException.class)
 	public void testInvalidRegistrationUsernameAlreadyExists() {
-		UserDetails toStore = createUser("bandName", "bandPassword");
+		BandDetails toStore = createUser("bandName", "bandPassword");
 		repository.save(toStore);
 		service.register("bandName", "bandPassword","bandPassword");
 	}
@@ -66,8 +64,8 @@ public class BandServiceRepoIT {
 
 	@Test
 	public void testLoadByUsername() {
-		UserDetails c1 = createUser("bandName1", "bandPassword");
-		UserDetails c2 = createUser("bandName2", "bandPassword");
+		BandDetails c1 = createUser("bandName1", "bandPassword");
+		BandDetails c2 = createUser("bandName2", "bandPassword");
 		repository.save(c1);
 		repository.save(c2);
 		UserDetails result = service.loadUserByUsername("bandName1");
@@ -76,9 +74,9 @@ public class BandServiceRepoIT {
 	}
 
 	@Test(expected = UsernameNotFoundException.class)
-	public void loadOneByUsernameWhenThereIsNotTest() {
-		UserDetails c1 = createUser("bandName1", "bandPassword");
-		UserDetails c2 = createUser("bandName2", "bandPassword");
+	public void testLoadOneByUsernameWhenThereIsNot() {
+		BandDetails c1 = createUser("bandName1", "bandPassword");
+		BandDetails c2 = createUser("bandName2", "bandPassword");
 		repository.save(c1);
 		repository.save(c2);
 		UserDetails result = service.loadUserByUsername("error");
@@ -86,25 +84,25 @@ public class BandServiceRepoIT {
 	}
 	
 	@Test
-	public void existsUserByUsername() {
+	public void testExistsUserByUsername() {
 		repository.save(createUser("bandName","bandPassword"));
 		assertTrue(service.existsUserByUsername("bandName"));
 	}
 	
 	@Test
-	public void existsUserByUsernameWhenNotExistsTest() {
+	public void testExistsUserByUsernameWhenNotExists() {
 		repository.save(createUser("bandName","bandPassword"));
 		assertFalse(service.existsUserByUsername("band"));
 	}
 	
 	@Test
-	public void existsUserByUserNameWhenRepositoryIsEmptyTest() {
+	public void testExistsUserByUserNameWhenRepositoryIsEmpty() {
 		assertFalse(service.existsUserByUsername("anything"));
 	}
 
-	private UserDetails createUser(String name, String password) {
+	private BandDetails createUser(String name, String password) {
 		String[] authorities = { "USER" };
-		UserDetails result = new BandDetails(name, password, authorities);
+		BandDetails result = new BandDetails(name, password, authorities);
 		return result;
 	}
 

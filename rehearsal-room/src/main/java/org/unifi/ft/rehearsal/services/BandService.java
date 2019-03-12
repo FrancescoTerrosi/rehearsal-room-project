@@ -45,7 +45,7 @@ public class BandService implements UserDetailsService {
 
 	private UserDetails handleRegistration(String name, String password, String confirmPassword) {
 		if (password.equals(confirmPassword)) {
-			UserDetails user = createUser(name, password);
+			BandDetails user = createUser(name, password);
 			repository.save(user);
 			LOGGER.info("User " + name + " just joined our system!");
 			return user;
@@ -56,8 +56,8 @@ public class BandService implements UserDetailsService {
 	}
 
 	public UserDetails loadUserByUsername(String username) {
-		List<UserDetails> temp = repository.findAll();
-		for (UserDetails user : temp) {
+		List<BandDetails> temp = repository.findAll();
+		for (BandDetails user : temp) {
 			if (user.getUsername().equals(username)) {
 				return user;
 			}
@@ -67,8 +67,8 @@ public class BandService implements UserDetailsService {
 	}
 
 	public boolean existsUserByUsername(String username) {
-		List<UserDetails> temp = repository.findAll();
-		for (UserDetails user : temp) {
+		List<BandDetails> temp = repository.findAll();
+		for (BandDetails user : temp) {
 			if (user.getUsername().equals(username)) {
 				return true;
 			}
@@ -76,7 +76,7 @@ public class BandService implements UserDetailsService {
 		return false;
 	}
 
-	private UserDetails createUser(String name, String password) {
+	private BandDetails createUser(String name, String password) {
 		String[] authorities = { "USER" };
 		return new BandDetails(name, encoder.encode(password), authorities);
 	}
