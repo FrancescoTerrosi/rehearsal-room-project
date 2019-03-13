@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.unifi.ft.rehearsal.exceptions.InvalidTimeException;
 import org.unifi.ft.rehearsal.exceptions.RoomNotFreeException;
 import org.unifi.ft.rehearsal.exceptions.ScheduleNotFoundException;
-import org.unifi.ft.rehearsal.model.BandDetails;
 import org.unifi.ft.rehearsal.model.RehearsalRoom;
 import org.unifi.ft.rehearsal.model.Schedule;
 import org.unifi.ft.rehearsal.repository.mongo.IScheduleMongoRepository;
@@ -36,11 +35,11 @@ public class Scheduler {
 		this.repository = repository;
 	}
 
-	public List<Schedule> findSchedulesByBand(BandDetails band) {
+	public List<Schedule> findSchedulesByBand(String bandName) {
 		List<Schedule> schedules = repository.findAll();
 		List<Schedule> result = new ArrayList<>();
 		for (Schedule schedule : schedules) {
-			if (schedule.getBand().equals(band)) {
+			if (schedule.getBand().equals(bandName)) {
 				result.add(schedule);
 			}
 		}
@@ -73,7 +72,7 @@ public class Scheduler {
 		return result;
 	}
 
-	public Schedule deleteSchedule(BandDetails band, DateTime startDate, RehearsalRoom room) {
+	public Schedule deleteSchedule(String band, DateTime startDate, RehearsalRoom room) {
 		List<Schedule> schedules = repository.findAll();
 		Schedule toDelete = createSchedule(band, startDate, room);
 		for (Schedule schedule : schedules) {
@@ -82,13 +81,13 @@ public class Scheduler {
 				return schedule;
 			}
 		}
-		LOGGER.warn(band.getUsername() + " - " + SCHEDULE_NOT_FOUND);
+		LOGGER.warn(band + " - " + SCHEDULE_NOT_FOUND);
 		throw new ScheduleNotFoundException(SCHEDULE_NOT_FOUND);
 	}
 
-	public Schedule initAndSaveSchedule(BandDetails band, DateTime startDate, RehearsalRoom room) {
+	public Schedule initAndSaveSchedule(String band, DateTime startDate, RehearsalRoom room) {
 		if (startDate.isBefore(DateTime.now().plusMinutes(5))) {
-			LOGGER.warn(band.getUsername() + " - " + REQUESTED_DATE_IS_BEFORE_NOW);
+			LOGGER.warn(band + " - " + REQUESTED_DATE_IS_BEFORE_NOW);
 			throw new InvalidTimeException(REQUESTED_DATE_IS_BEFORE_NOW);
 		}
 		Schedule result = createSchedule(band, startDate, room);
@@ -96,12 +95,12 @@ public class Scheduler {
 			repository.save(result);
 			return result;
 		} else {
-			LOGGER.info(band.getUsername() + " - " + ROOM_NOT_FREE);
+			LOGGER.info(band + " - " + ROOM_NOT_FREE);
 			throw new RoomNotFreeException(ROOM_NOT_FREE);
 		}
 	}
 
-	private Schedule createSchedule(BandDetails band, DateTime startDate, RehearsalRoom room) {
+	private Schedule createSchedule(String band, DateTime startDate, RehearsalRoom room) {
 		DateTime endDate = setEndTime(startDate);
 		return new Schedule(band, startDate, endDate, room);
 	}

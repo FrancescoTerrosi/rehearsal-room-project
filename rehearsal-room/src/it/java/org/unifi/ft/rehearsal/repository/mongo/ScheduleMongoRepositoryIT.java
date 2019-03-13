@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.unifi.ft.rehearsal.model.BandDetails;
 import org.unifi.ft.rehearsal.model.RehearsalRoom;
 import org.unifi.ft.rehearsal.model.Schedule;
 
@@ -34,7 +33,7 @@ public class ScheduleMongoRepositoryIT {
 
 	@Test
 	public void testSave() {
-		Schedule toSave = createSchedule("bandName","bandPw");
+		Schedule toSave = createSchedule("bandName");
 		repository.save(toSave);
 		List<Schedule> result = mongoOps.findAll(Schedule.class);
 		assertEquals(1, result.size());
@@ -44,9 +43,9 @@ public class ScheduleMongoRepositoryIT {
 	
 	@Test
 	public void testFindAll() {
-		Schedule s1 = createSchedule("bandName1", "bandPw1");
-		Schedule s2 = createSchedule("bandName2", "bandPw2");
-		Schedule s3 = createSchedule("bandName3", "bandPw3");
+		Schedule s1 = createSchedule("bandName1");
+		Schedule s2 = createSchedule("bandName2");
+		Schedule s3 = createSchedule("bandName3");
 
 		mongoOps.save(s1);
 		mongoOps.save(s2);
@@ -70,9 +69,9 @@ public class ScheduleMongoRepositoryIT {
 
 	@Test
 	public void testDelete() {
-		Schedule s1 = createSchedule("band1", "pw1");
-		Schedule s2 = createSchedule("band2", "pw2");
-		Schedule s3 = createSchedule("band3", "pw3");
+		Schedule s1 = createSchedule("band1");
+		Schedule s2 = createSchedule("band2");
+		Schedule s3 = createSchedule("band3");
 
 		mongoOps.save(s1);
 		mongoOps.save(s2);
@@ -90,9 +89,9 @@ public class ScheduleMongoRepositoryIT {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testDeleteWhenThereIsNot() {
-		Schedule s1 = createSchedule("bandName1", "bandPw1");
-		Schedule s2 = createSchedule("bandName2", "bandPw2");
-		Schedule s3 = createSchedule("bandName3", "bandPw3");
+		Schedule s1 = createSchedule("bandName1");
+		Schedule s2 = createSchedule("bandName2");
+		Schedule s3 = createSchedule("bandName3");
 
 		mongoOps.save(s2);
 		mongoOps.save(s3);
@@ -100,9 +99,8 @@ public class ScheduleMongoRepositoryIT {
 		repository.delete(s1);
 	}
 	
-	private Schedule createSchedule(String bandName, String bandPw) {
-		BandDetails band = new BandDetails(bandName, bandPw);
-		Schedule result = new Schedule(band, new DateTime(), new DateTime(), RehearsalRoom.FIRSTROOM);
+	private Schedule createSchedule(String bandName) {
+		Schedule result = new Schedule(bandName, new DateTime(), new DateTime(), RehearsalRoom.FIRSTROOM);
 		return result;
 	}
 }

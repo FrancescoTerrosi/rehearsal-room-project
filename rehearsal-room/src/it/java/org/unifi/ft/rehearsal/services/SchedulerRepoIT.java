@@ -16,7 +16,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.unifi.ft.rehearsal.exceptions.InvalidTimeException;
 import org.unifi.ft.rehearsal.exceptions.RoomNotFreeException;
 import org.unifi.ft.rehearsal.exceptions.ScheduleNotFoundException;
-import org.unifi.ft.rehearsal.model.BandDetails;
 import org.unifi.ft.rehearsal.model.RehearsalRoom;
 import org.unifi.ft.rehearsal.model.Schedule;
 import org.unifi.ft.rehearsal.repository.mongo.IScheduleMongoRepository;
@@ -43,7 +42,7 @@ public class SchedulerRepoIT {
 
 	@Test
 	public void testCreateSchedule() {
-		BandDetails b = new BandDetails("bandName", "bandPw");
+		String b = "bandName";
 		DateTime start = new DateTime(2121, 12, 12, 12, 12, 12);
 		DateTime end = start.plusHours(Scheduler.HOUR_DURATION).plusMinutes(Scheduler.MINUTE_DURATION);
 
@@ -60,14 +59,14 @@ public class SchedulerRepoIT {
 
 	@Test
 	public void testCreateScheduleSameTimeDifferentRooms() {
-		BandDetails b1 = new BandDetails("bandName1", "bandPw1");
+		String b1 = "bandName1";
 		DateTime start = new DateTime(2121, 12, 12, 12, 12, 12);
 		DateTime end = start.plusHours(Scheduler.HOUR_DURATION).plusMinutes(Scheduler.MINUTE_DURATION);
 
 		Schedule s = new Schedule(b1, start, end, RehearsalRoom.FIRSTROOM);
 		repository.save(s);
 
-		BandDetails b2 = new BandDetails("bandName2", "bandPw2");
+		String b2 = "bandName2";
 		service.initAndSaveSchedule(b2, start, RehearsalRoom.SECONDROOM);
 
 		assertEquals(2, repository.count());
@@ -83,7 +82,7 @@ public class SchedulerRepoIT {
 
 	@Test
 	public void testCreateScheduleSameRoomDifferentTimes() {
-		BandDetails b1 = new BandDetails("bandName1", "bandPw1");
+		String b1 = "bandName1";
 		DateTime start1 = new DateTime(2120, 12, 12, 12, 12, 12);
 		DateTime end1 = start1.plusHours(Scheduler.HOUR_DURATION).plusMinutes(Scheduler.MINUTE_DURATION);
 
@@ -92,7 +91,7 @@ public class SchedulerRepoIT {
 
 		DateTime start2 = new DateTime(2121, 12, 12, 12, 12, 12);
 		DateTime end2 = start2.plusHours(Scheduler.HOUR_DURATION).plusMinutes(Scheduler.MINUTE_DURATION);
-		BandDetails b2 = new BandDetails("bandName2", "bandPw2");
+		String b2 = "bandName2";
 		service.initAndSaveSchedule(b2, start2, RehearsalRoom.FIRSTROOM);
 
 		assertEquals(2, repository.count());
@@ -108,37 +107,37 @@ public class SchedulerRepoIT {
 
 	@Test(expected = InvalidTimeException.class)
 	public void testCreateScheduleWhenItIsTooLate() {
-		BandDetails b = new BandDetails("bandName", "bandPw");
+		String b = "bandName";
 
 		service.initAndSaveSchedule(b, new DateTime(new Date()), RehearsalRoom.FIRSTROOM);
 	}
 
 	@Test(expected = RoomNotFreeException.class)
 	public void testCreateScheduleWhenAnotherExistsOnStartDate() {
-		BandDetails b1 = new BandDetails("bandName1", "bandPw1");
+		String b1 = "bandName1";
 		DateTime start = new DateTime(2121, 12, 12, 12, 12, 12);
 		DateTime end = start.plusHours(Scheduler.HOUR_DURATION).plusMinutes(Scheduler.MINUTE_DURATION);
 		repository.save(new Schedule(b1, start, end, RehearsalRoom.FIRSTROOM));
 
-		BandDetails b2 = new BandDetails("bandName2", "bandPw2");
+		String b2 = "bandName2";
 		service.initAndSaveSchedule(b2, start, RehearsalRoom.FIRSTROOM);
 	}
 
 	@Test(expected = RoomNotFreeException.class)
 	public void testCreateScheduleWhenAnotherExistsOnEndDate() {
-		BandDetails b1 = new BandDetails("bandName1", "bandPw1");
+		String b1 = "bandName1";
 		DateTime start1 = new DateTime(2121, 12, 12, 12, 12, 12);
 		DateTime end1 = start1.plusHours(Scheduler.HOUR_DURATION).plusMinutes(Scheduler.MINUTE_DURATION);
 		repository.save(new Schedule(b1, start1, end1, RehearsalRoom.FIRSTROOM));
 
-		BandDetails b2 = new BandDetails("bandName2", "bandPw2");
+		String b2 = "bandName2";
 		DateTime start2 = new DateTime(2121, 12, 12, 10, 12, 12);
 		service.initAndSaveSchedule(b2, start2, RehearsalRoom.FIRSTROOM);
 	}
 
 	@Test
 	public void testDeleteSchedule() {
-		BandDetails b1 = new BandDetails("bandName1", "bandPw1");
+		String b1 = "bandName1";
 		DateTime start1 = new DateTime(2121, 12, 12, 12, 12, 12);
 		DateTime end1 = start1.plusHours(Scheduler.HOUR_DURATION).plusMinutes(Scheduler.MINUTE_DURATION);
 		repository.save(new Schedule(b1, start1, end1, RehearsalRoom.FIRSTROOM));
@@ -156,13 +155,13 @@ public class SchedulerRepoIT {
 
 	@Test(expected = ScheduleNotFoundException.class)
 	public void testDeleteScheduleWhenItDoesNotExist() {
-		BandDetails b1 = new BandDetails("bandName1", "bandPw1");
+		String b1 = "bandName1";
 		DateTime start1 = new DateTime(2121, 12, 12, 12, 12, 12);
 		DateTime end1 = start1.plusHours(Scheduler.HOUR_DURATION).plusMinutes(Scheduler.MINUTE_DURATION);
 		repository.save(new Schedule(b1, start1, end1, RehearsalRoom.FIRSTROOM));
 
 		assertEquals(1, repository.count());
-		BandDetails b = new BandDetails("bandName", "bandPw");
+		String b = "bandName";
 		DateTime start = new DateTime(new Date());
 
 		service.deleteSchedule(b, start, RehearsalRoom.FIRSTROOM);
@@ -170,8 +169,8 @@ public class SchedulerRepoIT {
 
 	@Test
 	public void findSchedulesByBand() {
-		BandDetails b1 = new BandDetails("bandName1", "bandPw1");
-		BandDetails b2 = new BandDetails("bandName2", "bandPw2");
+		String b1 = "bandName1";
+		String b2 = "bandName2";
 		DateTime start = new DateTime(2121, 12, 12, 12, 12, 12);
 		DateTime end = start.plusHours(Scheduler.HOUR_DURATION).plusMinutes(Scheduler.MINUTE_DURATION);
 
@@ -189,8 +188,8 @@ public class SchedulerRepoIT {
 
 	@Test
 	public void findSchedulesByBandWhenThereIsNot() {
-		BandDetails b1 = new BandDetails("bandName1", "bandPw1");
-		BandDetails b2 = new BandDetails("bandName2", "bandPw2");
+		String b1 = "bandName1";
+		String b2 = "bandName2";
 		DateTime start = new DateTime(2121, 12, 12, 12, 12, 12);
 		DateTime end = start.plusHours(Scheduler.HOUR_DURATION).plusMinutes(Scheduler.MINUTE_DURATION);
 
@@ -201,14 +200,14 @@ public class SchedulerRepoIT {
 		repository.save(s2);
 		assertEquals(2, repository.count());
 
-		List<Schedule> result = service.findSchedulesByBand(new BandDetails("bandName3", "bandPw3"));
+		List<Schedule> result = service.findSchedulesByBand("bandName3");
 		assertEquals(0, result.size());
 	}
 
 	@Test
 	public void findScheduleByDate() {
-		BandDetails b1 = new BandDetails("bandName1", "bandPw1");
-		BandDetails b2 = new BandDetails("bandName2", "bandPw2");
+		String b1 = "bandName1";
+		String b2 = "bandName2";
 		DateTime start = new DateTime(2121, 12, 12, 12, 12, 12);
 		DateTime end = start.plusHours(Scheduler.HOUR_DURATION).plusMinutes(Scheduler.MINUTE_DURATION);
 
@@ -227,9 +226,8 @@ public class SchedulerRepoIT {
 
 	@Test
 	public void findScheduleByDateWrongDay() {
-
-		BandDetails b1 = new BandDetails("bandName1", "bandPw1");
-		BandDetails b2 = new BandDetails("bandName2", "bandPw2");
+		String b1 = "bandName1";
+		String b2 = "bandName2";
 		DateTime start = new DateTime(2121, 12, 12, 12, 12, 12);
 		DateTime end = start.plusHours(Scheduler.HOUR_DURATION).plusMinutes(Scheduler.MINUTE_DURATION);
 
@@ -246,8 +244,8 @@ public class SchedulerRepoIT {
 
 	@Test
 	public void findScheduleByDateWrongMonth() {
-		BandDetails b1 = new BandDetails("bandName1", "bandPw1");
-		BandDetails b2 = new BandDetails("bandName2", "bandPw2");
+		String b1 = "bandName1";
+		String b2 = "bandName2";
 		DateTime start = new DateTime(2121, 12, 12, 12, 12, 12);
 		DateTime end = start.plusHours(Scheduler.HOUR_DURATION).plusMinutes(Scheduler.MINUTE_DURATION);
 
@@ -264,8 +262,8 @@ public class SchedulerRepoIT {
 
 	@Test
 	public void findScheduleByDateWrongYear() {
-		BandDetails b1 = new BandDetails("bandName1", "bandPw1");
-		BandDetails b2 = new BandDetails("bandName2", "bandPw2");
+		String b1 = "bandName1";
+		String b2 = "bandName2";
 		DateTime start = new DateTime(2121, 12, 12, 12, 12, 12);
 		DateTime end = start.plusHours(Scheduler.HOUR_DURATION).plusMinutes(Scheduler.MINUTE_DURATION);
 
@@ -282,8 +280,8 @@ public class SchedulerRepoIT {
 
 	@Test
 	public void findScheduleByRoom() {
-		BandDetails b1 = new BandDetails("bandName1", "bandPw1");
-		BandDetails b2 = new BandDetails("bandName2", "bandPw2");
+		String b1 = "bandName1";
+		String b2 = "bandName2";
 		DateTime start = new DateTime(2121, 12, 12, 12, 12, 12);
 		DateTime end = start.plusHours(Scheduler.HOUR_DURATION).plusMinutes(Scheduler.MINUTE_DURATION);
 
@@ -301,8 +299,8 @@ public class SchedulerRepoIT {
 
 	@Test
 	public void findScheduleByRoomWhenItIsTooLate() {
-		BandDetails b1 = new BandDetails("bandName1", "bandPw1");
-		BandDetails b2 = new BandDetails("bandName2", "bandPw2");
+		String b1 = "bandName1";
+		String b2 = "bandName2";
 		DateTime start = new DateTime(2018, 12, 12, 12, 12, 12);
 		DateTime end = start.plusHours(Scheduler.HOUR_DURATION).plusMinutes(Scheduler.MINUTE_DURATION);
 
@@ -322,8 +320,8 @@ public class SchedulerRepoIT {
 
 	@Test
 	public void findScheduleByRoomWhenRoomIsEmpty() {
-		BandDetails b1 = new BandDetails("bandName1", "bandPw1");
-		BandDetails b2 = new BandDetails("bandName2", "bandPw2");
+		String b1 = "bandName1";
+		String b2 = "bandName2";
 		DateTime start = new DateTime(2018, 12, 12, 12, 12, 12);
 		DateTime end = start.plusHours(Scheduler.HOUR_DURATION).plusMinutes(Scheduler.MINUTE_DURATION);
 

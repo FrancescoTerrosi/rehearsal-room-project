@@ -14,26 +14,34 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
+import org.unifi.ft.rehearsal.model.RehearsalRoom;
 import org.unifi.ft.rehearsal.repository.mongo.IBandDetailsMongoRepository;
 import org.unifi.ft.rehearsal.repository.mongo.IScheduleMongoRepository;
 import org.unifi.ft.rehearsal.services.BandService;
+import org.unifi.ft.rehearsal.services.Scheduler;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers = HomePageWebController.class)
 public class HomePageWebControllerTest {
 
 	private MockMvc mvc;
+	private MultiValueMap<String, String> params = new HttpHeaders();
 
 	@Autowired
 	private WebApplicationContext context;
 
 	@MockBean
 	private BandService bandService;
+
+	@MockBean
+	private Scheduler scheduler;
 
 	@MockBean
 	private IScheduleMongoRepository schedulesRepository;
@@ -56,8 +64,22 @@ public class HomePageWebControllerTest {
 	@Test
 	@WithMockUser("username")
 	public void testClearSession() throws Exception {
-		mvc.perform(post("/clear_session").with(csrf())).andExpect(status().is3xxRedirection())
-				.andExpect(redirectedUrl("/"));
+		mvc.perform(post("/clear_session").sessionAttr("user", "username").with(csrf()))
+				.andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/"));
+	}
+
+	@Test
+	@WithMockUser("username")
+	public void testRehearsal() throws Exception {
+		params.add("year", "2121");
+		params.add("month", "12");
+		params.add("day", "12");
+		params.add("hour", "12");
+		params.add("minutes", "12");
+		params.add("room", RehearsalRoom.FIRSTROOM.name());
+
+		mvc.perform(post("/schedule").params(params).sessionAttr("user", "username").with(csrf()))
+				.andExpect(status().isOk());
 	}
 
 }

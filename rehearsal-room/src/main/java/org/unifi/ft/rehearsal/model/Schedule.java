@@ -11,19 +11,19 @@ public class Schedule {
 
 	@Id
 	private BigInteger id;
-	private BandDetails band;
+	private String band;
 	private DateTime startDate;
 	private DateTime endDate;
 	private RehearsalRoom room;
 	
-	public Schedule(BandDetails band, DateTime startDate, DateTime endDate, RehearsalRoom room) {
+	public Schedule(String band, DateTime startDate, DateTime endDate, RehearsalRoom room) {
 		this.band = band;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.room = room;
 	}
 
-	public BandDetails getBand() {
+	public String getBand() {
 		return this.band;
 	}
 
