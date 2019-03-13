@@ -21,6 +21,8 @@ public class HomePageWebController {
 	private static final String HOME_URI = "/home";
 	private static final String CLEAR_SESSION = "/clear_session";
 	private static final String SCHEDULE = "/schedule";
+	private static final String ROOM_ERROR = "?roomError";
+	private static final String TIME_ERROR = "?timeError";
 
 	private static final String HOME_PAGE = "home";
 
