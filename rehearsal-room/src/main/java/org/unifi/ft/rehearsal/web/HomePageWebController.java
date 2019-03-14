@@ -2,13 +2,16 @@ package org.unifi.ft.rehearsal.web;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.ModelAndView;
 import org.unifi.ft.rehearsal.exceptions.InvalidTimeException;
 import org.unifi.ft.rehearsal.exceptions.RoomNotFreeException;
 import org.unifi.ft.rehearsal.model.RehearsalRoom;
@@ -18,46 +21,78 @@ import org.unifi.ft.rehearsal.services.Scheduler;
 @SessionAttributes("user")
 public class HomePageWebController {
 
-	private static final String HOME_URI = "/home";
-	private static final String CLEAR_SESSION = "/clear_session";
-	private static final String SCHEDULE = "/schedule";
+	/*
+	 * URIs
+	 */
+	public static final String HOME_URI = "/home";
+	public static final String CLEAR_SESSION_URI = "/clear_session";
+	public static final String SCHEDULE_URI = "/schedule";
+	public static final String ROOM_ERROR_URI = "?roomError";
+	public static final String TIME_ERROR_URI = "?timeError";
+	public static final String NUMBER_FORMAT_ERROR_URI = "?numberError";
+	public static final String HOME_PAGE_URI = "home";
 
-	private static final String HOME_PAGE = "home";
+	/*
+	 * Error Messages
+	 */
+	public static final String TIME_ERROR_MESSAGE = "Time travel has not been invented yet!";
+	public static final String ROOM_ERROR_MESSAGE = "The room you requested for is not free at that time";
+	public static final String NUMBER_ERROR_MESSAGE = "Please insert a valid date!";
 
 	@Autowired
 	private Scheduler scheduler;
 
 	@GetMapping(HOME_URI)
-	public String getIndex(@SessionAttribute("user") String user) {
-		return HOME_PAGE;
+	public ModelAndView getIndex(
+			@RequestParam(value = "numberError", required = false) String numberError,
+			@RequestParam(value = "roomError", required = false) String roomError,
+			@RequestParam(value = "timeError", required = false) String timeError) {
+		ModelAndView model = handleError(numberError, roomError, timeError);
+		model.setViewName(HOME_PAGE_URI);
+		return model;
 	}
 
-	@PostMapping(CLEAR_SESSION)
+	@PostMapping(CLEAR_SESSION_URI)
 	public String sayGoodbye(SessionStatus status) {
 		status.setComplete();
 		return "redirect:/";
 	}
 
-	@PostMapping(SCHEDULE)
+	@PostMapping(SCHEDULE_URI)
 	public String rehearsalSchedule(
 			@RequestParam int year, @RequestParam int month, @RequestParam int day,
 			@RequestParam int hour, @RequestParam int minutes, @RequestParam RehearsalRoom room,
-			@SessionAttribute("user") String band,
-			@RequestParam(value = "timeError", required = false) String timeError,
-			@RequestParam(value = "roomError", required = false) String roomError) {
+			@SessionAttribute("user") String band) {
 
 		DateTime startDate = new DateTime(year, month, day, hour, minutes, 0);
 		try {
 			scheduler.initAndSaveSchedule(band, startDate, room);
 		} catch (InvalidTimeException e) {
-			/*
-			 * TODO: SHOW ERROR IN PAGE
-			 */
+			return "redirect:" + HOME_URI + TIME_ERROR_URI;
 		} catch (RoomNotFreeException e) {
-			/*
-			 * TODO: SHOW ERROR IN PAGE
-			 */
+			return "redirect:" + HOME_URI + ROOM_ERROR_URI;
 		}
-		return HOME_PAGE;
+		return HOME_PAGE_URI;
 	}
+	
+	@ExceptionHandler(NumberFormatException.class)
+	private String handleError() {
+		return "redirect:" + HOME_URI + NUMBER_FORMAT_ERROR_URI;
+	}
+	
+	private ModelAndView handleError(String numberError, String roomError, String timeError) {
+		ModelAndView model = new ModelAndView();
+		if (numberError != null) {
+			model.addObject("error", NUMBER_ERROR_MESSAGE);
+			model.setStatus(HttpStatus.BAD_REQUEST);
+		} else if (roomError != null) {
+			model.addObject("error", ROOM_ERROR_MESSAGE);
+			model.setStatus(HttpStatus.BAD_REQUEST);
+		} else if (timeError != null) {
+			model.addObject("error", TIME_ERROR_MESSAGE);
+			model.setStatus(HttpStatus.BAD_REQUEST);
+		}
+		return model;
+	}
+
 }

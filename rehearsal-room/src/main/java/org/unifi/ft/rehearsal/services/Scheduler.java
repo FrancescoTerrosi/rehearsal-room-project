@@ -93,9 +93,10 @@ public class Scheduler {
 		Schedule result = createSchedule(band, startDate, room);
 		if (checkFreeRoom(result)) {
 			repository.save(result);
+			LOGGER.info(band + " scheduled for room "+ room + " on: "+startDate.toString());
 			return result;
 		} else {
-			LOGGER.info(band + " - " + ROOM_NOT_FREE);
+			LOGGER.warn(band + " - " + ROOM_NOT_FREE);
 			throw new RoomNotFreeException(ROOM_NOT_FREE);
 		}
 	}
