@@ -30,7 +30,7 @@ public class HomePageWebController {
 	public static final String ROOM_ERROR_URI = "?roomError";
 	public static final String TIME_ERROR_URI = "?timeError";
 	public static final String NUMBER_FORMAT_ERROR_URI = "?numberError";
-	public static final String HOME_PAGE_URI = "home";
+	public static final String HOME_PAGE = "home";
 	public static final String REDIRECT = "redirect:";
 	public static final String ERROR = "error";
 
@@ -45,13 +45,9 @@ public class HomePageWebController {
 	private Scheduler scheduler;
 
 	@GetMapping(HOME_URI)
-	public ModelAndView getIndex(
-			@RequestParam(value = "numberError", required = false) String numberError,
-			@RequestParam(value = "roomError", required = false) String roomError,
-			@RequestParam(value = "timeError", required = false) String timeError) {
-		ModelAndView model = handleError(numberError, roomError, timeError);
-		model.setViewName(HOME_PAGE_URI);
-		return model;
+	public String getIndex() {
+//		ModelAndView model = handleErrorMessage(numberError, roomError, timeError);
+		return HOME_PAGE;
 	}
 
 	@PostMapping(CLEAR_SESSION_URI)
@@ -67,22 +63,38 @@ public class HomePageWebController {
 			@SessionAttribute("user") String band) {
 
 		DateTime startDate = new DateTime(year, month, day, hour, minutes, 0);
-		try {
-			scheduler.initAndSaveSchedule(band, startDate, room);
-		} catch (InvalidTimeException e) {
-			return REDIRECT + HOME_URI + TIME_ERROR_URI;
-		} catch (RoomNotFreeException e) {
-			return REDIRECT + HOME_URI + ROOM_ERROR_URI;
-		}
-		return HOME_PAGE_URI;
+		scheduler.initAndSaveSchedule(band, startDate, room);
+		return HOME_PAGE;
+	}
+	
+	@ExceptionHandler(InvalidTimeException.class)
+	private ModelAndView handleInvalidTimeException() {
+		ModelAndView result = new ModelAndView();
+		result.setViewName(HOME_PAGE);
+		result.addObject(ERROR, TIME_ERROR_MESSAGE);
+		result.setStatus(HttpStatus.BAD_REQUEST);
+		return result;
+	}
+	
+	@ExceptionHandler(RoomNotFreeException.class)
+	private ModelAndView handleRoomNotFreeException() {
+		ModelAndView result = new ModelAndView();
+		result.setViewName(HOME_PAGE);
+		result.addObject(ERROR, ROOM_ERROR_MESSAGE);
+		result.setStatus(HttpStatus.BAD_REQUEST);
+		return result;
 	}
 	
 	@ExceptionHandler(NumberFormatException.class)
-	private String handleError() {
-		return REDIRECT + HOME_URI + NUMBER_FORMAT_ERROR_URI;
+	private ModelAndView handleNumberFormatException() {
+		ModelAndView result = new ModelAndView();
+		result.setViewName(HOME_PAGE);
+		result.addObject(ERROR, NUMBER_ERROR_MESSAGE);
+		result.setStatus(HttpStatus.BAD_REQUEST);
+		return result;
 	}
 	
-	private ModelAndView handleError(String numberError, String roomError, String timeError) {
+	private ModelAndView handleErrorMessage(String numberError, String roomError, String timeError) {
 		ModelAndView model = new ModelAndView();
 		if (numberError != null) {
 			model.addObject(ERROR, NUMBER_ERROR_MESSAGE);

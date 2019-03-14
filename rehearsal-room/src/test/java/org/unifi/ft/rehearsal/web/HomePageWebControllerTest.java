@@ -102,10 +102,10 @@ public class HomePageWebControllerTest {
 		params.add("room", RehearsalRoom.FIRSTROOM.name());
 		
 		mvc.perform(post(HomePageWebController.SCHEDULE_URI).params(params).sessionAttr("user", "username").with(csrf()))
-			.andExpect(status().is3xxRedirection());
+			.andExpect(status().is4xxClientError())
+			.andExpect(model().attribute("error", HomePageWebController.NUMBER_ERROR_MESSAGE));
 		
 		verify(scheduler, times(0)).initAndSaveSchedule(any(String.class), any(DateTime.class), any(RehearsalRoom.class));
-	
 	}
 
 	@Test
@@ -125,11 +125,11 @@ public class HomePageWebControllerTest {
 		.willThrow(RoomNotFreeException.class);
 		
 		mvc.perform(post(HomePageWebController.SCHEDULE_URI).params(params).sessionAttr("user", "username").with(csrf()))
-			.andExpect(status().is3xxRedirection());
+			.andExpect(status().is4xxClientError())
+			.andExpect(model().attribute("error", HomePageWebController.ROOM_ERROR_MESSAGE));
 		
 		verify(scheduler, times(1)).initAndSaveSchedule(eq("username"), eq(toCheck), eq(RehearsalRoom.FIRSTROOM));
 	}
-	
 
 	@Test
 	@WithMockUser("username")
@@ -148,42 +148,10 @@ public class HomePageWebControllerTest {
 		.willThrow(InvalidTimeException.class);
 		
 		mvc.perform(post(HomePageWebController.SCHEDULE_URI).params(params).sessionAttr("user", "username").with(csrf()))
-			.andExpect(status().is3xxRedirection());
-		
+			.andExpect(status().is4xxClientError())
+				.andExpect(model().attribute("error", HomePageWebController.TIME_ERROR_MESSAGE));
+
 		verify(scheduler, times(1)).initAndSaveSchedule(eq("username"), eq(toCheck), eq(RehearsalRoom.FIRSTROOM));
-	}
-	
-	@Test
-	@WithMockUser("username")
-	public void testNumberErrorMessage() throws Exception {
-		params.add("numberError", "true");
-		mvc.perform(
-				get(HomePageWebController.HOME_URI + HomePageWebController.NUMBER_FORMAT_ERROR_URI).params(params))
-				.andExpect(view().name(HomePageWebController.HOME_PAGE_URI))
-				.andExpect(model().attribute("error", HomePageWebController.NUMBER_ERROR_MESSAGE))
-				.andExpect(status().is4xxClientError());
-	}
-	
-	@Test
-	@WithMockUser("username")
-	public void testRoomErrorMessage() throws Exception {
-		params.add("roomError", "true");
-		mvc.perform(
-				get(HomePageWebController.HOME_URI + HomePageWebController.ROOM_ERROR_URI).params(params))
-				.andExpect(view().name(HomePageWebController.HOME_PAGE_URI))
-				.andExpect(model().attribute("error", HomePageWebController.ROOM_ERROR_MESSAGE))
-				.andExpect(status().is4xxClientError());
-	}
-	
-	@Test
-	@WithMockUser("username")
-	public void testTimeErrorMessage() throws Exception {
-		params.add("timeError", "true");
-		mvc.perform(
-				get(HomePageWebController.HOME_URI + HomePageWebController.TIME_ERROR_URI).params(params))
-				.andExpect(view().name(HomePageWebController.HOME_PAGE_URI))
-				.andExpect(model().attribute("error", HomePageWebController.TIME_ERROR_MESSAGE))
-				.andExpect(status().is4xxClientError());
 	}
 
 }
