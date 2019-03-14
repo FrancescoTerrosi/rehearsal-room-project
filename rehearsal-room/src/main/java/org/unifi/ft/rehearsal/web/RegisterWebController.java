@@ -3,7 +3,7 @@ package org.unifi.ft.rehearsal.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,32 +34,34 @@ public class RegisterWebController {
 	private BandService bandService;
 
 	@GetMapping(REGISTER_URI)
-	public ModelAndView getRegisterIndex(
-			@RequestParam(value="invalidUsername", required = false) String invalidUsername, 
-			@RequestParam(value="invalidPasswords", required = false) String invalidPasswords ) {
-		ModelAndView result = new ModelAndView();
-		if (invalidUsername != null) {
-			result.addObject("error", REGISTRATION_USERNAME_ERROR);
-			result.setStatus(HttpStatus.BAD_REQUEST);
-		} else if (invalidPasswords != null) {
-			result.addObject("error", REGISTRATION_PASSW_ERROR);
-			result.setStatus(HttpStatus.BAD_REQUEST);
-		}
-		result.setViewName(REGISTER_PAGE);
-		return result;
+	public String getRegisterIndex() {
+		return REGISTER_PAGE;
 	}
 
 	@PostMapping(REGISTER_URI)
-	public String performRegister(@RequestParam String username, @RequestParam String password,
-			@RequestParam String confirmPassword, Model model) {
-		try {
-			bandService.register(username, password, confirmPassword);
-			return "redirect:/";
-		} catch (UsernameAlreadyExistsException e) {
-			return "redirect:"+REGISTER_URI+INVALID_USER_URI;
-		} catch (PasswordNotMatchingException e) {
-			return "redirect:"+REGISTER_URI+INVALID_PASSW_URI;
-		}
+	public String performRegister(
+			@RequestParam String username, @RequestParam String password,
+			@RequestParam String confirmPassword) {
+		bandService.register(username, password, confirmPassword);
+		return "redirect:/";
+	}
+	
+	@ExceptionHandler(PasswordNotMatchingException.class)
+	private ModelAndView handlePasswordNotMatchingException() {
+		ModelAndView result = new ModelAndView();
+		result.setViewName(REGISTER_PAGE);
+		result.addObject("error", REGISTRATION_PASSW_ERROR);
+		result.setStatus(HttpStatus.BAD_REQUEST);
+		return result;
+	}
+	
+	@ExceptionHandler(UsernameAlreadyExistsException.class)
+	private ModelAndView handleUsernameAlreadyExistsException() {
+		ModelAndView result = new ModelAndView();
+		result.setViewName(REGISTER_PAGE);
+		result.addObject("error", REGISTRATION_USERNAME_ERROR);
+		result.setStatus(HttpStatus.BAD_REQUEST);
+		return result;
 	}
 	
 }

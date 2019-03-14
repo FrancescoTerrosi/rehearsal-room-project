@@ -68,20 +68,11 @@ public class RegisterWebControllerTest extends AbstractLoginRegisterUtilForTest 
 		given(getService().register("userName", "userPassword", "userPassword"))
 				.willThrow(UsernameAlreadyExistsException.class);
 
-		getMvc().perform(post("/register").params(params)).andExpect(
-				view().name("redirect:" + RegisterWebController.REGISTER_URI + RegisterWebController.INVALID_USER_URI));
+		getMvc().perform(post("/register").params(params))
+				.andExpect(status().is4xxClientError())
+				.andExpect(model().attribute("error", RegisterWebController.REGISTRATION_USERNAME_ERROR));
 
 		verify(getService()).register("userName", "userPassword", "userPassword");
-	}
-
-	@Test
-	public void testInvalidUsernameParam() throws Exception {
-		params.add("invalidUsername", "true");
-		getMvc().perform(
-				get(RegisterWebController.REGISTER_URI + RegisterWebController.INVALID_USER_URI).params(params))
-				.andExpect(view().name(RegisterWebController.REGISTER_PAGE))
-				.andExpect(model().attribute("error", RegisterWebController.REGISTRATION_USERNAME_ERROR))
-				.andExpect(status().is4xxClientError());
 	}
 
 	@Test
@@ -93,20 +84,11 @@ public class RegisterWebControllerTest extends AbstractLoginRegisterUtilForTest 
 		given(getService().register("userName", "userPassword", "errorPassword"))
 				.willThrow(PasswordNotMatchingException.class);
 
-		getMvc().perform(post("/register").params(params)).andExpect(view()
-				.name("redirect:" + RegisterWebController.REGISTER_URI + RegisterWebController.INVALID_PASSW_URI));
+		getMvc().perform(post("/register").params(params))
+				.andExpect(status().is4xxClientError())
+				.andExpect(model().attribute("error", RegisterWebController.REGISTRATION_PASSW_ERROR));
 
 		verify(getService()).register("userName", "userPassword", "errorPassword");
-	}
-
-	@Test
-	public void testInvalidPasswordsParam() throws Exception {
-		params.add("invalidPasswords", "true");
-		getMvc().perform(
-				get(RegisterWebController.REGISTER_URI + RegisterWebController.INVALID_PASSW_URI).params(params))
-				.andExpect(view().name(RegisterWebController.REGISTER_PAGE))
-				.andExpect(model().attribute("error", RegisterWebController.REGISTRATION_PASSW_ERROR))
-				.andExpect(status().is4xxClientError());
 	}
 
 }
