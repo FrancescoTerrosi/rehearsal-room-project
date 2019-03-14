@@ -24,6 +24,7 @@
     <sonar.junit.reportPaths>target/surefire-reports,target/failsafe-reports</sonar.junit.reportPaths>
     <sonar.exclusions>
       src/main/java/org/unifi/ft/rehearsal/model/*
+      src/main/java/org/unifi/ft/rehearsal/configurations/*
     </sonar.exclusions>
     <sonar.coverage.exclusions>
       src/main/java/org/unifi/ft/rehearsal/RehearsalRoomApplication.java,
