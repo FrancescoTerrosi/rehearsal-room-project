@@ -1,6 +1,7 @@
 package org.unifi.ft.rehearsal.web;
 
 import org.joda.time.DateTime;
+import org.joda.time.IllegalFieldValueException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -85,28 +86,13 @@ public class HomePageWebController {
 		return result;
 	}
 	
-	@ExceptionHandler(NumberFormatException.class)
+	@ExceptionHandler({NumberFormatException.class, IllegalFieldValueException.class})
 	private ModelAndView handleNumberFormatException() {
 		ModelAndView result = new ModelAndView();
 		result.setViewName(HOME_PAGE);
 		result.addObject(ERROR, NUMBER_ERROR_MESSAGE);
 		result.setStatus(HttpStatus.BAD_REQUEST);
 		return result;
-	}
-	
-	private ModelAndView handleErrorMessage(String numberError, String roomError, String timeError) {
-		ModelAndView model = new ModelAndView();
-		if (numberError != null) {
-			model.addObject(ERROR, NUMBER_ERROR_MESSAGE);
-			model.setStatus(HttpStatus.BAD_REQUEST);
-		} else if (roomError != null) {
-			model.addObject(ERROR, ROOM_ERROR_MESSAGE);
-			model.setStatus(HttpStatus.BAD_REQUEST);
-		} else if (timeError != null) {
-			model.addObject(ERROR, TIME_ERROR_MESSAGE);
-			model.setStatus(HttpStatus.BAD_REQUEST);
-		}
-		return model;
 	}
 
 }
