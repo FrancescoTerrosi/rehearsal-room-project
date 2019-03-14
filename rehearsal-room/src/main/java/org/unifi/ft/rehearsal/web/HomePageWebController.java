@@ -47,7 +47,6 @@ public class HomePageWebController {
 
 	@GetMapping(HOME_URI)
 	public String getIndex() {
-//		ModelAndView model = handleErrorMessage(numberError, roomError, timeError);
 		return HOME_PAGE;
 	}
 
