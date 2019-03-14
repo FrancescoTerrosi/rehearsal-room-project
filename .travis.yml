@@ -8,8 +8,6 @@ addons:
     token:
       secure: "bEeDu/vicox1lZOYpxp6rK6bC6Zm51atNwkAkmmym/Kxg7cApoPKXvVp9iLJ7nXk6kEQ/1z6i8jaAwF2bkA8V7U3kt/quqqvdDBUTU5Q1QihfAmRpXRm9YA7+L5cgKft8C4KSOnWGgjsHN5geBG7p92w0HrkYt/wSbAn4wm3OoWMf+f4U7AwvMXLOUi2y86H8DDExZxbhUrRIP+RPBG0KhSTn7sz8GtxkllDCitGQ7AqK9kA4kpDOGtgqf07denPoLJE/BLV7Ir2Sjxs2TKanVqUsoFr51NAJX5hvJl4heUo971Q5iaCswJ8MGWPRXy3gc4fuBcHuuDizvv4YcxrBzL9bhIHZ+MxhyHWk9nz8xase5A9zsytN//ckCLv8Zrazf/81CAQhgRmmnLa/fjooo5RfcM2sbghnXbc9pcPlF65U0Hgjehc3qz2bQhK4NjzsBIbiA84lnJj4ccriJv29XMtwxrUsy2/dcF2LCW6zaZA5jsrCGd6Q1Ji3nXJgBQ4Dh32m/s1Y5Z7CbS+cmbTJRk8/SjHoV6l8bHLllxYI12oGqYa5A+VT1g0+vx4wj1HPXuwYsch8ExnfSSxY+W8P1Hbt5IimMXdupxExi3OoJ2oTMYTsJkj19ZMqVMkSunNHWMTLP9tkocsMIlqW9mofee75IkfbvOZkG+uCc/hZtM="
 
-
-
 jdk:
   - oraclejdk8
 
@@ -19,4 +17,4 @@ cache:
     - '$HOME/.sonar/cache'
 
 script:
-  - mvn -f rehearsal-room/pom.xml clean verify -Pjacoco coveralls:report sonar:sonar
+  - mvn -f rehearsal-room/pom.xml clean verify -Pjacoco -Pintegration -Pmutation coveralls:report sonar:sonar
