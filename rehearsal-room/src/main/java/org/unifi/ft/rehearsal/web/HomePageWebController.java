@@ -31,6 +31,8 @@ public class HomePageWebController {
 	public static final String TIME_ERROR_URI = "?timeError";
 	public static final String NUMBER_FORMAT_ERROR_URI = "?numberError";
 	public static final String HOME_PAGE_URI = "home";
+	public static final String REDIRECT = "redirect:";
+	public static final String ERROR = "error";
 
 	/*
 	 * Error Messages
@@ -55,7 +57,7 @@ public class HomePageWebController {
 	@PostMapping(CLEAR_SESSION_URI)
 	public String sayGoodbye(SessionStatus status) {
 		status.setComplete();
-		return "redirect:/";
+		return REDIRECT+"/";
 	}
 
 	@PostMapping(SCHEDULE_URI)
@@ -68,28 +70,28 @@ public class HomePageWebController {
 		try {
 			scheduler.initAndSaveSchedule(band, startDate, room);
 		} catch (InvalidTimeException e) {
-			return "redirect:" + HOME_URI + TIME_ERROR_URI;
+			return REDIRECT + HOME_URI + TIME_ERROR_URI;
 		} catch (RoomNotFreeException e) {
-			return "redirect:" + HOME_URI + ROOM_ERROR_URI;
+			return REDIRECT + HOME_URI + ROOM_ERROR_URI;
 		}
 		return HOME_PAGE_URI;
 	}
 	
 	@ExceptionHandler(NumberFormatException.class)
 	private String handleError() {
-		return "redirect:" + HOME_URI + NUMBER_FORMAT_ERROR_URI;
+		return REDIRECT + HOME_URI + NUMBER_FORMAT_ERROR_URI;
 	}
 	
 	private ModelAndView handleError(String numberError, String roomError, String timeError) {
 		ModelAndView model = new ModelAndView();
 		if (numberError != null) {
-			model.addObject("error", NUMBER_ERROR_MESSAGE);
+			model.addObject(ERROR, NUMBER_ERROR_MESSAGE);
 			model.setStatus(HttpStatus.BAD_REQUEST);
 		} else if (roomError != null) {
-			model.addObject("error", ROOM_ERROR_MESSAGE);
+			model.addObject(ERROR, ROOM_ERROR_MESSAGE);
 			model.setStatus(HttpStatus.BAD_REQUEST);
 		} else if (timeError != null) {
-			model.addObject("error", TIME_ERROR_MESSAGE);
+			model.addObject(ERROR, TIME_ERROR_MESSAGE);
 			model.setStatus(HttpStatus.BAD_REQUEST);
 		}
 		return model;
