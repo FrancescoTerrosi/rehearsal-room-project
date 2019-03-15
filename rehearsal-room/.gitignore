@@ -1,6 +1,7 @@
 HELP.md
 /target/
 /logs/
+/archived/
 /*attach*
 
 !.mvn/wrapper/maven-wrapper.jar

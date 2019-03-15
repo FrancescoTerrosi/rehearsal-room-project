@@ -38,6 +38,11 @@ public class Schedule {
 	public RehearsalRoom getRoom() {
 		return this.room;
 	}
+	
+	@Override
+	public String toString() {
+		return this.band + " scheduled for room: " + this.room + " on date: "+ this.startDate.toString("yyyy/MM/dd - HH:mm");
+	}
 
 	@Override
 	public int hashCode() {

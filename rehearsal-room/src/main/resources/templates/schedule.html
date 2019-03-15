@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:security="http://www.springframework.org/security/tags">
+
+<head>
+<title>Schedule your rehearsal</title>
+</head>
+	<h3>Schedule for your rehearsal room!</h3>
+
+	<form name='scheduleForm' th:action="@{/schedule}" method="post">
+
+		<div id="error" th:if="${info}"><font color="red"><span th:text="${info}"></span></font><br/><br/></div>
+
+		<fieldset>
+			<label for="year">Year:</label>
+			<input type="text" id="year" name="year"/>
+			<label for="month">Month:</label>
+			<input type="text" id="month" name="month"/>
+			<label for="day">Day:</label>
+			<input type="text" id="day" name="day"/>
+			<label for="hour">Hour:</label>
+			<input type="text" id="hour" name="hour"/>
+			<label for="minutes">Minutes:</label>
+			<input type="text" id="minutes" name="minutes"/>
+			<SELECT id="room" name="room" size="1">
+       			<OPTION label="1" value="FIRSTROOM">Room 1</OPTION>
+        		<OPTION label="2" value="SECONDROOM">Room 2</OPTION>
+        		<OPTION label="3" value="THIRDROOM">Room 3</OPTION>
+    		</SELECT>
+			<button type="submit" name="submit" class="btn">Register</button>
+		</fieldset>
+	</form>
+	
+	<form name='scheduleFormByDate' th:action="@{/schedule/byDate}" method="get">
+
+		<fieldset>
+			<label for="year">Year:</label>
+			<input type="text" id="year" name="year"/>
+			<label for="month">Month:</label>
+			<input type="text" id="month" name="month"/>
+			<label for="day">Day:</label>
+			<input type="text" id="day" name="day"/>
+			<label for="hour">Hour:</label>
+			<input type="text" id="hour" name="hour"/>
+			<label for="minutes">Minutes:</label>
+			<input type="text" id="minutes" name="minutes"/>
+			<SELECT id="room" name="room" size="1">
+       			<OPTION label="1" value="FIRSTROOM">Room 1</OPTION>
+        		<OPTION label="2" value="SECONDROOM">Room 2</OPTION>
+        		<OPTION label="3" value="THIRDROOM">Room 3</OPTION>
+    		</SELECT>
+			<button type="submit" name="submit" class="btn">Find Schedules By Date</button>
+		</fieldset>
+	</form>
+	
+	<form name='scheduleFormByName' th:action="@{/schedule/byName}" method="get">
+		<fieldset>
+			<button type="submit" name="submit" class="btn">Find Your Schedules!</button>
+		</fieldset>
+	</form>
+	
+	<form name='scheduleFormByRoom' th:action="@{/schedule/byRoom}" method="get">
+		<fieldset>
+			<SELECT id="room" name="room" size="1">
+       			<OPTION label="1" value="FIRSTROOM">Room 1</OPTION>
+        		<OPTION label="2" value="SECONDROOM">Room 2</OPTION>
+        		<OPTION label="3" value="THIRDROOM">Room 3</OPTION>
+    		</SELECT>
+			<button type="submit" name="submit" class="btn">Find Schedules By Room</button>
+		</fieldset>
+	</form>
+	
+	<form name='deleteSchedule' th:action="@{/schedule/delete}" method="get">
+
+		<fieldset>
+			<label for="year">Year:</label>
+			<input type="text" id="year" name="year"/>
+			<label for="month">Month:</label>
+			<input type="text" id="month" name="month"/>
+			<label for="day">Day:</label>
+			<input type="text" id="day" name="day"/>
+			<label for="hour">Hour:</label>
+			<input type="text" id="hour" name="hour"/>
+			<label for="minutes">Minutes:</label>
+			<input type="text" id="minutes" name="minutes"/>
+			<SELECT id="room" name="room" size="1">
+       			<OPTION label="1" value="FIRSTROOM">Room 1</OPTION>
+        		<OPTION label="2" value="SECONDROOM">Room 2</OPTION>
+        		<OPTION label="3" value="THIRDROOM">Room 3</OPTION>
+    		</SELECT>
+			<button type="submit" name="submit" class="btn">Delete schedule</button>
+		</fieldset>
+	</form>
+		
+	<div id="queries" th:if="${schedules}">
+ 	  	<table class="table table-striped">
+       		<tr th:each="schedule : ${schedules}">
+            	<td th:text="${schedule}"></td>
+        	</tr>
+        </table>
+    </div>
+</body>
+</html>

@@ -25,7 +25,7 @@ import org.unifi.ft.rehearsal.services.BandService;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private static final String[] PUBLIC_ACCESS_URIS = { "/", "/register" };
-	private static final String HOMEPAGE = "/home";
+	private static final String HOMEPAGE = "/schedule";
 
 	@Autowired
 	private BandService bandService;
