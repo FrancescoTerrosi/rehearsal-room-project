@@ -7,6 +7,7 @@ import org.joda.time.IllegalFieldValueException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,6 +48,7 @@ public class SchedulePageWebController {
 	public static final String NUMBER_ERROR_MESSAGE = "Please insert a valid date!";
 	public static final String NO_SCHEDULES_MESSAGE = "No schedules found!";
 	public static final String SCHEDULE_REMOVED_MESSAGE = "Your schedule was successfully removed";
+	public static final String SCHEDULE_SAVED_MESSAGE = "Your schedule was successfully saved!";
 
 	@Autowired
 	private Scheduler scheduler;
@@ -63,13 +65,15 @@ public class SchedulePageWebController {
 	}
 
 	@PostMapping(SCHEDULE_URI)
-	public String rehearsalSchedule(@RequestParam int year, @RequestParam int month, @RequestParam int day,
+	public Model rehearsalSchedule(@RequestParam int year, @RequestParam int month, @RequestParam int day,
 			@RequestParam int hour, @RequestParam int minutes, @RequestParam RehearsalRoom room,
-			@SessionAttribute("user") String band) {
+			@SessionAttribute("user") String band,
+			Model model) {
 
 		DateTime startDate = new DateTime(year, month, day, hour, minutes, 0);
 		scheduler.initAndSaveSchedule(band, startDate, room);
-		return SCHEDULE_PAGE;
+		model.addAttribute(SchedulePageWebController.INFO, SCHEDULE_SAVED_MESSAGE);
+		return model;
 	}
 
 	@GetMapping(FIND_BY_NAME_URI)
@@ -105,10 +109,10 @@ public class SchedulePageWebController {
 			@RequestParam(value = "month", required = true) int month,
 			@RequestParam(value = "day", required = true) int day,
 			@RequestParam(value = "hour", required = true) int hour,
-			@RequestParam(value = "minute", required = true) int minute,
+			@RequestParam(value = "minutes", required = true) int minutes,
 			@RequestParam(value = "room", required = true) RehearsalRoom room,
 			@SessionAttribute("user") String user) {
-		DateTime date = new DateTime(year, month, day, hour, minute);
+		DateTime date = new DateTime(year, month, day, hour, minutes);
 		ModelAndView model = new ModelAndView();
 		try {
 			scheduler.deleteSchedule(user, date, room);

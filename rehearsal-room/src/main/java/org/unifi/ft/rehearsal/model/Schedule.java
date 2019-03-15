@@ -41,7 +41,7 @@ public class Schedule {
 	
 	@Override
 	public String toString() {
-		return this.band + " scheduled for room: " + this.room + " on date: "+ this.startDate;
+		return this.band + " scheduled for room: " + this.room + " on date: "+ this.startDate.toString("yyyy/MM/dd - HH:mm");
 	}
 
 	@Override

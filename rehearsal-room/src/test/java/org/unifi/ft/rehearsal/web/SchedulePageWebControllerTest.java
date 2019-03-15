@@ -329,7 +329,7 @@ public class SchedulePageWebControllerTest {
 		params.add("month", String.valueOf(startDate.getMonthOfYear()));
 		params.add("day", String.valueOf(startDate.getDayOfMonth()));
 		params.add("hour", String.valueOf(startDate.getHourOfDay()));
-		params.add("minute", String.valueOf(startDate.getMinuteOfHour()));
+		params.add("minutes", String.valueOf(startDate.getMinuteOfHour()));
 		params.add("room", RehearsalRoom.FIRSTROOM.name());
 		
 		given(scheduler.deleteSchedule("username", startDate, RehearsalRoom.FIRSTROOM)).willReturn(temp);
@@ -348,7 +348,7 @@ public class SchedulePageWebControllerTest {
 		params.add("month", String.valueOf(startDate.getMonthOfYear()));
 		params.add("day", String.valueOf(startDate.getDayOfMonth()));
 		params.add("hour", String.valueOf(startDate.getHourOfDay()));
-		params.add("minute", String.valueOf(startDate.getMinuteOfHour()));
+		params.add("minutes", String.valueOf(startDate.getMinuteOfHour()));
 		params.add("room", RehearsalRoom.FIRSTROOM.name());
 		
 		given(scheduler.deleteSchedule(eq("username"), any(DateTime.class), eq(RehearsalRoom.FIRSTROOM))).willThrow(ScheduleNotFoundException.class);
@@ -366,7 +366,7 @@ public class SchedulePageWebControllerTest {
 		params.add("month", String.valueOf(startDate.getMonthOfYear()));
 		params.add("day", String.valueOf(startDate.getDayOfMonth()));
 		params.add("hour", String.valueOf(startDate.getHourOfDay()));
-		params.add("minute", String.valueOf(startDate.getMinuteOfHour()));
+		params.add("minutes", String.valueOf(startDate.getMinuteOfHour()));
 		params.add("room", RehearsalRoom.FIRSTROOM.name());
 		
 		given(scheduler.deleteSchedule(eq("username"), any(DateTime.class), eq(RehearsalRoom.FIRSTROOM))).willThrow(ScheduleNotFoundException.class);
