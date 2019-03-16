@@ -42,10 +42,6 @@
 			<input type="text" id="month" name="month"/>
 			<label for="day">Day:</label>
 			<input type="text" id="day" name="day"/>
-			<label for="hour">Hour:</label>
-			<input type="text" id="hour" name="hour"/>
-			<label for="minutes">Minutes:</label>
-			<input type="text" id="minutes" name="minutes"/>
 			<SELECT id="room" name="room" size="1">
        			<OPTION label="1" value="FIRSTROOM">Room 1</OPTION>
         		<OPTION label="2" value="SECONDROOM">Room 2</OPTION>
@@ -72,7 +68,7 @@
 		</fieldset>
 	</form>
 	
-	<form name='deleteSchedule' th:action="@{/schedule/delete}" method="get">
+<!-- 	<form name='deleteSchedule' th:action="@{/schedule/delete}" method="get">
 
 		<fieldset>
 			<label for="year">Year:</label>
@@ -92,9 +88,19 @@
     		</SELECT>
 			<button type="submit" name="submit" class="btn">Delete schedule</button>
 		</fieldset>
-	</form>
-		
-	<div id="queries" th:if="${schedules}">
+	</form> -->
+	
+	<div id="yourSchedules" th:if="${yourSchedules}">
+ 	  	<table class="table table-striped">
+       		<tr th:each="schedule : ${yourSchedules}">
+            	<td th:text="${schedule}"></td>
+            		<td class="tdDel"><a th:href="@{/schedule/delete(id=${schedule.id})}"
+class="delete">Delete</a></td>
+        	</tr>
+        </table>
+    </div>
+	
+	<div id="schedules" th:if="${schedules}">
  	  	<table class="table table-striped">
        		<tr th:each="schedule : ${schedules}">
             	<td th:text="${schedule}"></td>

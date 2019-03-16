@@ -23,6 +23,14 @@ public class Schedule {
 		this.room = room;
 	}
 
+	public BigInteger getId() {
+		return this.id;
+	}
+	
+	public void setId(BigInteger id) {
+		this.id = id;
+	}
+	
 	public String getBand() {
 		return this.band;
 	}

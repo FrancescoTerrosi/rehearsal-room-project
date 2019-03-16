@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -163,8 +164,9 @@ public class SchedulePageWebControllerTest {
 	@Test
 	@WithMockUser("username")
 	public void testGetSchedulesByName() throws Exception {
-		Schedule temp = new Schedule("username", new DateTime(),
-				new DateTime().plusHours(Scheduler.HOUR_DURATION).plusMinutes(Scheduler.MINUTE_DURATION),
+		DateTime t = new DateTime();
+		Schedule temp = new Schedule("username", t,
+				t.plusHours(Scheduler.HOUR_DURATION).plusMinutes(Scheduler.MINUTE_DURATION),
 				RehearsalRoom.FIRSTROOM);
 		
 		List<Schedule> schedules = new ArrayList<>();
@@ -174,7 +176,9 @@ public class SchedulePageWebControllerTest {
 		
 		mvc.perform(get(SchedulePageWebController.FIND_BY_NAME_URI).sessionAttr("user", "username"))
 				.andExpect(status().isOk())
-				.andExpect(model().attribute("schedules", schedules));
+				.andExpect(model().attribute(SchedulePageWebController.YOUR_SCHEDULE_DIV, schedules));
+		
+		verify(scheduler, times(1)).findSchedulesByBand("username");
 	}
 
 	@Test
@@ -185,6 +189,8 @@ public class SchedulePageWebControllerTest {
 		mvc.perform(get(SchedulePageWebController.FIND_BY_NAME_URI).sessionAttr("user", "username"))
 				.andExpect(status().isOk())
 				.andExpect(model().attribute("schedules", SchedulePageWebController.NO_SCHEDULES_MESSAGE));
+
+		verify(scheduler, times(1)).findSchedulesByBand("username");
 	}
 	
 	@Test
@@ -194,6 +200,8 @@ public class SchedulePageWebControllerTest {
 		
 		mvc.perform(get(SchedulePageWebController.FIND_BY_NAME_URI))
 				.andExpect(status().is4xxClientError());
+		
+		verify(scheduler, times(0)).findSchedulesByBand("username");
 	}
 
 	@Test
@@ -215,7 +223,10 @@ public class SchedulePageWebControllerTest {
 		
 		mvc.perform(get(SchedulePageWebController.FIND_BY_DATE_URI).params(params).sessionAttr("user", "username"))
 				.andExpect(status().isOk())
-				.andExpect(model().attribute("schedules", schedules));
+				.andExpect(model().attribute(SchedulePageWebController.QUERIES, schedules));
+		
+
+		verify(scheduler, times(1)).findSchedulesByDate(startDate.getYear(), startDate.getMonthOfYear(), startDate.getDayOfMonth());
 	}
 
 	@Test
@@ -231,7 +242,9 @@ public class SchedulePageWebControllerTest {
 		
 		mvc.perform(get(SchedulePageWebController.FIND_BY_DATE_URI).params(params).sessionAttr("user", "username"))
 				.andExpect(status().isOk())
-				.andExpect(model().attribute("schedules", SchedulePageWebController.NO_SCHEDULES_MESSAGE));
+				.andExpect(model().attribute(SchedulePageWebController.QUERIES, SchedulePageWebController.NO_SCHEDULES_MESSAGE));
+
+		verify(scheduler, times(1)).findSchedulesByDate(startDate.getYear(), startDate.getMonthOfYear(), startDate.getDayOfMonth());		
 	}
 
 	@Test
@@ -246,6 +259,8 @@ public class SchedulePageWebControllerTest {
 		
 		mvc.perform(get(SchedulePageWebController.FIND_BY_DATE_URI).params(params).sessionAttr("user", "username"))
 				.andExpect(status().is4xxClientError());
+
+		verify(scheduler, times(0)).findSchedulesByDate(any(Integer.class), any(Integer.class), any(Integer.class));
 	}
 
 	@Test
@@ -260,6 +275,8 @@ public class SchedulePageWebControllerTest {
 		
 		mvc.perform(get(SchedulePageWebController.FIND_BY_DATE_URI).params(params).sessionAttr("user", "username"))
 				.andExpect(status().is4xxClientError());
+		
+		verify(scheduler, times(0)).findSchedulesByDate(any(Integer.class), any(Integer.class), any(Integer.class));
 	}
 
 	@Test
@@ -274,6 +291,8 @@ public class SchedulePageWebControllerTest {
 		
 		mvc.perform(get(SchedulePageWebController.FIND_BY_DATE_URI).params(params).sessionAttr("user", "username"))
 				.andExpect(status().is4xxClientError());
+
+		verify(scheduler, times(0)).findSchedulesByDate(any(Integer.class), any(Integer.class), any(Integer.class));
 	}
 
 	@Test
@@ -293,7 +312,9 @@ public class SchedulePageWebControllerTest {
 		
 		mvc.perform(get(SchedulePageWebController.FIND_BY_ROOM_URI).params(params).sessionAttr("user", "username"))
 				.andExpect(status().isOk())
-				.andExpect(model().attribute("schedules", schedules));
+				.andExpect(model().attribute(SchedulePageWebController.QUERIES, schedules));
+
+		verify(scheduler, times(1)).findSchedulesByRoom(RehearsalRoom.FIRSTROOM);		
 	}
 
 	@Test
@@ -305,8 +326,10 @@ public class SchedulePageWebControllerTest {
 		
 		mvc.perform(get(SchedulePageWebController.FIND_BY_ROOM_URI).params(params).sessionAttr("user", "username"))
 				.andExpect(status().isOk())
-				.andExpect(model().attribute("schedules", SchedulePageWebController.NO_SCHEDULES_MESSAGE));
-	}
+				.andExpect(model().attribute(SchedulePageWebController.QUERIES, SchedulePageWebController.NO_SCHEDULES_MESSAGE));
+
+			verify(scheduler, times(1)).findSchedulesByRoom(RehearsalRoom.FIRSTROOM);
+		}
 
 	@Test
 	@WithMockUser("username")
@@ -315,6 +338,8 @@ public class SchedulePageWebControllerTest {
 
 		mvc.perform(get(SchedulePageWebController.FIND_BY_ROOM_URI).sessionAttr("user", "username"))
 				.andExpect(status().is4xxClientError());
+
+		verify(scheduler, times(0)).findSchedulesByRoom(any(RehearsalRoom.class));
 	}
 	
 	@Test
@@ -324,55 +349,45 @@ public class SchedulePageWebControllerTest {
 		Schedule temp = new Schedule("username", startDate,
 				startDate.plusHours(Scheduler.HOUR_DURATION).plusMinutes(Scheduler.MINUTE_DURATION),
 				RehearsalRoom.FIRSTROOM);
+		BigInteger id = new BigInteger("0");
+		temp.setId(id);
 		
-		params.add("year", String.valueOf(startDate.getYear()));
-		params.add("month", String.valueOf(startDate.getMonthOfYear()));
-		params.add("day", String.valueOf(startDate.getDayOfMonth()));
-		params.add("hour", String.valueOf(startDate.getHourOfDay()));
-		params.add("minutes", String.valueOf(startDate.getMinuteOfHour()));
-		params.add("room", RehearsalRoom.FIRSTROOM.name());
+		params.add("id", "0");
 		
-		given(scheduler.deleteSchedule("username", startDate, RehearsalRoom.FIRSTROOM)).willReturn(temp);
+		given(scheduler.deleteSchedule(id)).willReturn(temp);
 		
 		mvc.perform(get(SchedulePageWebController.DELETE_SCHEDULE_URI).params(params).sessionAttr("user", "username"))
 				.andExpect(status().isOk())
 				.andExpect(model().attribute(SchedulePageWebController.INFO, SchedulePageWebController.SCHEDULE_REMOVED_MESSAGE));
+		
+		verify(scheduler, times(1)).deleteSchedule(id);
 	}
 	
 	@Test
 	@WithMockUser("username")
 	public void testDeleteScheduleFailure() throws Exception {
-		DateTime startDate = new DateTime();
+		params.add("id", "1");
 		
-		params.add("year", String.valueOf(startDate.getYear()));
-		params.add("month", String.valueOf(startDate.getMonthOfYear()));
-		params.add("day", String.valueOf(startDate.getDayOfMonth()));
-		params.add("hour", String.valueOf(startDate.getHourOfDay()));
-		params.add("minutes", String.valueOf(startDate.getMinuteOfHour()));
-		params.add("room", RehearsalRoom.FIRSTROOM.name());
+		BigInteger id = new BigInteger("1");
 		
-		given(scheduler.deleteSchedule(eq("username"), any(DateTime.class), eq(RehearsalRoom.FIRSTROOM))).willThrow(ScheduleNotFoundException.class);
+		given(scheduler.deleteSchedule(id)).willThrow(ScheduleNotFoundException.class);
 		
 		mvc.perform(get(SchedulePageWebController.DELETE_SCHEDULE_URI).params(params).sessionAttr("user", "username"))
 				.andExpect(status().is4xxClientError())
 				.andExpect(model().attribute(SchedulePageWebController.INFO, SchedulePageWebController.NO_SCHEDULES_MESSAGE));
+
+		verify(scheduler, times(1)).deleteSchedule(id);
 	}
 	
 	@Test
 	@WithMockUser("username")
 	public void testDeleteScheduleMissingAttribute() throws Exception {
-		DateTime startDate = new DateTime();
-		
-		params.add("month", String.valueOf(startDate.getMonthOfYear()));
-		params.add("day", String.valueOf(startDate.getDayOfMonth()));
-		params.add("hour", String.valueOf(startDate.getHourOfDay()));
-		params.add("minutes", String.valueOf(startDate.getMinuteOfHour()));
-		params.add("room", RehearsalRoom.FIRSTROOM.name());
-		
-		given(scheduler.deleteSchedule(eq("username"), any(DateTime.class), eq(RehearsalRoom.FIRSTROOM))).willThrow(ScheduleNotFoundException.class);
+		given(scheduler.deleteSchedule(any(BigInteger.class))).willThrow(ScheduleNotFoundException.class);
 		
 		mvc.perform(get(SchedulePageWebController.DELETE_SCHEDULE_URI).params(params).sessionAttr("user", "username"))
 				.andExpect(status().is4xxClientError());
+
+		verify(scheduler, times(0)).deleteSchedule(any(BigInteger.class));
 	}
 
 }
