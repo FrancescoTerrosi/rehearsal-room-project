@@ -17,4 +17,4 @@ cache:
     - '$HOME/.sonar/cache'
 
 script:
-  - mvn -f rehearsal-room/pom.xml clean verify -Pjacoco -Pintegration -Pmutation coveralls:report sonar:sonar
+  - mvn -f rehearsal-room/pom.xml clean verify -Pjacoco -Pintegration coveralls:report sonar:sonar
