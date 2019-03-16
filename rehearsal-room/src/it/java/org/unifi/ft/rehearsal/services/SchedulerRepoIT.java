@@ -2,6 +2,7 @@ package org.unifi.ft.rehearsal.services;
 
 import static org.junit.Assert.*;
 
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
@@ -56,7 +57,7 @@ public class SchedulerRepoIT {
 		assertEquals(end, result.getEndDate());
 		assertEquals(RehearsalRoom.FIRSTROOM, result.getRoom());
 	}
-
+	
 	@Test
 	public void testCreateScheduleSameTimeDifferentRooms() {
 		String b1 = "bandName1";
@@ -140,11 +141,13 @@ public class SchedulerRepoIT {
 		String b1 = "bandName1";
 		DateTime start1 = new DateTime(2121, 12, 12, 12, 12, 12);
 		DateTime end1 = start1.plusHours(Scheduler.HOUR_DURATION).plusMinutes(Scheduler.MINUTE_DURATION);
-		repository.save(new Schedule(b1, start1, end1, RehearsalRoom.FIRSTROOM));
+		Schedule s = new Schedule(b1, start1, end1, RehearsalRoom.FIRSTROOM);
+		s.setId(new BigInteger("0"));
+		repository.save(s);
 
 		assertEquals(1, repository.count());
 
-		Schedule result = service.deleteSchedule(b1, start1, RehearsalRoom.FIRSTROOM);
+		Schedule result = service.deleteSchedule(new BigInteger("0"));
 
 		assertEquals(0, repository.count());
 		assertEquals(b1, result.getBand());
@@ -158,13 +161,13 @@ public class SchedulerRepoIT {
 		String b1 = "bandName1";
 		DateTime start1 = new DateTime(2121, 12, 12, 12, 12, 12);
 		DateTime end1 = start1.plusHours(Scheduler.HOUR_DURATION).plusMinutes(Scheduler.MINUTE_DURATION);
-		repository.save(new Schedule(b1, start1, end1, RehearsalRoom.FIRSTROOM));
+		Schedule s = new Schedule(b1, start1, end1, RehearsalRoom.FIRSTROOM);
+		s.setId(new BigInteger("0"));
+		repository.save(s);
 
 		assertEquals(1, repository.count());
-		String b = "bandName";
-		DateTime start = new DateTime(new Date());
 
-		service.deleteSchedule(b, start, RehearsalRoom.FIRSTROOM);
+		service.deleteSchedule(new BigInteger("1"));
 	}
 
 	@Test

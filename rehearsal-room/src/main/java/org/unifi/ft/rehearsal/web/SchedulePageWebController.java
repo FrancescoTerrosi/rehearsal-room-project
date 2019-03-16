@@ -1,5 +1,6 @@
 package org.unifi.ft.rehearsal.web;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -39,6 +40,8 @@ public class SchedulePageWebController {
 	public static final String SCHEDULE_PAGE = "schedule";
 	public static final String REDIRECT = "redirect:";
 	public static final String INFO = "info";
+	public static final String YOUR_SCHEDULE_DIV = "yourSchedules";
+	public static final String QUERIES = "schedules";
 
 	/*
 	 * Error Messages
@@ -79,7 +82,7 @@ public class SchedulePageWebController {
 	@GetMapping(FIND_BY_NAME_URI)
 	public ModelAndView findSchedulesByName(@SessionAttribute("user") String bandName) {
 		List<Schedule> schedules = scheduler.findSchedulesByBand(bandName);
-		ModelAndView model = addSchedulesToModel(schedules);
+		ModelAndView model = addSchedulesToModel(schedules, YOUR_SCHEDULE_DIV);
 		model.setViewName(SCHEDULE_PAGE);
 		return model;
 	}
@@ -90,7 +93,7 @@ public class SchedulePageWebController {
 			@RequestParam(value = "month", required = true) int month,
 			@RequestParam(value = "day", required = true) int day) {
 		List<Schedule> schedules = scheduler.findSchedulesByDate(year, month, day);
-		ModelAndView model = addSchedulesToModel(schedules);
+		ModelAndView model = addSchedulesToModel(schedules, QUERIES);
 		model.setViewName(SCHEDULE_PAGE);
 		return model;
 	}
@@ -98,40 +101,33 @@ public class SchedulePageWebController {
 	@GetMapping(FIND_BY_ROOM_URI)
 	public ModelAndView findSchedulesByRoom(@RequestParam(value="room", required = true) RehearsalRoom room) {
 		List<Schedule> schedules = scheduler.findSchedulesByRoom(room);
-		ModelAndView model = addSchedulesToModel(schedules);
+		ModelAndView model = addSchedulesToModel(schedules, QUERIES);
 		model.setViewName(SCHEDULE_PAGE);
 		return model;
 	}
 	
 	@GetMapping(DELETE_SCHEDULE_URI)
 	public ModelAndView deleteSchedule(
-			@RequestParam(value = "year", required = true) int year,
-			@RequestParam(value = "month", required = true) int month,
-			@RequestParam(value = "day", required = true) int day,
-			@RequestParam(value = "hour", required = true) int hour,
-			@RequestParam(value = "minutes", required = true) int minutes,
-			@RequestParam(value = "room", required = true) RehearsalRoom room,
+			@RequestParam(value = "id", required = true) String id,
 			@SessionAttribute("user") String user) {
-		DateTime date = new DateTime(year, month, day, hour, minutes);
 		ModelAndView model = new ModelAndView();
 		try {
-			scheduler.deleteSchedule(user, date, room);
+			scheduler.deleteSchedule(new BigInteger(id));
 			model.addObject(INFO, SCHEDULE_REMOVED_MESSAGE);
-			model.setViewName(SCHEDULE_PAGE);
 		} catch (ScheduleNotFoundException e) {
 			model.addObject(INFO, NO_SCHEDULES_MESSAGE);
 			model.setStatus(HttpStatus.BAD_REQUEST);
-			model.setViewName(SCHEDULE_PAGE);
 		}
+		model.setViewName(SCHEDULE_PAGE);
 		return model;
 	}
 
-	private ModelAndView addSchedulesToModel(List<Schedule> schedules) {
+	private ModelAndView addSchedulesToModel(List<Schedule> schedules, String div) {
 		ModelAndView model = new ModelAndView();
 		if (schedules.isEmpty()) {
-			model.addObject("schedules", NO_SCHEDULES_MESSAGE);
+			model.addObject(QUERIES, NO_SCHEDULES_MESSAGE);
 		} else {
-			model.addObject("schedules", schedules);
+			model.addObject(div, schedules);
 		}
 		return model;
 	}

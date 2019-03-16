@@ -1,7 +1,9 @@
 package org.unifi.ft.rehearsal.services;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -72,16 +74,13 @@ public class Scheduler {
 		return result;
 	}
 
-	public Schedule deleteSchedule(String band, DateTime startDate, RehearsalRoom room) {
-		List<Schedule> schedules = repository.findAll();
-		Schedule toDelete = createSchedule(band, startDate, room);
-		for (Schedule schedule : schedules) {
-			if (schedule.equals(toDelete)) {
-				repository.delete(schedule);
-				return schedule;
-			}
+	public Schedule deleteSchedule(BigInteger id) {
+		Optional<Schedule> optSchedule = repository.findById(id);
+		if (optSchedule.isPresent()) {
+			repository.deleteById(id);
+			return optSchedule.get();
 		}
-		LOGGER.warn(band + " - " + SCHEDULE_NOT_FOUND);
+		LOGGER.warn("schedule " +id+" "+SCHEDULE_NOT_FOUND);
 		throw new ScheduleNotFoundException(SCHEDULE_NOT_FOUND);
 	}
 
@@ -91,6 +90,7 @@ public class Scheduler {
 			throw new InvalidTimeException(REQUESTED_DATE_IS_BEFORE_NOW);
 		}
 		Schedule result = createSchedule(band, startDate, room);
+//		result.setId(new BigInteger(String.valueOf(repository.count())));
 		if (checkFreeRoom(result)) {
 			repository.save(result);
 			LOGGER.info(band + " scheduled for room "+ room + " on: "+startDate.toString());

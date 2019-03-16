@@ -3,9 +3,11 @@ package org.unifi.ft.rehearsal.services;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -67,7 +69,7 @@ public class SchedulerTest {
 	}
 
 	@Test
-	public void testCreateScehduleSameRoomDifferentTimes() {
+	public void testCreateScheduleSameRoomDifferentTimes() {
 		when(repository.findAll()).thenReturn(notEmptyList(1));
 
 		DateTime start = new DateTime(2121, 12, 12, 16, 12, 12);
@@ -117,28 +119,33 @@ public class SchedulerTest {
 
 	@Test
 	public void testDeleteSchedule() {
-		when(repository.findAll()).thenReturn(notEmptyList(1));
-
-		DateTime start = new DateTime(2121, 12, 12, 12, 12, 12);
 		String b = "ProvaBand0";
+		DateTime start = new DateTime(2121, 12, 12, 12, 12, 12);
+		DateTime end = start.plusHours(Scheduler.HOUR_DURATION).plusMinutes(Scheduler.MINUTE_DURATION);
+		Schedule s = new Schedule(b, start, end, RehearsalRoom.FIRSTROOM);
+		s.setId(new BigInteger("0"));
+		
+		BigInteger id = new BigInteger("0");
 
-		Schedule result = scheduler.deleteSchedule(b, start, RehearsalRoom.FIRSTROOM);
+		when(repository.findAll()).thenReturn(notEmptyList(1));
+		when (repository.findById(id)).thenReturn(Optional.of(s));
+		
+		Schedule result = scheduler.deleteSchedule(id);
 		assertNotNull(result);
-		verify(repository, times(1)).findAll();
-		verify(repository, times(1)).delete(result);
+		verify(repository, times(1)).findById(id);
+		verify(repository, times(1)).deleteById(id);
 	}
 
 	@Test(expected = ScheduleNotFoundException.class)
 	public void testDeleteScheduleWhenItIsNotFound() {
 		when(repository.findAll()).thenReturn(notEmptyList(1));
 
-		DateTime start = new DateTime(2121, 12, 12, 10, 12, 12);
-		String b = "ProvaBand0";
+		BigInteger id = new BigInteger("1");
 
-		Schedule result = scheduler.deleteSchedule(b, start, RehearsalRoom.FIRSTROOM);
+		Schedule result = scheduler.deleteSchedule(id);
 		assertNull(result);
-		verify(repository, times(1)).findAll();
-		verify(repository, times(1)).delete(result);
+		verify(repository, times(1)).findById(id);
+		verify(repository, times(1)).deleteById(id);
 	}
 
 	@Test
@@ -254,6 +261,7 @@ public class SchedulerTest {
 			DateTime start = new DateTime(2121, 12, 12, 12, 12 + i, 12);
 			DateTime end = start.plusHours(Scheduler.HOUR_DURATION).plusMinutes(Scheduler.MINUTE_DURATION);
 			Schedule s = new Schedule(b, start, end, RehearsalRoom.FIRSTROOM);
+			s.setId(new BigInteger(String.valueOf(i)));
 			result.add(s);
 		}
 		return result;
