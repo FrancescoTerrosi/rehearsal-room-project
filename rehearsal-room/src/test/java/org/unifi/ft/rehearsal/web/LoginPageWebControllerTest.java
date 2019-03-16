@@ -17,10 +17,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.RequestBuilder;
-import org.unifi.ft.rehearsal.web.LoginWebController;
+import org.unifi.ft.rehearsal.web.LoginPageWebController;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers = LoginWebController.class)
+@WebMvcTest(controllers = LoginPageWebController.class)
 public class LoginPageWebControllerTest extends AbstractLoginRegisterUtilForTest {
 
 	private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -62,8 +62,8 @@ public class LoginPageWebControllerTest extends AbstractLoginRegisterUtilForTest
 	@Test
 	public void testWrongNameModelAttribute() throws Exception {
 		getMvc().perform(get("/login?error").param("error", "true"))
-			.andExpect(view().name(LoginWebController.LOGIN_PAGE))
-					.andExpect(model().attribute("error", LoginWebController.INVALID_USERNAME_OR_PASSW))
+			.andExpect(view().name(LoginPageWebController.LOGIN_PAGE))
+					.andExpect(model().attribute("error", LoginPageWebController.INVALID_USERNAME_OR_PASSW))
 					.andExpect(status().is4xxClientError());
 	}
 	
@@ -84,8 +84,8 @@ public class LoginPageWebControllerTest extends AbstractLoginRegisterUtilForTest
 	@Test
 	public void testWrongPasswordModelAttribute() throws Exception {
 		getMvc().perform(get("/login?error").param("error", "true"))
-			.andExpect(view().name(LoginWebController.LOGIN_PAGE))
-					.andExpect(model().attribute("error", LoginWebController.INVALID_USERNAME_OR_PASSW))
+			.andExpect(view().name(LoginPageWebController.LOGIN_PAGE))
+					.andExpect(model().attribute("error", LoginPageWebController.INVALID_USERNAME_OR_PASSW))
 					.andExpect(status().is4xxClientError());
 	}
 	

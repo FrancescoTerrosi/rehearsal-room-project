@@ -13,22 +13,19 @@ import org.unifi.ft.rehearsal.exceptions.PasswordNotMatchingException;
 import org.unifi.ft.rehearsal.services.BandService;
 
 @Controller("RegisterWebController")
-public class RegisterWebController {
+public class RegisterPageWebController {
 
 	/*
 	 * URIs
 	 */
 	public static final String REGISTER_URI = "/register";
 	public static final String REGISTER_PAGE = "registerPage";
-	public static final String INVALID_USER_URI = "?invalidUsername";
-	public static final String INVALID_PASSW_URI = "?invalidPasswords";
 	
 	/*
 	 * Error messages
 	 */
 	public static final String REGISTRATION_USERNAME_ERROR = "There is already a user with that name";
 	public static final String REGISTRATION_PASSW_ERROR = "Passwords do not match, please try again";
-
 
 	@Autowired
 	private BandService bandService;
