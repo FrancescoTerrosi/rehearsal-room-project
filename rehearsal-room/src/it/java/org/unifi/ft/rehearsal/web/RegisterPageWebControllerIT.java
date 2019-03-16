@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.MultiValueMap;
 
 @RunWith(SpringRunner.class)
-public class RegisterWebControllerIT extends AbstractLoginRegisterUtilForIT {
+public class RegisterPageWebControllerIT extends AbstractLoginRegisterUtilForIT {
 
 	private MultiValueMap<String, String> params = new HttpHeaders();
 	
@@ -34,7 +34,7 @@ public class RegisterWebControllerIT extends AbstractLoginRegisterUtilForIT {
 	
 	@Test
 	public void testGetRegisterIndex() throws Exception {
-		getMvc().perform(get("/register"))
+		getMvc().perform(get(RegisterPageWebController.REGISTER_URI))
 			.andExpect(view().name("registerPage"))
 			.andExpect(status().isOk());
 	}
@@ -45,7 +45,7 @@ public class RegisterWebControllerIT extends AbstractLoginRegisterUtilForIT {
 		params.add("password", "userPassword");
 		params.add("confirmPassword", "userPassword");
 		
-		getMvc().perform(post("/register").params(params))
+		getMvc().perform(post(RegisterPageWebController.REGISTER_URI).params(params))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(view().name("redirect:/"));
 		
@@ -61,9 +61,9 @@ public class RegisterWebControllerIT extends AbstractLoginRegisterUtilForIT {
 		params.add("password", "userPassword");
 		params.add("confirmPassword", "userPassword");
 		
-		getMvc().perform(post("/register").params(params))
+		getMvc().perform(post(RegisterPageWebController.REGISTER_URI).params(params))
 				.andExpect(status().is4xxClientError())
-				.andExpect(model().attribute("error", RegisterWebController.REGISTRATION_USERNAME_ERROR));
+				.andExpect(model().attribute("error", RegisterPageWebController.REGISTRATION_USERNAME_ERROR));
 
 		assertEquals(1, getRepository().count());
 	}
@@ -74,9 +74,9 @@ public class RegisterWebControllerIT extends AbstractLoginRegisterUtilForIT {
 		params.add("password", "userPassword");
 		params.add("confirmPassword", "wrongPassword");
 		
-		getMvc().perform(post("/register").params(params))
+		getMvc().perform(post(RegisterPageWebController.REGISTER_URI).params(params))
 				.andExpect(status().is4xxClientError())
-				.andExpect(model().attribute("error", RegisterWebController.REGISTRATION_PASSW_ERROR));
+				.andExpect(model().attribute("error", RegisterPageWebController.REGISTRATION_PASSW_ERROR));
 
 		assertEquals(0, getRepository().count());
 	}

@@ -8,7 +8,6 @@ import org.joda.time.IllegalFieldValueException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,7 +36,7 @@ public class SchedulePageWebController {
 	public static final String FIND_BY_DATE_URI = "/schedule/byDate";
 	public static final String FIND_BY_ROOM_URI = "/schedule/byRoom";
 	public static final String DELETE_SCHEDULE_URI = "/schedule/delete";
-	public static final String SCHEDULE_PAGE = "schedule";
+	public static final String SCHEDULE_PAGE = "schedulePage";
 	public static final String REDIRECT = "redirect:";
 	public static final String INFO = "info";
 	public static final String YOUR_SCHEDULE_DIV = "yourSchedules";
@@ -68,14 +67,15 @@ public class SchedulePageWebController {
 	}
 
 	@PostMapping(SCHEDULE_URI)
-	public Model rehearsalSchedule(@RequestParam int year, @RequestParam int month, @RequestParam int day,
+	public ModelAndView rehearsalSchedule(@RequestParam int year, @RequestParam int month, @RequestParam int day,
 			@RequestParam int hour, @RequestParam int minutes, @RequestParam RehearsalRoom room,
 			@SessionAttribute("user") String band,
-			Model model) {
+			ModelAndView model) {
 
 		DateTime startDate = new DateTime(year, month, day, hour, minutes, 0);
 		scheduler.initAndSaveSchedule(band, startDate, room);
-		model.addAttribute(SchedulePageWebController.INFO, SCHEDULE_SAVED_MESSAGE);
+		model.addObject(SchedulePageWebController.INFO, SCHEDULE_SAVED_MESSAGE);
+		model.setViewName(SCHEDULE_PAGE);
 		return model;
 	}
 
@@ -109,8 +109,8 @@ public class SchedulePageWebController {
 	@GetMapping(DELETE_SCHEDULE_URI)
 	public ModelAndView deleteSchedule(
 			@RequestParam(value = "id", required = true) String id,
-			@SessionAttribute("user") String user) {
-		ModelAndView model = new ModelAndView();
+			@SessionAttribute("user") String user,
+			ModelAndView model) {
 		try {
 			scheduler.deleteSchedule(new BigInteger(id));
 			model.addObject(INFO, SCHEDULE_REMOVED_MESSAGE);

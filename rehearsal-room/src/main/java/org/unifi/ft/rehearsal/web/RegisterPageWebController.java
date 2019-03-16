@@ -13,7 +13,7 @@ import org.unifi.ft.rehearsal.exceptions.PasswordNotMatchingException;
 import org.unifi.ft.rehearsal.services.BandService;
 
 @Controller("RegisterWebController")
-public class RegisterWebController {
+public class RegisterPageWebController {
 
 	/*
 	 * URIs

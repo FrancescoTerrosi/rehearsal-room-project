@@ -18,11 +18,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.MultiValueMap;
 import org.unifi.ft.rehearsal.exceptions.UsernameAlreadyExistsException;
 import org.unifi.ft.rehearsal.exceptions.PasswordNotMatchingException;
-import org.unifi.ft.rehearsal.web.RegisterWebController;
+import org.unifi.ft.rehearsal.web.RegisterPageWebController;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers = RegisterWebController.class)
-public class RegisterWebControllerTest extends AbstractLoginRegisterUtilForTest {
+@WebMvcTest(controllers = RegisterPageWebController.class)
+public class RegisterPageWebControllerTest extends AbstractLoginRegisterUtilForTest {
 
 	private MultiValueMap<String, String> params = new HttpHeaders();
 
@@ -40,8 +40,8 @@ public class RegisterWebControllerTest extends AbstractLoginRegisterUtilForTest 
 
 	@Test
 	public void testGetRegisterIndex() throws Exception {
-		getMvc().perform(get(RegisterWebController.REGISTER_URI))
-				.andExpect(view().name(RegisterWebController.REGISTER_PAGE)).andExpect(status().isOk());
+		getMvc().perform(get(RegisterPageWebController.REGISTER_URI))
+				.andExpect(view().name(RegisterPageWebController.REGISTER_PAGE)).andExpect(status().isOk());
 	}
 
 	@Test
@@ -71,7 +71,7 @@ public class RegisterWebControllerTest extends AbstractLoginRegisterUtilForTest 
 
 		getMvc().perform(post("/register").params(params))
 				.andExpect(status().is4xxClientError())
-				.andExpect(model().attribute("error", RegisterWebController.REGISTRATION_USERNAME_ERROR));
+				.andExpect(model().attribute("error", RegisterPageWebController.REGISTRATION_USERNAME_ERROR));
 
 		verify(getService()).register("userName", "userPassword", "userPassword");
 	}
@@ -87,7 +87,7 @@ public class RegisterWebControllerTest extends AbstractLoginRegisterUtilForTest 
 
 		getMvc().perform(post("/register").params(params))
 				.andExpect(status().is4xxClientError())
-				.andExpect(model().attribute("error", RegisterWebController.REGISTRATION_PASSW_ERROR));
+				.andExpect(model().attribute("error", RegisterPageWebController.REGISTRATION_PASSW_ERROR));
 
 		verify(getService()).register("userName", "userPassword", "errorPassword");
 	}
