@@ -89,14 +89,17 @@ public class Scheduler {
 			LOGGER.warn(band + " - " + REQUESTED_DATE_IS_BEFORE_NOW);
 			throw new InvalidTimeException(REQUESTED_DATE_IS_BEFORE_NOW);
 		}
-		Schedule result = createSchedule(band, startDate, room);
-//		result.setId(new BigInteger(String.valueOf(repository.count())));
-		if (checkFreeRoom(result)) {
-			repository.save(result);
-			LOGGER.info(band + " scheduled for room "+ room + " on: "+startDate.toString());
-			return result;
+		Schedule schedule = createSchedule(band, startDate, room);
+		return saveSchedule(schedule);
+	}
+
+	private Schedule saveSchedule(Schedule schedule) {
+		if (checkFreeRoom(schedule)) {
+			repository.save(schedule);
+			LOGGER.info(schedule.getBand() + " scheduled for room "+ schedule.getRoom() + " on: "+schedule.getStartDate().toString("yyyy/MM/dd - HH:mm"));
+			return schedule;
 		} else {
-			LOGGER.warn(band + " - " + ROOM_NOT_FREE);
+			LOGGER.warn(schedule.getBand() + " - " + ROOM_NOT_FREE);
 			throw new RoomNotFreeException(ROOM_NOT_FREE);
 		}
 	}
