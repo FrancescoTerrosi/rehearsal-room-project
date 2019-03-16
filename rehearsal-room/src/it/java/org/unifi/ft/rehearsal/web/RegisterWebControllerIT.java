@@ -1,95 +1,84 @@
 package org.unifi.ft.rehearsal.web;
 
+import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-import static org.mockito.BDDMockito.*;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.MultiValueMap;
-import org.unifi.ft.rehearsal.exceptions.UsernameAlreadyExistsException;
-import org.unifi.ft.rehearsal.exceptions.PasswordNotMatchingException;
-import org.unifi.ft.rehearsal.web.RegisterWebController;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers = RegisterWebController.class)
-public class RegisterWebControllerTest extends AbstractLoginRegisterUtilForTest {
+public class RegisterWebControllerIT extends AbstractLoginRegisterUtilForIT {
 
 	private MultiValueMap<String, String> params = new HttpHeaders();
-
+	
 	@Before
 	public void setup() {
 		super.setup();
 		params.clear();
 	}
-
+	
 	@After
 	public void clearAll() {
 		super.clearAll();
 		params.clear();
 	}
-
+	
 	@Test
 	public void testGetRegisterIndex() throws Exception {
-		getMvc().perform(get(RegisterWebController.REGISTER_URI))
-				.andExpect(view().name(RegisterWebController.REGISTER_PAGE)).andExpect(status().isOk());
+		getMvc().perform(get("/register"))
+			.andExpect(view().name("registerPage"))
+			.andExpect(status().isOk());
 	}
 
 	@Test
-	public void testDoRegister() throws Exception {
-		UserDetails user = createUser("userName", "userPassword");
+	public void testRegister() throws Exception {
 		params.add("username", "userName");
 		params.add("password", "userPassword");
 		params.add("confirmPassword", "userPassword");
-
-		given(getService().register("userName", "userPassword", "userPassword")).willReturn(user);
-
+		
 		getMvc().perform(post("/register").params(params))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(view().name("redirect:/"));
-
-		verify(getService()).register("userName", "userPassword", "userPassword");
+		
+		assertEquals(1, getRepository().count());
 	}
 
 	@Test
-	public void testDoInvalidUsernameRegister() throws Exception {
+	public void testRegisterUserAlreadyExists() throws Exception {
+		getRepository().save(createUser("userName","userPw"));
+		assertEquals(1, getRepository().count());
+		
 		params.add("username", "userName");
 		params.add("password", "userPassword");
 		params.add("confirmPassword", "userPassword");
-
-		given(getService().register("userName", "userPassword", "userPassword"))
-				.willThrow(UsernameAlreadyExistsException.class);
-
+		
 		getMvc().perform(post("/register").params(params))
 				.andExpect(status().is4xxClientError())
 				.andExpect(model().attribute("error", RegisterWebController.REGISTRATION_USERNAME_ERROR));
 
-		verify(getService()).register("userName", "userPassword", "userPassword");
+		assertEquals(1, getRepository().count());
 	}
-
+	
 	@Test
-	public void testDoInvalidRegisterPasswordsNotMatching() throws Exception {
+	public void testRegisterWrongPassword() throws Exception {		
 		params.add("username", "userName");
 		params.add("password", "userPassword");
-		params.add("confirmPassword", "errorPassword");
-
-		given(getService().register("userName", "userPassword", "errorPassword"))
-				.willThrow(PasswordNotMatchingException.class);
-
+		params.add("confirmPassword", "wrongPassword");
+		
 		getMvc().perform(post("/register").params(params))
 				.andExpect(status().is4xxClientError())
 				.andExpect(model().attribute("error", RegisterWebController.REGISTRATION_PASSW_ERROR));
 
-		verify(getService()).register("userName", "userPassword", "errorPassword");
+		assertEquals(0, getRepository().count());
 	}
-
+		
 }

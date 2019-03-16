@@ -16,6 +16,7 @@ import java.util.List;
 import static org.mockito.BDDMockito.*;
 
 import org.joda.time.DateTime;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -64,7 +65,12 @@ public class SchedulePageWebControllerTest {
 	@Before
 	public void setup() {
 		mvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
-		params = new HttpHeaders();
+		params.clear();
+	}
+	
+	@After
+	public void clearAll() {
+		params.clear();
 	}
 
 	@Test
