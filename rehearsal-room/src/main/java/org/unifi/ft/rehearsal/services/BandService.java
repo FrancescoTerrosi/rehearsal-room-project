@@ -55,6 +55,7 @@ public class BandService implements UserDetailsService {
 		}
 	}
 
+	@Override
 	public UserDetails loadUserByUsername(String username) {
 		List<BandDetails> temp = repository.findAll();
 		for (BandDetails user : temp) {

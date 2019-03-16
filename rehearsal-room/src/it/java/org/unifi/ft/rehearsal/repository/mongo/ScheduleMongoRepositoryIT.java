@@ -3,7 +3,9 @@ package org.unifi.ft.rehearsal.repository.mongo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.*;
 
+import java.math.BigInteger;
 import java.util.List;
+import java.util.Optional;
 
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -33,7 +35,7 @@ public class ScheduleMongoRepositoryIT {
 
 	@Test
 	public void testSave() {
-		Schedule toSave = createSchedule("bandName");
+		Schedule toSave = createSchedule("bandName", "0");
 		repository.save(toSave);
 		List<Schedule> result = mongoOps.findAll(Schedule.class);
 		assertEquals(1, result.size());
@@ -42,10 +44,32 @@ public class ScheduleMongoRepositoryIT {
 	}
 	
 	@Test
+	public void testFindById() {
+		Schedule s1 = createSchedule("bandName1", "1");
+
+		mongoOps.save(s1);
+		
+		Optional<Schedule> result = repository.findById(new BigInteger("1"));
+		assertTrue(result.isPresent());
+		assertThat(result.get(), instanceOf(Schedule.class));
+		assertEquals(s1, result.get());
+	}
+	
+	@Test
+	public void testFindByIdWhenThereIsNot() {
+		Schedule s1 = createSchedule("bandName1", "1");
+
+		mongoOps.save(s1);
+		
+		Optional<Schedule> result = repository.findById(new BigInteger("0"));
+		assertFalse(result.isPresent());
+	}
+	
+	@Test
 	public void testFindAll() {
-		Schedule s1 = createSchedule("bandName1");
-		Schedule s2 = createSchedule("bandName2");
-		Schedule s3 = createSchedule("bandName3");
+		Schedule s1 = createSchedule("bandName1", "1");
+		Schedule s2 = createSchedule("bandName2", "2");
+		Schedule s3 = createSchedule("bandName3", "3");
 
 		mongoOps.save(s1);
 		mongoOps.save(s2);
@@ -68,16 +92,16 @@ public class ScheduleMongoRepositoryIT {
 	}
 
 	@Test
-	public void testDelete() {
-		Schedule s1 = createSchedule("band1");
-		Schedule s2 = createSchedule("band2");
-		Schedule s3 = createSchedule("band3");
+	public void testDeleteById() {
+		Schedule s1 = createSchedule("band1", "1");
+		Schedule s2 = createSchedule("band2", "2");
+		Schedule s3 = createSchedule("band3", "3");
 
 		mongoOps.save(s1);
 		mongoOps.save(s2);
 		mongoOps.save(s3);
 
-		repository.delete(s1);
+		repository.deleteById(new BigInteger("1"));
 		
 		List<Schedule> result = mongoOps.findAll(Schedule.class);
 		
@@ -87,20 +111,23 @@ public class ScheduleMongoRepositoryIT {
 		}
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testDeleteWhenThereIsNot() {
-		Schedule s1 = createSchedule("bandName1");
-		Schedule s2 = createSchedule("bandName2");
-		Schedule s3 = createSchedule("bandName3");
+		Schedule s2 = createSchedule("bandName2", "2");
+		Schedule s3 = createSchedule("bandName3", "3");
 
 		mongoOps.save(s2);
 		mongoOps.save(s3);
-
-		repository.delete(s1);
+		
+		assertEquals(2, repository.count());
+		repository.deleteById(new BigInteger("1"));
+		assertEquals(2, repository.count());
 	}
 	
-	private Schedule createSchedule(String bandName) {
+	private Schedule createSchedule(String bandName, String id) {
 		Schedule result = new Schedule(bandName, new DateTime(), new DateTime(), RehearsalRoom.FIRSTROOM);
+		BigInteger sId = new BigInteger(id);
+		result.setId(sId);
 		return result;
 	}
 }
