@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.MultiValueMap;
 import org.unifi.ft.rehearsal.exceptions.UsernameAlreadyExistsException;
+import org.unifi.ft.rehearsal.exceptions.InvalidRegistrationField;
 import org.unifi.ft.rehearsal.exceptions.PasswordNotMatchingException;
 import org.unifi.ft.rehearsal.web.RegisterPageWebController;
 
@@ -92,4 +93,83 @@ public class RegisterPageWebControllerTest extends AbstractLoginRegisterUtilForT
 		verify(getService()).register("userName", "userPassword", "errorPassword");
 	}
 
+	@Test
+	public void testDoInvalidRegisterEmptyUsername() throws Exception {
+		params.add("username", "");
+		params.add("password", "userPassword");
+		params.add("confirmPassword", "confirmPassword");
+
+		given(getService().register("", "userPassword", "confirmPassword"))
+				.willThrow(InvalidRegistrationField.class);
+
+		getMvc().perform(post("/register").params(params))
+				.andExpect(status().is4xxClientError())
+				.andExpect(model().attribute("error", RegisterPageWebController.EMPTY_FIELDS_ERROR));
+
+		verify(getService()).register("", "userPassword", "confirmPassword");
+	}
+	
+	@Test
+	public void testDoInvalidRegisterEmptyPw() throws Exception {
+		params.add("username", "userName");
+		params.add("password", "");
+		params.add("confirmPassword", "confirmPassword");
+
+		given(getService().register("userName", "", "confirmPassword"))
+				.willThrow(InvalidRegistrationField.class);
+
+		getMvc().perform(post("/register").params(params))
+				.andExpect(status().is4xxClientError())
+				.andExpect(model().attribute("error", RegisterPageWebController.EMPTY_FIELDS_ERROR));
+
+		verify(getService()).register("userName", "", "confirmPassword");
+	}
+	
+	@Test
+	public void testDoInvalidRegisterEmptyConfirmPw() throws Exception {
+		params.add("username", "userName");
+		params.add("password", "userPassword");
+		params.add("confirmPassword", "");
+
+		given(getService().register("userName", "userPassword", ""))
+				.willThrow(InvalidRegistrationField.class);
+
+		getMvc().perform(post("/register").params(params))
+				.andExpect(status().is4xxClientError())
+				.andExpect(model().attribute("error", RegisterPageWebController.EMPTY_FIELDS_ERROR));
+
+		verify(getService()).register("userName", "userPassword", "");
+	}
+	@Test
+	public void testDoInvalidRegisterUsernameWithSpaces() throws Exception {
+		params.add("username", "u s e r n a m e");
+		params.add("password", "userPassword");
+		params.add("confirmPassword", "confirmPassword");
+
+		given(getService().register("u s e r n a m e", "userPassword", "confirmPassword"))
+				.willThrow(InvalidRegistrationField.class);
+
+		getMvc().perform(post("/register").params(params))
+				.andExpect(status().is4xxClientError())
+				.andExpect(model().attribute("error", RegisterPageWebController.EMPTY_FIELDS_ERROR));
+
+		verify(getService()).register("u s e r n a m e", "userPassword", "confirmPassword");
+	}
+	
+	@Test
+	public void testDoInvalidRegisterPwWithSpaces() throws Exception {
+		params.add("username", "userName");
+		params.add("password", " ");
+		params.add("confirmPassword", " ");
+
+		given(getService().register("userName", " ", " "))
+				.willThrow(InvalidRegistrationField.class);
+
+		getMvc().perform(post("/register").params(params))
+				.andExpect(status().is4xxClientError())
+				.andExpect(model().attribute("error", RegisterPageWebController.EMPTY_FIELDS_ERROR));
+
+		verify(getService()).register("userName", " ", " ");
+	}
+	
 }

@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.unifi.ft.rehearsal.exceptions.InvalidRegistrationField;
 import org.unifi.ft.rehearsal.exceptions.PasswordNotMatchingException;
 import org.unifi.ft.rehearsal.exceptions.UsernameAlreadyExistsException;
 import org.unifi.ft.rehearsal.model.BandDetails;
@@ -60,6 +61,31 @@ public class BandServiceRepoIT {
 	@Test(expected=PasswordNotMatchingException.class)
 	public void testInvalidRegistrationPasswordsNotMatching() {
 		service.register("bandName", "bandPassword", "errorPassword");
+	}
+	
+	@Test(expected = InvalidRegistrationField.class)
+	public void testInvalidRegistrationEmptyUsername() {
+		service.register("", "password", "password");
+	}
+
+	@Test(expected = InvalidRegistrationField.class)
+	public void testInvalidRegistrationEmptyPassword() {
+		service.register("bandName", "", "password");
+	}
+	
+	@Test(expected = InvalidRegistrationField.class)
+	public void testInvalidRegistrationEmptyConfirmPassword() {
+		service.register("bandName", "password", "");
+	}
+	
+	@Test(expected = InvalidRegistrationField.class)
+	public void testInvalidRegistrationUsernameWithSpaces() {
+		service.register("u s e r n a m e", "password", "password");
+	}
+
+	@Test(expected = InvalidRegistrationField.class)
+	public void testInvalidRegistrationPasswordWithSpaces() {
+		service.register("bandName", " ", " ");
 	}
 
 	@Test

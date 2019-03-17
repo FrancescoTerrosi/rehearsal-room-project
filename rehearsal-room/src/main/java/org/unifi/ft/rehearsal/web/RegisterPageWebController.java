@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.unifi.ft.rehearsal.exceptions.UsernameAlreadyExistsException;
+import org.unifi.ft.rehearsal.exceptions.InvalidRegistrationField;
 import org.unifi.ft.rehearsal.exceptions.PasswordNotMatchingException;
 import org.unifi.ft.rehearsal.services.BandService;
 
@@ -24,8 +25,10 @@ public class RegisterPageWebController {
 	/*
 	 * Error messages
 	 */
+	public static final String ERROR = "error";
 	public static final String REGISTRATION_USERNAME_ERROR = "There is already a user with that name";
 	public static final String REGISTRATION_PASSW_ERROR = "Passwords do not match, please try again";
+	public static final String EMPTY_FIELDS_ERROR = "Please insert non null Username and Password and without spaces!";
 
 	@Autowired
 	private BandService bandService;
@@ -45,18 +48,23 @@ public class RegisterPageWebController {
 	
 	@ExceptionHandler(PasswordNotMatchingException.class)
 	private ModelAndView handlePasswordNotMatchingException() {
-		ModelAndView result = new ModelAndView();
-		result.setViewName(REGISTER_PAGE);
-		result.addObject("error", REGISTRATION_PASSW_ERROR);
-		result.setStatus(HttpStatus.BAD_REQUEST);
-		return result;
+		return addAttributeAndStatus(REGISTRATION_PASSW_ERROR);
 	}
 	
 	@ExceptionHandler(UsernameAlreadyExistsException.class)
 	private ModelAndView handleUsernameAlreadyExistsException() {
+		return addAttributeAndStatus(REGISTRATION_USERNAME_ERROR);
+	}
+	
+	@ExceptionHandler(InvalidRegistrationField.class)
+	private ModelAndView handleEmptyFields() {
+		return addAttributeAndStatus(EMPTY_FIELDS_ERROR);
+	}
+	
+	private ModelAndView addAttributeAndStatus(String message) {
 		ModelAndView result = new ModelAndView();
 		result.setViewName(REGISTER_PAGE);
-		result.addObject("error", REGISTRATION_USERNAME_ERROR);
+		result.addObject(ERROR, message);
 		result.setStatus(HttpStatus.BAD_REQUEST);
 		return result;
 	}

@@ -5,21 +5,31 @@
 	xmlns:security="http://www.springframework.org/security/tags">
 
 <head>
+<link rel="stylesheet" type="text/css" href="css/login.css">
 <title>Login Page</title>
 </head>
 <body onload='document.loginForm.username.focus();'>
-	<h3>Sign in for Rehearsals!</h3>
 
-	<form name='loginForm' th:action="@{/login}" method="post">
+	<h1>Ciao</h1>
+	
 
-		<div id="error" th:if="${error}"><font color="red"><span th:text="${error}"></span></font><br/><br/></div>
+	<div class="container">
+		<h3>Sign in for Rehearsals!</h3>
 
-		<fieldset>
-			<label for="username">User:</label> <input type="text" id="username"
-				name="username" /> <br> <label for="password">Password:</label>
-			<input type="password" id="password" name="password" />
-			<button type="submit" id="submit" name="submit" class="btn">Login</button>
-		</fieldset>
-	</form>
+		<form name='loginForm' th:action="@{/login}" method="post">
+
+			<div id="error" th:if="${error}">
+				<font color="red"><span th:text="${error}"></span></font><br />
+				<br />
+			</div>
+
+			<fieldset>
+				<label for="username">User:</label> <input type="text" id="username"
+					name="username" /> <br> <label for="password">Password:</label>
+				<input type="password" id="password" name="password" />
+				<button type="submit" id="submit" name="submit" class="btn">Login</button>
+			</fieldset>
+		</form>
+	</div>
 </body>
 </html>

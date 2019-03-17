@@ -1,16 +1,11 @@
 package org.unifi.ft.rehearsal.exceptions;
 
-public class InvalidTimeException extends RuntimeException {
+public class InvalidTimeException extends IllegalArgumentException {
 
 	private static final long serialVersionUID = 1L;
 	
 	public InvalidTimeException() {
 		super();
-	}
-
-	public InvalidTimeException(String message, Throwable cause, boolean enableSuppression,
-			boolean writableStackTrace) {
-		super(message, cause, enableSuppression, writableStackTrace);
 	}
 
 	public InvalidTimeException(String message, Throwable cause) {
