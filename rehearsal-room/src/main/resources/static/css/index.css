@@ -1,5 +1,35 @@
 @charset "UTF-8";
 
-h1 {
-	color: yellow;
+body {
+	background-color: #d4dcda;
+}
+
+#cont0 {
+	width: 70px;
+	height: 300px;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-wrap: wrap;
+	flex-wrap: wrap;
+	-webkit-align-content: center;
+	align-content: center;
+}
+
+#cont1 {
+	align-content: center;
+}
+
+#text {
+	width: 1000px;
+	height: 100px;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-wrap: wrap;
+	flex-wrap: wrap;
+	-webkit-align-content: center;
+	align-content: center;
+}
+
+pre {
+	color: #fce94f;
 }

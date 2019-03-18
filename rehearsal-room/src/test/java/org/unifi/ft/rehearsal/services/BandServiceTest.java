@@ -98,7 +98,7 @@ public class BandServiceTest {
 	
 	@Test(expected = InvalidRegistrationField.class)
 	public void testInvalidRegistrationConfirmPasswordWithSpaces() {
-		service.register("bandName", " ", " ");
+		service.register("bandName", "password", "p assword");
 		verify(repository, times(0)).save(isA(BandDetails.class));
 	}
 	

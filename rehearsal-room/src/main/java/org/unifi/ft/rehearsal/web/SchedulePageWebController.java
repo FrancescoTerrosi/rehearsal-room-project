@@ -30,7 +30,7 @@ public class SchedulePageWebController {
 	/*
 	 * URIs
 	 */
-	public static final String CLEAR_SESSION_URI = "/clear_session";
+	public static final String CLEAR_SESSION_URI = "/logout";
 	public static final String SCHEDULE_URI = "/schedule";
 	public static final String FIND_BY_NAME_URI = "/schedule/byName";
 	public static final String FIND_BY_DATE_URI = "/schedule/byDate";

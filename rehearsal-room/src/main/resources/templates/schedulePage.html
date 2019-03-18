@@ -6,8 +6,27 @@
 
 <head>
 <title>Schedule your rehearsal</title>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
 </head>
+	<nav class="navbar navbar-inverse">
+		<div class="container">
+
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">Schedule your Rehearsals!</a>
+			</div>
+			<div id="navbar" class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="/">Home</a></li>
+					<li><a href="/login">Login</a></li>
+					<li><a href="/register">Register</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
 	<h3>Schedule for your rehearsal room!</h3>
 
 	<form name='scheduleForm' th:action="@{/schedule}" method="post">
@@ -80,6 +99,12 @@ class="delete">Delete</a></td>
             	<td th:text="${schedule}"></td>
         	</tr>
         </table>
+    </div>
+    
+    <div id="logout">
+    	<form name="logoutForm" th:action="@{/logout}" method="post">
+    		<button type="submit">Logout</button>
+    	</form>
     </div>
 </body>
 </html>
