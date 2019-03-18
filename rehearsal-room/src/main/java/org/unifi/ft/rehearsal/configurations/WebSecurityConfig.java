@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,6 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private static final String HOMEPAGE = "/schedule";
 	private static final String PROTECTED = "/schedule/**";
+	private static final String[] PUBLIC_ACCESS_URIS = {"/", "/register", "/css/**", "/webjars/**"};
 
 	@Autowired
 	private BandService bandService;
@@ -50,6 +52,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 				.permitAll();
 
+	}
+	
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring().antMatchers(PUBLIC_ACCESS_URIS);
 	}
 	
 	@Override

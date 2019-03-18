@@ -30,6 +30,15 @@ body {
 	align-content: center;
 }
 
-pre {
-	color: #fce94f;
+#welcome {
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-wrap: wrap;
+	flex-wrap: wrap;
+	-webkit-align-content: center;
+	align-content: center;
+}
+
+h1 {
+	color: #eeeeec;
 }
