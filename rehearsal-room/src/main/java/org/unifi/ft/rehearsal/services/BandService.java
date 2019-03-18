@@ -47,9 +47,7 @@ public class BandService implements UserDetailsService {
 	}
 
 	private void checkValidParameters(String name, String password, String confirmPassword) {
-		if ((name != "" && !name.contains(" ")) && (password != "" && !password.contains(" ")) && (confirmPassword != "" && !confirmPassword.contains(" "))) {
-			return;
-		} else {
+		if ((name.equals("") || name.contains(" ")) || (password.equals("") || password.contains(" ")) || (confirmPassword.equals("") || confirmPassword.contains(" "))) {
 			throw new InvalidRegistrationField(EMPTY_FIELDS);
 		}
 	}
