@@ -14,7 +14,7 @@
 <link rel="stylesheet" type="text/css" href="css/loginRegister.css">
 </head>
 <body onload='document.registrationForm.username.focus();'>
-	
+
 	<nav class="navbar navbar-inverse">
 		<div class="container">
 
@@ -31,7 +31,7 @@
 		</div>
 	</nav>
 
-	
+
 	<div class="container-fluid">
 		<form name='registerForm' th:action="@{/register}" method="post">
 
@@ -47,6 +47,10 @@
 					<span class="label label-info">Password:</span>
 				</h2>
 				<input type="password" id="password" name="password" />
+				<h2>
+					<span class="label label-info">Confirm Password:</span>
+				</h2>
+				<input type="password" id="confirmPassword" name="confirmPassword" />
 				<div id="loginButton" class="container">
 					<button type="submit" class="btn btn-primary" id="submit"
 						name="submit">Register</button>
