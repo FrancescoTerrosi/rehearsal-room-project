@@ -11,7 +11,7 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
-<link rel="stylesheet" type="text/css" href="css/login.css">
+<link rel="stylesheet" type="text/css" href="css/loginRegister.css">
 </head>
 <body onload='document.loginForm.username.focus();'>
 
@@ -30,29 +30,31 @@
 			</div>
 		</div>
 	</nav>
-	
-	
 
-	<div class="container">
-		<h3>Sign in for Rehearsals!</h3>
-
+	<div class="container-fluid">
 		<form name='loginForm' th:action="@{/login}" method="post">
 
 			<div id="error" th:if="${error}">
-				<font color="red"><span th:text="${error}"></span></font><br />
-				<br />
+				<font color="red"><span th:text="${error}"></span></font><br /> <br />
 			</div>
-
 			<fieldset>
-				<label for="username" id="userLabel">User:</label> <input type="text" id="username"
-					name="username" /> <br> <label for="password">Password:</label>
+				<h2>
+					<span class="label label-info">User:</span>
+				</h2>
+				<input type="text" id="username" name="username" /> <br>
+				<h2>
+					<span class="label label-info">Password:</span>
+				</h2>
 				<input type="password" id="password" name="password" />
-				<button type="submit" class="btn btn-primary" id="submit" name="submit">Login</button>
+				<div id="loginButton" class="container">
+					<button type="submit" class="btn btn-primary" id="submit"
+						name="submit">Login</button>
+				</div>
 			</fieldset>
 		</form>
-	<form name="goBack" method="get" action="/">
-		<button type="submit" class="btn btn-danger">Go back</button>
-	</form>
+		<form id="goBackForm" method="get" action="/">
+			<button type="submit" class="btn btn-danger">Go back</button>
+		</form>
 	</div>
 </body>
 </html>

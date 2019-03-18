@@ -11,6 +11,7 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="css/loginRegister.css">
 </head>
 <body onload='document.registrationForm.username.focus();'>
 	
@@ -29,29 +30,32 @@
 			</div>
 		</div>
 	</nav>
-	<div class="container-fluid">
-		<h3>Sign up for Rehearsals!</h3>
 
-		<form name='registrationForm' th:action="@{/register}" method="post">
+	
+	<div class="container-fluid">
+		<form name='registerForm' th:action="@{/register}" method="post">
 
 			<div id="error" th:if="${error}">
-				<font color="red"><span th:text="${error}"></span></font><br />
-				<br />
+				<font color="red"><span th:text="${error}"></span></font><br /> <br />
 			</div>
-
 			<fieldset>
-				<label for="username">Username:</label> <input type="text"
-					id="username" name="username" /> <label for="password">Password:</label>
-				<input type="password" id="password" name="password" /> <label
-					for="confirmPassword">Confirm password:</label> <input
-					type="password" id="confirmPassword" name="confirmPassword" />
-				<button type="submit" name="submit" class="btn">Register</button>
+				<h2>
+					<span class="label label-info">User:</span>
+				</h2>
+				<input type="text" id="username" name="username" /> <br>
+				<h2>
+					<span class="label label-info">Password:</span>
+				</h2>
+				<input type="password" id="password" name="password" />
+				<div id="loginButton" class="container">
+					<button type="submit" class="btn btn-primary" id="submit"
+						name="submit">Register</button>
+				</div>
 			</fieldset>
 		</form>
+		<form id="goBackForm" method="get" action="/">
+			<button type="submit" class="btn btn-danger">Go back</button>
+		</form>
 	</div>
-		
-	<form name="goBack" method="get" action="/">
-		<button type="submit">Go back</button>
-	</form>
 </body>
 </html>
