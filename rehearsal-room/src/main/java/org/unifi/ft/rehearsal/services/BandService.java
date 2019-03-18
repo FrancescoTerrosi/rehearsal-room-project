@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.unifi.ft.rehearsal.exceptions.UsernameAlreadyExistsException;
 import org.unifi.ft.rehearsal.model.BandDetails;
+import org.unifi.ft.rehearsal.exceptions.InvalidRegistrationField;
 import org.unifi.ft.rehearsal.exceptions.PasswordNotMatchingException;
 import org.unifi.ft.rehearsal.repository.mongo.IBandDetailsMongoRepository;
 
@@ -21,6 +22,7 @@ public class BandService implements UserDetailsService {
 	public static final String USER_NOT_FOUND = "There is no user with that name!";
 	public static final String ALREADY_EXISTING_USERNAME = "There is already a user with that name!";
 	public static final String PASSW_NOT_MATCHING = "The two passwords do not match!";
+	public static final String EMPTY_FIELDS = "These fields can not be empty!";
 
 	private static final Logger LOGGER = LogManager.getLogger(BandService.class);
 
@@ -35,11 +37,18 @@ public class BandService implements UserDetailsService {
 	}
 
 	public UserDetails register(String name, String password, String confirmPassword) {
+		checkValidParameters(name, password, confirmPassword);
 		if (!existsUserByUsername(name)) {
 			return handleRegistration(name, password, confirmPassword);
 		} else {
 			LOGGER.warn(name + " - "+ALREADY_EXISTING_USERNAME);
 			throw new UsernameAlreadyExistsException(ALREADY_EXISTING_USERNAME);
+		}
+	}
+
+	private void checkValidParameters(String name, String password, String confirmPassword) {
+		if ((name.equals("") || name.contains(" ")) || (password.equals("") || password.contains(" ")) || (confirmPassword.equals("") || confirmPassword.contains(" "))) {
+			throw new InvalidRegistrationField(EMPTY_FIELDS);
 		}
 	}
 

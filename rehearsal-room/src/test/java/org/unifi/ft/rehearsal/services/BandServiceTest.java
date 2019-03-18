@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.unifi.ft.rehearsal.services.BandService;
+import org.unifi.ft.rehearsal.exceptions.InvalidRegistrationField;
 import org.unifi.ft.rehearsal.exceptions.PasswordNotMatchingException;
 import org.unifi.ft.rehearsal.exceptions.UsernameAlreadyExistsException;
 import org.unifi.ft.rehearsal.model.BandDetails;
@@ -62,6 +63,43 @@ public class BandServiceTest {
 	@Test(expected = PasswordNotMatchingException.class)
 	public void testInvalidRegistrationPasswordNotMatching() {
 		service.register("band", "bandPassword", "errorPassword");
+		verify(repository, times(0)).save(isA(BandDetails.class));
+	}
+	
+	@Test(expected = InvalidRegistrationField.class)
+	public void testInvalidRegistrationEmptyUsername() {
+		service.register("", "password", "password");
+		verify(repository, times(0)).save(isA(BandDetails.class));
+	}
+
+	@Test(expected = InvalidRegistrationField.class)
+	public void testInvalidRegistrationEmptyPassword() {
+		service.register("bandName", "", "password");
+		verify(repository, times(0)).save(isA(BandDetails.class));
+	}
+	
+	@Test(expected = InvalidRegistrationField.class)
+	public void testInvalidRegistrationEmptyConfirmPassword() {
+		service.register("bandName", "password", "");
+		verify(repository, times(0)).save(isA(BandDetails.class));
+	}
+	
+	@Test(expected = InvalidRegistrationField.class)
+	public void testInvalidRegistrationUsernameWithSpaces() {
+		service.register("   ", "password", "password");
+		verify(repository, times(0)).save(isA(BandDetails.class));
+	}
+
+	@Test(expected = InvalidRegistrationField.class)
+	public void testInvalidRegistrationPasswordWithSpaces() {
+		service.register("bandName", "p a", "p a");
+		verify(repository, times(0)).save(isA(BandDetails.class));
+	}
+	
+	@Test(expected = InvalidRegistrationField.class)
+	public void testInvalidRegistrationConfirmPasswordWithSpaces() {
+		service.register("bandName", "password", "p assword");
+		verify(repository, times(0)).save(isA(BandDetails.class));
 	}
 	
 	@Test

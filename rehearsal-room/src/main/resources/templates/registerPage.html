@@ -6,23 +6,56 @@
 
 <head>
 <title>Registration Page</title>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="css/loginRegister.css">
 </head>
 <body onload='document.registrationForm.username.focus();'>
-	<h3>Sign up for Rehearsals!</h3>
+	
+	<nav class="navbar navbar-inverse">
+		<div class="container">
 
-	<form name='registrationForm' th:action="@{/register}" method="post">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">Schedule your Rehearsals!</a>
+			</div>
+			<div id="navbar" class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="/">Home</a></li>
+					<li><a href="/login">Login</a></li>
+					<li><a href="/register">Register</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
 
-		<div id="error" th:if="${error}"><font color="red"><span th:text="${error}"></span></font><br/><br/></div>
+	
+	<div class="container-fluid">
+		<form name='registerForm' th:action="@{/register}" method="post">
 
-		<fieldset>
-			<label for="username">Username:</label>
-			<input type="text" id="username" name="username"/>
-			<label for="password">Password:</label>
-			<input type="password" id="password" name="password"/>
-			<label for="confirmPassword">Confirm password:</label>
-			<input type="password" id="confirmPassword" name="confirmPassword"/>
-			<button type="submit" name="submit" class="btn">Register</button>
-		</fieldset>
-	</form>
+			<div id="error" th:if="${error}">
+				<font color="red"><span th:text="${error}"></span></font><br /> <br />
+			</div>
+			<fieldset>
+				<h2>
+					<span class="label label-info">User:</span>
+				</h2>
+				<input type="text" id="username" name="username" /> <br>
+				<h2>
+					<span class="label label-info">Password:</span>
+				</h2>
+				<input type="password" id="password" name="password" />
+				<div id="loginButton" class="container">
+					<button type="submit" class="btn btn-primary" id="submit"
+						name="submit">Register</button>
+				</div>
+			</fieldset>
+		</form>
+		<form id="goBackForm" method="get" action="/">
+			<button type="submit" class="btn btn-danger">Go back</button>
+		</form>
+	</div>
 </body>
 </html>

@@ -1,0 +1,40 @@
+@charset "UTF-8";
+
+@charset "UTF-8";
+
+body {
+	background-color: #d4dcda;
+}
+
+.container-fluid {
+	width: 500px;
+	height: 300px;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-wrap: wrap;
+	flex-wrap: wrap;
+	-webkit-align-content: center;
+	align-content: center;
+}
+
+#loginButton {
+	padding-top: 10px;
+	align-content: center;
+}
+
+#goBackForm {
+	padding-top: 10px;
+	padding-left: 15px;
+	align-content: center;
+}
+
+#error {
+	width: 300px;
+	height: 50px;
+	font-size: 20px;
+	padding-top: 10px;
+}
+
+h1 {
+	color: #000000;
+}

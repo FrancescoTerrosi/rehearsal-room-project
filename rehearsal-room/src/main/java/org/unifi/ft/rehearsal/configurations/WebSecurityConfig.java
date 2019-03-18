@@ -24,8 +24,9 @@ import org.unifi.ft.rehearsal.services.BandService;
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	private static final String[] PUBLIC_ACCESS_URIS = { "/", "/register" };
 	private static final String HOMEPAGE = "/schedule";
+	private static final String PROTECTED = "/schedule/**";
+	private static final String[] PUBLIC_ACCESS_URIS = {"/", "/register", "/css/**", "/webjars/**"};
 
 	@Autowired
 	private BandService bandService;
@@ -35,29 +36,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http.authorizeRequests()
 
-				.anyRequest().authenticated()
+				.antMatchers(PROTECTED).authenticated()
 
 				.and()
 
 				.formLogin().loginPage("/login")
 							.usernameParameter("username")
 							.passwordParameter("password").successHandler(new RehearsalAuthenticationSuccessHandler())
-
+							
 				.permitAll()
 
 				.and()
 
-				.logout()
+				.logout().logoutSuccessUrl("/")
 
 				.permitAll();
 
 	}
-
+	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers(PUBLIC_ACCESS_URIS);
 	}
-
+	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.authenticationProvider(authProvider());

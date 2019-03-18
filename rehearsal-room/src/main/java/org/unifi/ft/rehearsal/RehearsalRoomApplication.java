@@ -2,12 +2,12 @@ package org.unifi.ft.rehearsal;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.context.annotation.Import;
+import org.unifi.ft.rehearsal.configurations.MongoConfig;
+import org.unifi.ft.rehearsal.configurations.WebSecurityConfig;
 
 @SpringBootApplication
-@EnableWebSecurity
-@EnableMongoRepositories(basePackages = "org.unifi.ft.rehearsal.repository.mongo")
+@Import({WebSecurityConfig.class, MongoConfig.class})
 public class RehearsalRoomApplication {
 	
 	public static void main(String[] args) {
