@@ -6,7 +6,7 @@ body {
 
 #cont0 {
 	width: 70px;
-	height: 300px;
+	height: 200px;
 	display: -webkit-flex;
 	display: flex;
 	-webkit-flex-wrap: wrap;
@@ -19,26 +19,17 @@ body {
 	align-content: center;
 }
 
-#text {
-	width: 1000px;
-	height: 100px;
-	display: -webkit-flex;
-	display: flex;
-	-webkit-flex-wrap: wrap;
-	flex-wrap: wrap;
-	-webkit-align-content: center;
-	align-content: center;
+.btn-primary {
+	width: 100px;
+	height: 50px;
+	font-size: 20px;
+	text-align: center;
 }
 
-#welcome {
-	display: -webkit-flex;
-	display: flex;
-	-webkit-flex-wrap: wrap;
-	flex-wrap: wrap;
-	-webkit-align-content: center;
-	align-content: center;
+#text {
+	text-align: center
 }
 
 h1 {
-	color: #eeeeec;
+	color: #000000;
 }

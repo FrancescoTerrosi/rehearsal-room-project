@@ -1,9 +1,26 @@
 @charset "UTF-8";
 
-h1 {
-	color: yellow;
+@charset "UTF-8";
+
+body {
+	background-color: #d4dcda;
 }
 
-h3 {
-	color: yellow;
+.containter {
+	width: 70px;
+	height: 200px;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-wrap: wrap;
+	flex-wrap: wrap;
+	-webkit-align-content: center;
+	align-content: center;
+}
+
+.userLabel {
+	color: #fce94f;
+}
+
+h1 {
+	color: #000000;
 }
