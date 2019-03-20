@@ -30,7 +30,7 @@ public class SchedulePageWebController {
 	/*
 	 * URIs
 	 */
-	public static final String CLEAR_SESSION_URI = "/logout";
+	public static final String CLEAR_SESSION_URI = "/goodbye";
 	public static final String SCHEDULE_URI = "/schedule";
 	public static final String FIND_BY_NAME_URI = "/schedule/byName";
 	public static final String FIND_BY_DATE_URI = "/schedule/byDate";
@@ -63,7 +63,7 @@ public class SchedulePageWebController {
 	@PostMapping(CLEAR_SESSION_URI)
 	public String sayGoodbye(SessionStatus status) {
 		status.setComplete();
-		return REDIRECT + "/";
+		return REDIRECT + "/logout";
 	}
 
 	@PostMapping(SCHEDULE_URI)
