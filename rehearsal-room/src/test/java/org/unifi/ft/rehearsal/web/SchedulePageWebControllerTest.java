@@ -13,6 +13,9 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
+import static org.junit.Assert.assertNull;
 import static org.mockito.BDDMockito.*;
 
 import org.joda.time.DateTime;
@@ -83,8 +86,10 @@ public class SchedulePageWebControllerTest {
 	@Test
 	@WithMockUser("username")
 	public void testClearSession() throws Exception {
-		mvc.perform(post(SchedulePageWebController.CLEAR_SESSION_URI).sessionAttr("user", "username").with(csrf()))
-				.andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/"));
+		HttpSession session = mvc.perform(post(SchedulePageWebController.CLEAR_SESSION_URI).sessionAttr("user", "username").with(csrf()))
+				.andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/")).andReturn().getRequest().getSession();
+		
+		assertNull(session.getAttribute("user"));
 	}
 
 	@Test
