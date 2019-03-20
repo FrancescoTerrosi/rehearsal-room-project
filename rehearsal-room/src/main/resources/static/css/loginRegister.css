@@ -1,12 +1,11 @@
 @charset "UTF-8";
 
-@charset "UTF-8";
-
 body {
 	background-color: #d4dcda;
 }
 
 .container-fluid {
+	padding-top: 150px;
 	width: 500px;
 	height: 300px;
 	display: -webkit-flex;
@@ -29,7 +28,7 @@ body {
 }
 
 #error {
-	width: 300px;
+	width: 350px;
 	height: 50px;
 	font-size: 20px;
 	padding-top: 10px;

@@ -11,6 +11,7 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="/css/schedule.css">
 </head>
 	<nav class="navbar navbar-inverse">
 		<div class="container">
@@ -27,8 +28,11 @@
 			</div>
 		</div>
 	</nav>
-	<h3>Schedule for your rehearsal room!</h3>
-
+	<div id="hello">
+		<h3>Schedule for your rehearsal room!</h3>
+	</div>
+	
+	<div id="scheduleContent" class="container-fluid">
 	<form name='scheduleForm' th:action="@{/schedule}" method="post">
 
 		<div id="error" th:if="${info}"><font color="red"><span th:text="${info}"></span></font><br/><br/></div>
@@ -52,36 +56,44 @@
 			<button type="submit" name="submit" class="btn">Register</button>
 		</fieldset>
 	</form>
+	</div>
 	
-	<form name='scheduleFormByDate' th:action="@{/schedule/byDate}" method="get">
-
-		<fieldset>
-			<label for="year">Year:</label>
-			<input type="text" id="year" name="year"/>
-			<label for="month">Month:</label>
-			<input type="text" id="month" name="month"/>
-			<label for="day">Day:</label>
-			<input type="text" id="day" name="day"/>
-			<button type="submit" name="submit" class="btn">Find Schedules By Date</button>
-		</fieldset>
-	</form>
+	<div id="byDateDiv" class="container-fluid">
+		<form name='scheduleFormByDate' th:action="@{/schedule/byDate}" method="get">
+			<fieldset>
+				<label for="year">Year:</label>
+				<input type="text" id="year" name="year"/>
+				<label for="month">Month:</label>
+				<input type="text" id="month" name="month"/>
+				<label for="day">Day:</label>
+				<input type="text" id="day" name="day"/>
+				<button type="submit" name="submit" class="btn">Find Schedules By Date</button>
+			</fieldset>
+		</form>
+	</div>
 	
-	<form name='scheduleFormByName' th:action="@{/schedule/byName}" method="get">
-		<fieldset>
-			<button type="submit" name="submit" class="btn">Find Your Schedules!</button>
-		</fieldset>
-	</form>
+	<div id="byRoomDiv" class="container-fluid">
+		<form name='scheduleFormByRoom' th:action="@{/schedule/byRoom}" method="get">
+			
+			<fieldset>
+				<label for="room">Room:</label>
+				<SELECT id="room" name="room" size="1">
+	       			<OPTION label="1" value="FIRSTROOM">Room 1</OPTION>
+	        		<OPTION label="2" value="SECONDROOM">Room 2</OPTION>
+	        		<OPTION label="3" value="THIRDROOM">Room 3</OPTION>
+	    		</SELECT>
+				<button type="submit" name="submit" class="btn">Find Schedules By Room</button>
+			</fieldset>
+		</form>
+	</div>
 	
-	<form name='scheduleFormByRoom' th:action="@{/schedule/byRoom}" method="get">
-		<fieldset>
-			<SELECT id="room" name="room" size="1">
-       			<OPTION label="1" value="FIRSTROOM">Room 1</OPTION>
-        		<OPTION label="2" value="SECONDROOM">Room 2</OPTION>
-        		<OPTION label="3" value="THIRDROOM">Room 3</OPTION>
-    		</SELECT>
-			<button type="submit" name="submit" class="btn">Find Schedules By Room</button>
-		</fieldset>
-	</form>
+	<div id="byNameDiv" class="container-fluid">
+		<form name='scheduleFormByName' th:action="@{/schedule/byName}" method="get">
+			<fieldset>
+				<button type="submit" name="submit" class="btn">Find Your Schedules!</button>
+			</fieldset>
+		</form>
+	</div>
 	
 	<div id="yourSchedules" th:if="${yourSchedules}">
  	  	<table class="table table-striped">

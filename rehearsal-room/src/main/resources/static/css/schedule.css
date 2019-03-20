@@ -1,0 +1,59 @@
+@charset "UTF-8";
+
+body {
+	background-color: #d4dcda;
+}
+
+#scheduleContent {
+	padding-top: 50px;
+	width: 1500px;
+	height: 100px;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-wrap: wrap;
+	flex-wrap: wrap;
+	-webkit-align-content: center;
+	align-content: center;
+}
+
+#byDateDiv {
+	width: 1500px;
+	height: 100px;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-wrap: wrap;
+	flex-wrap: wrap;
+	-webkit-align-content: center;
+	align-content: center;
+}
+
+#byNameDiv {
+	width: 1500px;
+	height: 50px;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-wrap: wrap;
+	flex-wrap: wrap;
+	-webkit-align-content: center;
+	align-content: center;
+}
+
+#byRoomDiv {
+	width: 1500px;
+	height: 50px;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-wrap: wrap;
+	flex-wrap: wrap;
+	-webkit-align-content: center;
+	align-content: center;
+}
+
+#hello {
+	text-align: center;
+	padding-right: 450px;
+}
+
+h3 {
+	color: #3465a4;
+}
