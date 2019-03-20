@@ -5,9 +5,9 @@ body {
 }
 
 #scheduleContent {
-	padding-top: 50px;
+	padding-top: 150px;
 	width: 1500px;
-	height: 100px;
+	height: 150px;
 	display: -webkit-flex;
 	display: flex;
 	-webkit-flex-wrap: wrap;
@@ -67,6 +67,13 @@ body {
 	padding-top: 50px;
 	width: 1000px;
 	align-content: flex-start;
+}
+
+#error {
+	height: 5px;
+	padding-top: 5px;
+	text-align: center;
+	padding-right: 450px;
 }
  
 h3 {

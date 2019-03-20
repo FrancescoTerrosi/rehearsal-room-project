@@ -29,15 +29,22 @@
 	</div>
 </nav>
 <div id="hello">
-	<h3>Schedule for your rehearsal room!</h3>
+	<h1>Schedule for your rehearsal room!</h1>
 </div>
 
+	<div id="error"> 
+		<div id="errorContainer" th:if="${info}">
+		<h2>
+			<font color="red"><span th:text="${info}"></span></font><br /> <br />
+		</h2>
+		</div>
+	</div>
+
 <div id="scheduleContent" class="container-fluid">
+
+
 	<form name='scheduleForm' th:action="@{/schedule}" method="post">
 
-		<div id="error" th:if="${info}">
-			<font color="red"><span th:text="${info}"></span></font><br /> <br />
-		</div>
 
 		<fieldset>
 			<label for="year">Year:</label> <input type="text" id="year"
