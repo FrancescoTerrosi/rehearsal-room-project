@@ -176,9 +176,11 @@
             <configuration>
               <targetClasses>
                 <param>org.unifi.ft.rehearsal.services.*</param>
+                <param>org.unifi.ft.rehearsal.web.*</param>
               </targetClasses>
               <targetTests>
                 <param>org.unifi.ft.rehearsal.services.*</param>
+                <param>org.unifi.ft.rehearsal.web.*</param>
               </targetTests>
               <avoidCallsTo>
                 <avoidCallsTo>org.apache.logging.log4j.Logger</avoidCallsTo>

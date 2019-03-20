@@ -79,7 +79,7 @@ public class SchedulePageWebControllerIT {
 	@WithMockUser("username")
 	public void testClearSession() throws Exception {
 		HttpSession session = mvc.perform(post(SchedulePageWebController.CLEAR_SESSION_URI).sessionAttr("user", "username").with(csrf()))
-				.andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/")).andReturn().getRequest().getSession();
+				.andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/logout")).andReturn().getRequest().getSession();
 	
 		assertNull(session.getAttribute("user"));
 	}
