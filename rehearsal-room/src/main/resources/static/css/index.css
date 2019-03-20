@@ -5,7 +5,7 @@ body {
 }
 
 #cont0 {
-	width: 70px;
+	width: 500px;
 	height: 200px;
 	display: -webkit-flex;
 	display: flex;
@@ -27,7 +27,8 @@ body {
 }
 
 #text {
-	text-align: center
+	text-align: center;
+	padding-right: 350px;
 }
 
 h1 {

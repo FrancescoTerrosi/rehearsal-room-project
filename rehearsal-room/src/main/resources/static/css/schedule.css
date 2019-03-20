@@ -1,0 +1,81 @@
+@charset "UTF-8";
+
+body {
+	background-color: #d4dcda;
+}
+
+#scheduleContent {
+	padding-top: 150px;
+	width: 1500px;
+	height: 150px;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-wrap: wrap;
+	flex-wrap: wrap;
+	-webkit-align-content: center;
+	align-content: center;
+}
+
+#byDateDiv {
+	width: 1500px;
+	height: 100px;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-wrap: wrap;
+	flex-wrap: wrap;
+	-webkit-align-content: center;
+	align-content: center;
+}
+
+#byNameDiv {
+	width: 1500px;
+	height: 50px;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-wrap: wrap;
+	flex-wrap: wrap;
+	-webkit-align-content: center;
+	align-content: center;
+	padding-top: 50px;
+}
+
+#byRoomDiv {
+	width: 1500px;
+	height: 50px;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-wrap: wrap;
+	flex-wrap: wrap;
+	-webkit-align-content: center;
+	align-content: center;
+}
+
+#hello {
+	text-align: center;
+	padding-right: 450px;
+}
+
+#logout {
+	padding-top: 30px;
+	width: 1500px;
+	height: 50px;
+	align-content: flex-end;
+}
+
+#queryContainer {
+	background-color: #d4dcda;
+	padding-top: 50px;
+	width: 1000px;
+	align-content: flex-start;
+}
+
+#error {
+	height: 5px;
+	padding-top: 5px;
+	text-align: center;
+	padding-right: 450px;
+}
+ 
+h3 {
+	color: #3465a4;
+}
