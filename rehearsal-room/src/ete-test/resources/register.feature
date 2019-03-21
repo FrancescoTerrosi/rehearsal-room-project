@@ -17,11 +17,13 @@
 ## (Comments)
 #Sample Feature Definition Template
 @tag
-Feature: Index Page
+Feature: Registration page
 
   @tag1
-  Scenario: GetIndexDisplayLoginRegisterButton
-    Given The server is running
-    When The user connects to the homepage
-    Then The homepage with two buttons: link and register, is displayed
-    And Navbar is displayed
+  Scenario: User Registration
+    Given The DB is running
+    And The User request the /register url
+    When The user register for a username that does not exists
+    And The user gives a password
+    And The user confirm that password
+    Then The user is registered in the DB

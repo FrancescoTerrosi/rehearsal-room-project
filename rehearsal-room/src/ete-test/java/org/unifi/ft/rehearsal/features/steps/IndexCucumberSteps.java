@@ -23,7 +23,7 @@ import io.github.bonigarcia.wdm.ChromeDriverManager;
 @SpringBootTest
 public class IndexCucumberSteps {
 	
-	private static final String HOMEPAGE = "localhost:";
+	private static final String HOMEPAGE = "http://localhost:";
 	
 	private int port = 11111;
 	
@@ -73,5 +73,12 @@ public class IndexCucumberSteps {
 		assertTrue(registerButton.isDisplayed());
 		assertTrue(registerButton.isEnabled());
 	}
+	
+	@Then("^Navbar is displayed$")
+	public void navbar_is_displayed() throws Throwable {
+	    WebElement navBar = driver.findElement(By.id("navbar"));
+	    assertEquals("Home\nLogin\nRegister", navBar.getText());
+	}
+
 	
 }

@@ -140,6 +140,7 @@
         <configuration>
           <targetClasses>
             <param>org.unifi.ft.rehearsal.services.*</param>
+            <param>org.unifi.ft.rehearsal.web.*</param>
           </targetClasses>
         </configuration>
       </plugin>
