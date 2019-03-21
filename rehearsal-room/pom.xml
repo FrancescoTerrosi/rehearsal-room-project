@@ -127,26 +127,6 @@
 
   <!-- PLUGINS -->
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.pitest</groupId>
-        <artifactId>pitest-maven</artifactId>
-        <version>1.3.2</version>
-        <configuration>
-          <targetClasses>
-            <param>org.unifi.ft.rehearsal.services.*</param>
-            <param>org.unifi.ft.rehearsal.web.*</param>
-          </targetClasses>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-
   <profiles>
     <profile>
       <id>jacoco</id>
@@ -251,11 +231,22 @@
                     <source>src/it/java</source>
                     <source>src/ete-test/java</source>
                   </sources>
+                </configuration>
+              </execution>
+              <execution>
+                <id>add-test-resource</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>add-test-resource</goal>
+                </goals>
+                <configuration>
                   <resources>
-                    <source>
+                    <resource>
                       <directory>src/test/resources</directory>
-                      <directory>src/ete-test/resources</directory>
-                    </source>
+                    </resource>
+                    <resource>
+                        <directory>src/ete-test/resources</directory>
+                    </resource>
                   </resources>
                 </configuration>
               </execution>
@@ -270,6 +261,7 @@
                 <configuration>
                   <includes>
                     <include>**/*IT.java</include>
+                    <include>**/*BDD.java</include>
                   </includes>
                 </configuration>
                 <goals>

@@ -9,13 +9,13 @@ import cucumber.api.CucumberOptions;
 import cucumber.api.junit.Cucumber;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features = "src/ete-test/resources/index.feature")
-public class IndexEndToEndBDD {
+@CucumberOptions(features = "src/ete-test/resources/")
+public class ContextInitializerBDDEndToEnd {
 
 	@BeforeClass
 	public static void setupClass() {
 		SpringApplicationBuilder builder = new SpringApplicationBuilder(RehearsalRoomApplication.class);
 		builder.run(new String[] { "--server.port=11111" });
 	}
-	
+
 }
