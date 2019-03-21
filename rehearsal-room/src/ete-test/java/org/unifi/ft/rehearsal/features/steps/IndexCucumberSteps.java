@@ -56,7 +56,7 @@ public class IndexCucumberSteps {
 	@When("^The user connects to the homepage$")
 	public void theUserConnectsToTheHomepage() throws Throwable {
 		driver.get(HOMEPAGE+port);
-		System.out.println(driver.getCurrentUrl());
+		assertEquals(HOMEPAGE+port, driver.getCurrentUrl());
 		assertEquals("Rehearsal Rooms",driver.getTitle());
 	}
 	
