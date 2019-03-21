@@ -12,7 +12,6 @@ import cucumber.api.junit.Cucumber;
 @CucumberOptions(features = "src/ete-test/resources/register.feature")
 public class RegisterPageEndToEndBDD {
 
-
 	@BeforeClass
 	public static void setupClass() {
 		SpringApplicationBuilder builder = new SpringApplicationBuilder(RehearsalRoomApplication.class);

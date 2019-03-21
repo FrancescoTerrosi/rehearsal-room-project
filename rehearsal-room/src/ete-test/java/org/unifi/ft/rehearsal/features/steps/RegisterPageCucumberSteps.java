@@ -85,7 +85,7 @@ public class RegisterPageCucumberSteps {
 	public void the_user_confirm_that_password() throws Throwable {
 		driver.findElement(By.id("confirmPassword")).sendKeys("NewPassword");
 	}
-	
+
 	@When("^The user click on the register button$")
 	public void the_user_click_on_the_register_button() throws Throwable {
 		driver.findElement(By.id("submit")).click();
