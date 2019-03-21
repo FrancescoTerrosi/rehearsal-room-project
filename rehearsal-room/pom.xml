@@ -33,6 +33,7 @@
       src/main/java/org/unifi/ft/rehearsal/exceptions/*,
       src/main/java/org/unifi/ft/rehearsal/configurations/*
     </sonar.coverage.exclusions>
+    <cucumber.version>1.2.5</cucumber.version>
   </properties>
 
   <!-- SPRING BOOT DEPENDENCIES -->
@@ -92,6 +93,35 @@
       <groupId>org.webjars</groupId>
       <artifactId>webjars-locator</artifactId>
       <version>0.36</version>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-java</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.github.bonigarcia</groupId>
+      <artifactId>webdrivermanager</artifactId>
+      <version>1.7.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>info.cukes</groupId>
+      <artifactId>cucumber-spring</artifactId>
+      <version>${cucumber.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>info.cukes</groupId>
+      <artifactId>cucumber-java</artifactId>
+      <version>${cucumber.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>info.cukes</groupId>
+      <artifactId>cucumber-junit</artifactId>
+      <version>${cucumber.version}</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
@@ -218,7 +248,14 @@
                 <configuration>
                   <sources>
                     <source>src/it/java</source>
+                    <source>src/ete-test/java</source>
                   </sources>
+                  <resources>
+                    <source>
+                      <directory>src/test/resources</directory>
+                      <directory>src/ete-test/resources</directory>
+                    </source>
+                  </resources>
                 </configuration>
               </execution>
             </executions>
