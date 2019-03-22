@@ -2,13 +2,10 @@ package org.unifi.ft.rehearsal.features.steps;
 
 import static org.junit.Assert.*;
 
-import org.junit.BeforeClass;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootContextLoader;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,9 +22,8 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import io.github.bonigarcia.wdm.ChromeDriverManager;
 
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 @ContextConfiguration(loader = SpringBootContextLoader.class)
 public class LoginPageCucumberSteps {
 
@@ -44,14 +40,8 @@ public class LoginPageCucumberSteps {
 	@Autowired
 	private BCryptPasswordEncoder encoder;
 
-	@BeforeClass
-	public static void setupClass() {
-		ChromeDriverManager.getInstance().setup();
-	}
-
 	@Before
 	public void setupDriver() {
-		System.setProperty("webdriver.chrome.driver", "/home/travis/virtualenv/java8/chromedriver_linux64/");
 		driver = new ChromeDriver();
 		repository.deleteAll();
 	}
