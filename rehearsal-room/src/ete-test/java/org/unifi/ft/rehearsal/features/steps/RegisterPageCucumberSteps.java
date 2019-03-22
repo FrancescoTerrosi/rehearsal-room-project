@@ -50,7 +50,7 @@ public class RegisterPageCucumberSteps {
 	@Before
 	public void setupDriver() {
 		final ChromeOptions chromeOptions = new ChromeOptions();
-		chromeOptions.setBinary("/usr/bin/google-chrome-stable");
+		chromeOptions.setBinary("/usr/bin/X11/google-chrome-stable");
 		chromeOptions.addArguments("--headless");
 		
 		final DesiredCapabilities dc = new DesiredCapabilities();
