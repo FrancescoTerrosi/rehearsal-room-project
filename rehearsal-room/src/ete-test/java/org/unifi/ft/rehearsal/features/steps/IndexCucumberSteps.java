@@ -8,9 +8,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
-import org.unifi.ft.rehearsal.configurations.MongoConfig;
-import org.unifi.ft.rehearsal.configurations.WebSecurityConfig;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.context.SpringBootContextLoader;
+import org.springframework.test.context.ContextConfiguration;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -19,13 +20,14 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 
-@Import({WebSecurityConfig.class, MongoConfig.class})
-@SpringBootTest
+@SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
+@ContextConfiguration(loader = SpringBootContextLoader.class)
 public class IndexCucumberSteps {
 	
 	private static final String HOMEPAGE = "http://localhost:";
 	
-	private int port = 11111;
+	@LocalServerPort
+	private int port;
 	
 	private WebDriver driver;
 	
@@ -56,7 +58,7 @@ public class IndexCucumberSteps {
 	@When("^The user connects to the homepage$")
 	public void theUserConnectsToTheHomepage() throws Throwable {
 		driver.get(HOMEPAGE+port);
-		assertEquals(HOMEPAGE+port, driver.getCurrentUrl());
+		assertEquals(HOMEPAGE+port+"/", driver.getCurrentUrl());
 		assertEquals("Rehearsal Rooms",driver.getTitle());
 	}
 	

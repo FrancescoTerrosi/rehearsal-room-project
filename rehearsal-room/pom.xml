@@ -242,7 +242,7 @@
                 <configuration>
                   <resources>
                     <resource>
-                      <directory>src/test/resources</directory>
+                      <directory>src/main/resources</directory>
                     </resource>
                     <resource>
                         <directory>src/ete-test/resources</directory>

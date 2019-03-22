@@ -3,7 +3,6 @@ package org.unifi.ft.rehearsal.features.steps;
 import static org.junit.Assert.*;
 
 import org.junit.BeforeClass;
-import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -19,7 +18,6 @@ import org.unifi.ft.rehearsal.model.BandDetails;
 import org.unifi.ft.rehearsal.repository.mongo.IBandDetailsMongoRepository;
 import org.unifi.ft.rehearsal.web.LoginPageWebController;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
@@ -27,13 +25,14 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
 @ContextConfiguration(loader = SpringBootContextLoader.class)
 public class LoginPageCucumberSteps {
 
 	private static final String HOMEPAGE = "http://localhost:";
 
-	private int port = 11111;
+	@LocalServerPort
+	private int port;
 
 	private WebDriver driver;
 
