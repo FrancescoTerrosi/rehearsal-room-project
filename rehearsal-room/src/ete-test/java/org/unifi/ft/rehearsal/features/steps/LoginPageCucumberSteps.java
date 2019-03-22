@@ -52,9 +52,8 @@ public class LoginPageCucumberSteps {
 	@Before
 	public void setupDriver() {
 		final ChromeOptions chromeOptions = new ChromeOptions();
-		chromeOptions.setBinary("/user/local/bin/google-chrome-stable");
+		chromeOptions.setBinary("/usr/bin/google-chrome-stable");
 		chromeOptions.addArguments("--headless");
-		chromeOptions.addArguments("--disable-gpu");
 		
 		final DesiredCapabilities dc = new DesiredCapabilities();
 		dc.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
