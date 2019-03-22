@@ -49,7 +49,7 @@ public class RegisterPageCucumberSteps {
 	public void setupDriver() {
 		repository.deleteAll();
 
-		System.setProperty("webdriver.chrome.driver", "/home/travis/virtualenv/java8/");
+		System.setProperty("webdriver.chrome.driver", "/home/travis/virtualenv/java8/chromedriver_linux64/");
 		driver = new ChromeDriver();
 	}
 
