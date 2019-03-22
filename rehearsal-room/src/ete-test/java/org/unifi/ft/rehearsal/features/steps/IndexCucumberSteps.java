@@ -7,6 +7,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -20,27 +22,34 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 
-@SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @ContextConfiguration(loader = SpringBootContextLoader.class)
 public class IndexCucumberSteps {
-	
+
 	private static final String HOMEPAGE = "http://localhost:";
-	
+
 	@LocalServerPort
 	private int port;
-	
+
 	private WebDriver driver;
-	
+
 	@BeforeClass
 	public static void setupClass() {
 		ChromeDriverManager.getInstance().setup();
 	}
-	
+
 	@Before
 	public void setupDriver() {
+		final ChromeOptions chromeOptions = new ChromeOptions();
+		chromeOptions.setBinary("/user/local/bin/google-chrome-stable");
+		chromeOptions.addArguments("--headless");
+		chromeOptions.addArguments("--disable-gpu");
+		
+		final DesiredCapabilities dc = new DesiredCapabilities();
+		dc.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
 		driver = new ChromeDriver();
 	}
-	
+
 	@After
 	public void tearDown() {
 		if (driver != null) {
@@ -50,18 +59,18 @@ public class IndexCucumberSteps {
 
 	@Given("^The server is running$")
 	public void the_server_is_running() throws Throwable {
-	    /*
-	     * The server is always running before tests
-	     */
+		/*
+		 * The server is always running before tests
+		 */
 	}
 
 	@When("^The user connects to the homepage$")
 	public void theUserConnectsToTheHomepage() throws Throwable {
-		driver.get(HOMEPAGE+port);
-		assertEquals(HOMEPAGE+port+"/", driver.getCurrentUrl());
-		assertEquals("Rehearsal Rooms",driver.getTitle());
+		driver.get(HOMEPAGE + port);
+		assertEquals(HOMEPAGE + port + "/", driver.getCurrentUrl());
+		assertEquals("Rehearsal Rooms", driver.getTitle());
 	}
-	
+
 	@Then("^The homepage with two buttons: link and register, is displayed$")
 	public void the_homepage_with_two_buttons_link_and_register_is_displayed() throws Throwable {
 		WebElement loginButton = driver.findElement(By.id("login"));
@@ -71,16 +80,15 @@ public class IndexCucumberSteps {
 
 		assertTrue(loginButton.isDisplayed());
 		assertTrue(loginButton.isEnabled());
-		
+
 		assertTrue(registerButton.isDisplayed());
 		assertTrue(registerButton.isEnabled());
 	}
-	
+
 	@Then("^Navbar is displayed$")
 	public void navbar_is_displayed() throws Throwable {
-	    WebElement navBar = driver.findElement(By.id("navbar"));
-	    assertEquals("Home\nLogin\nRegister", navBar.getText());
+		WebElement navBar = driver.findElement(By.id("navbar"));
+		assertEquals("Home\nLogin\nRegister", navBar.getText());
 	}
 
-	
 }

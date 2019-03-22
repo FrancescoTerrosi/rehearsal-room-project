@@ -9,6 +9,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -47,6 +49,13 @@ public class RegisterPageCucumberSteps {
 
 	@Before
 	public void setupDriver() {
+		final ChromeOptions chromeOptions = new ChromeOptions();
+		chromeOptions.setBinary("/user/local/bin/google-chrome-stable");
+		chromeOptions.addArguments("--headless");
+		chromeOptions.addArguments("--disable-gpu");
+		
+		final DesiredCapabilities dc = new DesiredCapabilities();
+		dc.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
 		repository.deleteAll();
 		driver = new ChromeDriver();
 	}
