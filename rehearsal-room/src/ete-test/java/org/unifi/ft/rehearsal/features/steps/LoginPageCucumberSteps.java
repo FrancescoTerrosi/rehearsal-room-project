@@ -2,6 +2,7 @@ package org.unifi.ft.rehearsal.features.steps;
 
 import static org.junit.Assert.*;
 
+import org.junit.BeforeClass;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -22,6 +23,7 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import io.github.bonigarcia.wdm.ChromeDriverManager;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @ContextConfiguration(loader = SpringBootContextLoader.class)
@@ -39,7 +41,12 @@ public class LoginPageCucumberSteps {
 
 	@Autowired
 	private BCryptPasswordEncoder encoder;
-
+	
+	@BeforeClass
+	public static void setupClass() {
+		ChromeDriverManager.getInstance().setup();
+	}
+	
 	@Before
 	public void setupDriver() {
 		driver = new ChromeDriver();

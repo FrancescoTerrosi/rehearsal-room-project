@@ -11,9 +11,5 @@ import io.github.bonigarcia.wdm.ChromeDriverManager;
 @CucumberOptions(features = "src/ete-test/resources/register.feature")
 public class RegisterPageEndToEndBDD {
 
-	@BeforeClass
-	public static void setupClass() {
-		ChromeDriverManager.getInstance().setup();
-	}
 
 }

@@ -11,9 +11,5 @@ import io.github.bonigarcia.wdm.ChromeDriverManager;
 @CucumberOptions(features = "src/ete-test/resources/login.feature")
 public class LoginPageEndToEndBDD {
 
-	@BeforeClass
-	public static void setupClass() {
-		ChromeDriverManager.getInstance().setup();
-	}
 
 }

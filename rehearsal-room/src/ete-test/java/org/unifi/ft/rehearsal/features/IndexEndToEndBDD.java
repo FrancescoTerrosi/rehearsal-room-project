@@ -11,8 +11,4 @@ import io.github.bonigarcia.wdm.ChromeDriverManager;
 @CucumberOptions(features = "src/ete-test/resources/index.feature")
 public class IndexEndToEndBDD {
 
-	@BeforeClass
-	public static void setupClass() {
-		ChromeDriverManager.getInstance().setup();
-	}
 }
