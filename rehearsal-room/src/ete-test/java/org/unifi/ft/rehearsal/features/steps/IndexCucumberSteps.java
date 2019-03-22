@@ -35,19 +35,12 @@ public class IndexCucumberSteps {
 
 	@BeforeClass
 	public static void setupClass() {
-//		ChromeDriverManager.getInstance().setup();
-		final ChromeOptions chromeOptions = new ChromeOptions();
-		chromeOptions.setBinary("/usr/bin/chromium-browser");
-		chromeOptions.addArguments("--headless");
-		chromeOptions.addArguments("--disable-gpu");
-		
-		final DesiredCapabilities dc = new DesiredCapabilities();
-		dc.setJavascriptEnabled(true);
-		dc.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
+		ChromeDriverManager.getInstance().setup();
 	}
 
 	@Before
 	public void setupDriver() {
+		System.setProperty("webdriver.chrome.driver", "/home/travis/virtualenv/java8/chromedriver");
 		driver = new ChromeDriver();
 	}
 

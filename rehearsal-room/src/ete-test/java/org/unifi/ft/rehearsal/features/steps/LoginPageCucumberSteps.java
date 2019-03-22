@@ -27,7 +27,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 
-@SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @ContextConfiguration(loader = SpringBootContextLoader.class)
 public class LoginPageCucumberSteps {
 
@@ -46,19 +46,12 @@ public class LoginPageCucumberSteps {
 
 	@BeforeClass
 	public static void setupClass() {
-		//		ChromeDriverManager.getInstance().setup();
-		final ChromeOptions chromeOptions = new ChromeOptions();
-		chromeOptions.setBinary("/usr/bin/chromium-browser");
-		chromeOptions.addArguments("--headless");
-		chromeOptions.addArguments("--disable-gpu");
-		
-		final DesiredCapabilities dc = new DesiredCapabilities();
-		dc.setJavascriptEnabled(true);
-		dc.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
+		ChromeDriverManager.getInstance().setup();
 	}
 
 	@Before
 	public void setupDriver() {
+		System.setProperty("webdriver.chrome.driver", "/home/travis/virtualenv/java8/chromedriver");
 		driver = new ChromeDriver();
 		repository.deleteAll();
 	}
@@ -115,7 +108,7 @@ public class LoginPageCucumberSteps {
 	public void the_user_provides_a_password() throws Throwable {
 		driver.findElement(By.id("password")).sendKeys("UserPassword");
 	}
-	
+
 	@When("^The user provides a wrong password$")
 	public void the_user_provides_a_wrong_password() throws Throwable {
 		driver.findElement(By.id("password")).sendKeys("WrongPassword");
