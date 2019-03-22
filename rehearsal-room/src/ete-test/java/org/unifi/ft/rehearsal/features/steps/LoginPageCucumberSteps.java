@@ -51,7 +51,7 @@ public class LoginPageCucumberSteps {
 
 	@Before
 	public void setupDriver() {
-		System.setProperty("webdriver.chrome.driver", "/home/travis/virtualenv/java8/chromedriver");
+		System.setProperty("webdriver.chrome.driver", "/home/travis/virtualenv/java8/");
 		driver = new ChromeDriver();
 		repository.deleteAll();
 	}
