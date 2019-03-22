@@ -7,8 +7,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -40,12 +38,6 @@ public class IndexCucumberSteps {
 
 	@Before
 	public void setupDriver() {
-		final ChromeOptions chromeOptions = new ChromeOptions();
-		chromeOptions.setBinary("/usr/bin/X11/google-chrome-stable");
-		chromeOptions.addArguments("--headless");
-		
-		final DesiredCapabilities dc = new DesiredCapabilities();
-		dc.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
 		driver = new ChromeDriver();
 	}
 
