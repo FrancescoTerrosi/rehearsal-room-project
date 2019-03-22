@@ -100,6 +100,10 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-chrome-driver</artifactId>
+    </dependency>
+    <dependency>
       <groupId>io.github.bonigarcia</groupId>
       <artifactId>webdrivermanager</artifactId>
       <version>1.7.2</version>
@@ -245,7 +249,7 @@
                       <directory>src/main/resources</directory>
                     </resource>
                     <resource>
-                        <directory>src/ete-test/resources</directory>
+                      <directory>src/ete-test/resources</directory>
                     </resource>
                   </resources>
                 </configuration>
