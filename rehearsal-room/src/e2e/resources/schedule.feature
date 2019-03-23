@@ -64,7 +64,7 @@ Feature: Scheduling
     And The user is registered into the system
     And The user is logged into the system
     When The user requests the /schedule url
-    And The user schedule for a free room but using illegale charachters
+    And The user schedule for a free room but using illegal charachters
     Then An invalid date message is shown
     And The schedule is not stored in the empty DB
     

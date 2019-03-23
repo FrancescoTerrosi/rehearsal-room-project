@@ -137,8 +137,8 @@ public class SchedulePageCucumberSteps {
 		submitSchedule(scheduleDiv, "2015", "12", "12", "12", "12", "FIRSTROOM");
 	}
 
-	@When("^The user schedule for a free room but using illegale charachters$")
-	public void theUserScheduleForAFreeRoomButUsingIllegaleCharachters() throws Throwable {
+	@When("^The user schedule for a free room but using illegal charachters$")
+	public void theUserScheduleForAFreeRoomButUsingIllegalCharachters() throws Throwable {
 		WebElement scheduleDiv = driver.findElement(By.id("scheduleContent"));
 		submitSchedule(scheduleDiv, "aaaa", "12", "12", "12", "12", "FIRSTROOM");
 	}
@@ -185,6 +185,72 @@ public class SchedulePageCucumberSteps {
 		assertEquals(SchedulePageWebController.TIME_ERROR_MESSAGE, driver.findElement(By.id("infos")).getText());
 	}
 
+	@When("^The user requests the list of saved schedules by date$")
+	public void the_user_requests_the_list_of_saved_schedules_by_date() throws Throwable {
+		WebElement byDateDiv = driver.findElement(By.id("byDateDiv"));
+		searchScheduleByDate(byDateDiv, "2121", "12", "12");
+	}
+
+	@When("^There are schedules saved on that day$")
+	public void there_are_schedules_saved_on_that_day() throws Throwable {
+		assertEquals(1, scheduleRepo.count());
+		Schedule s = scheduleRepo.findAll().get(0);
+		assertEquals(s.getStartDate().getYear(), 2121);
+		assertEquals(s.getStartDate().getMonthOfYear(), 12);
+		assertEquals(s.getStartDate().getDayOfMonth(), 12);
+	}
+
+	@Then("^A list of saved schedules is shown$")
+	public void a_list_of_saved_schedules_is_shown() throws Throwable {
+		assertEquals("OneBand scheduled for room: FIRSTROOM on date: 2121/12/12 - 12:12",
+				driver.findElement(By.id("schedules")).getText());
+	}
+
+	@When("^The user requests the list of saved schedules by date on a free day$")
+	public void the_user_requests_the_list_of_saved_schedules_by_date_on_a_free_day() throws Throwable {
+		WebElement byDateDiv = driver.findElement(By.id("byDateDiv"));
+		searchScheduleByDate(byDateDiv, "2120", "12", "12");
+	}
+
+	@When("^There are not schedules saved on that day$")
+	public void there_are_not_schedules_saved_on_that_day() throws Throwable {
+		assertEquals(1, scheduleRepo.count());
+		Schedule s = scheduleRepo.findAll().get(0);
+		assertFalse(s.getStartDate().getYear() == 2120);
+	}
+
+	@Then("^A proper message is shown to the user$")
+	public void a_proper_message_is_shown_to_the_user() throws Throwable {
+		assertEquals("No schedules found!", driver.findElement(By.id("schedules")).getText());
+	}
+
+	@Then("^The user requests the list of saved schedules by date but leaves a blank field$")
+	public void theUserRequestsTheListOfSavedSchedulesByDateButLeavesABlankField() throws Throwable {
+		WebElement byDateDiv = driver.findElement(By.id("byDateDiv"));
+		searchScheduleByDate(byDateDiv, "", "12", "12");
+	}
+
+	@Then("^The user requests the list of saved schedules by date but using illegal charachters$")
+	public void theUserRequestsTheListOfSavedSchedulesByDateButUsingIllegalCharachters() throws Throwable {
+		WebElement byDateDiv = driver.findElement(By.id("byDateDiv"));
+		searchScheduleByDate(byDateDiv, "aaaa", "12", "12");
+	}
+
+	@Given("^The user scheduled for rehearsals$")
+	public void the_user_scheduled_for_rehearsals() throws Throwable {
+		WebElement scheduleDiv = driver.findElement(By.id("scheduleContent"));
+		submitSchedule(scheduleDiv, "2121", "12", "12", "12", "12", "FIRSTROOM");
+	}
+
+	@When("^The user requests the list of saved schedules by name$")
+	public void the_user_requests_the_list_of_saved_schedules_by_name() throws Throwable {
+		driver.findElement(By.id("byNameDiv")).findElement(By.name("submit")).click();
+	}
+
+	@Then("^His list of saved schedules is shown$")
+	public void his_list_of_saved_schedules_is_shown() throws Throwable {
+		assertEquals("BandName scheduled for room: FIRSTROOM on date: 2121/12/12 - 12:12 Delete", driver.findElement(By.id("yourSchedules")).getText());
+	}
 
 	private void submitSchedule(WebElement div, String year, String month, String day, String hour, String minutes,
 			String room) {
@@ -195,6 +261,13 @@ public class SchedulePageCucumberSteps {
 		div.findElement(By.id("minutes")).sendKeys(minutes);
 		div.findElement(By.id("room")).sendKeys(room);
 		div.findElement(By.id("submit")).click();
+	}
+
+	private void searchScheduleByDate(WebElement byDateDiv, String year, String month, String day) {
+		byDateDiv.findElement(By.id("year")).sendKeys(year);
+		byDateDiv.findElement(By.id("month")).sendKeys(month);
+		byDateDiv.findElement(By.id("day")).sendKeys(day);
+		byDateDiv.findElement(By.name("submit")).click(); // Questo By.name inspiegabile eh
 	}
 
 	private BandDetails createTestUser() {
