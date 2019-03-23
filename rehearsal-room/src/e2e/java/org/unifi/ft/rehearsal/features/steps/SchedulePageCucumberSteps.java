@@ -137,6 +137,12 @@ public class SchedulePageCucumberSteps {
 		submitSchedule(scheduleDiv, "2015", "12", "12", "12", "12", "FIRSTROOM");
 	}
 
+	@When("^The user schedule for a free room but using illegale charachters$")
+	public void theUserScheduleForAFreeRoomButUsingIllegaleCharachters() throws Throwable {
+		WebElement scheduleDiv = driver.findElement(By.id("scheduleContent"));
+		submitSchedule(scheduleDiv, "aaaa", "12", "12", "12", "12", "FIRSTROOM");
+	}
+
 	@Then("^The request is accepted$")
 	public void the_request_is_accepted() throws Throwable {
 		assertEquals(SchedulePageWebController.SCHEDULE_SAVED_MESSAGE, driver.findElement(By.id("infos")).getText());
@@ -178,6 +184,7 @@ public class SchedulePageCucumberSteps {
 	public void a_funny_message_is_shown() throws Throwable {
 		assertEquals(SchedulePageWebController.TIME_ERROR_MESSAGE, driver.findElement(By.id("infos")).getText());
 	}
+
 
 	private void submitSchedule(WebElement div, String year, String month, String day, String hour, String minutes,
 			String room) {

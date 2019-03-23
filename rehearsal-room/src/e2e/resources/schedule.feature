@@ -46,7 +46,7 @@ Feature: Scheduling
     Then A room not free message is shown
     And The schedule is not stored in the DB
     
-  @tag4
+  @tag5
   Scenario: User create a schedule for a room before 5 minutes from now
     Given The server is running
     And The Schedule DB is running
@@ -56,3 +56,16 @@ Feature: Scheduling
     And The user schedule for a room in a time t < (now + 5 minutes)
     Then A funny message is shown
     And The schedule is not stored in the empty DB
+    
+  @tag6
+  Scenario: User create a schedule using illegal charachters
+    Given The server is running
+    And The Schedule DB is running
+    And The user is registered into the system
+    And The user is logged into the system
+    When The user requests the /schedule url
+    And The user schedule for a free room but using illegale charachters
+    Then An invalid date message is shown
+    And The schedule is not stored in the empty DB
+    
+  
