@@ -54,8 +54,8 @@ public class LoginPageCucumberSteps {
 	
 	@Before
 	public void setupDriver() throws MalformedURLException {
-        String sauceUserName = System.getenv("SAUCE_USERNAME");
-        String sauceAccessKey = System.getenv("SAUCE_ACCESS_KEY");
+		String sauceUserName = "FrancescoTerrosi";
+        String sauceAccessKey = "b8b51937-e8e2-4afe-bdaa-11313171f17e";
         String sauceURL = "https://ondemand.saucelabs.com/wd/hub";
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("username", sauceUserName);
