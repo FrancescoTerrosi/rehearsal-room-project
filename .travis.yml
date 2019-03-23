@@ -43,6 +43,6 @@ before_script:
 script:
   - whereis google-chrome-stable
   - whereis chromedriver
-  - mvn -f rehearsal-room/pom.xml clean verify -Pjacoco
+  - mvn -f rehearsal-room/pom.xml clean verify -Pjacoco coveralls:report sonar:sonar
   - mvn -f rehearsal-room/pom.xml verify -Pintegration
   - mvn -f rehearsal-room/pom.xml verify -Pe2e
