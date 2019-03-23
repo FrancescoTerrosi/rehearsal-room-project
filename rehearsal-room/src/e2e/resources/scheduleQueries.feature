@@ -56,4 +56,37 @@ Feature: Schedule Queries and Operations
     And The user scheduled for rehearsals
     When The user requests the /schedule url
     And The user requests the list of saved schedules by name
-    Then His list of saved schedules is shown
+    Then His list of saved schedules is shown  
+  
+  @tag6
+  Scenario: User want to list schedules by name and delete one
+    Given The server is running
+    And The Schedule DB is running
+    And The user is registered into the system
+    And The user is logged into the system
+    And The user scheduled for rehearsals
+    When The user requests the /schedule url
+    And The user requests the list of saved schedules by name
+    And The user click the delete button
+    Then The schedule is removed from the db
+    
+  @tag7
+  Scenario: User wants to list schedules by room
+    Given The server is running
+    And The Schedule DB is running
+    And The user is registered into the system
+    And The user is logged into the system
+    And There are some schedules in the DB
+    When The user requests the /schedule url
+    And The user requests the list of saved schedules by room
+    Then A list of saved schedules is shown
+    
+  @tag8
+  Scenario: User wants to list schedules by room
+    Given The server is running
+    And The Schedule DB is running
+    And The user is registered into the system
+    And The user is logged into the system
+    When The user requests the /schedule url
+    And The user requests the list of saved schedules by room for a free room
+    Then A proper message is shown to the user

@@ -105,7 +105,7 @@
 <div id="logout" class="container-fluid">
 	<form id="logoutForm" name="logoutForm" th:action="@{/logout}"
 		method="post">
-		<button type="submit" class="btn btn-danger">Logout</button>
+		<button type="submit" id="logoutButton" name="logoutButton" class="btn btn-danger">Logout</button>
 	</form>
 </div>
 
@@ -115,7 +115,7 @@
 		<table class="table table-striped">
 			<tr th:each="schedule : ${yourSchedules}">
 				<td th:text="${schedule}"></td>
-				<td class="tdDel"><a th:href="@{/schedule/delete(id=${schedule.id})}"
+				<td class="tdDel"><a id="delete" name="delete" th:href="@{/schedule/delete(id=${schedule.id})}"
 				class="btn btn-danger">Delete</a></td>
 			</tr>
 		</table>

@@ -2,6 +2,7 @@ package org.unifi.ft.rehearsal.features.steps;
 
 import static org.junit.Assert.*;
 
+import org.apache.catalina.startup.ClassLoaderFactory.Repository;
 import org.joda.time.DateTime;
 import org.junit.BeforeClass;
 import org.openqa.selenium.By;
@@ -249,7 +250,48 @@ public class SchedulePageCucumberSteps {
 
 	@Then("^His list of saved schedules is shown$")
 	public void his_list_of_saved_schedules_is_shown() throws Throwable {
-		assertEquals("BandName scheduled for room: FIRSTROOM on date: 2121/12/12 - 12:12 Delete", driver.findElement(By.id("yourSchedules")).getText());
+		assertEquals("BandName scheduled for room: FIRSTROOM on date: 2121/12/12 - 12:12 Delete",
+				driver.findElement(By.id("yourSchedules")).getText());
+	}
+
+	@When("^The user click the delete button$")
+	public void the_user_click_the_delete_button() throws Throwable {
+		driver.findElement(By.id("yourSchedules")).findElement(By.linkText("Delete")).click();
+	}
+
+	@Then("^The schedule is removed from the db$")
+	public void the_schedule_is_removed_from_the_db() throws Throwable {
+		assertEquals(0, scheduleRepo.count());
+	}
+
+	@When("^The user requests the list of saved schedules by room$")
+	public void the_user_requests_the_list_of_saved_schedules_by_room() throws Throwable {
+		WebElement roomDiv = driver.findElement(By.id("byRoomDiv"));
+		roomDiv.findElement(By.id("room")).sendKeys("FIRSTROOM");
+		roomDiv.findElement(By.name("submit")).click();
+	}
+
+	@When("^The user requests the list of saved schedules by room for a free room$")
+	public void the_user_requests_the_list_of_saved_schedules_by_room_for_a_free_room() throws Throwable {
+		WebElement roomDiv = driver.findElement(By.id("byRoomDiv"));
+		roomDiv.findElement(By.id("room")).sendKeys("SECONDROOM");
+		roomDiv.findElement(By.name("submit")).click();
+	}
+
+	@When("^The user clicks on the Logout button$")
+	public void the_user_clicks_on_the_Logout_button() throws Throwable {
+		driver.findElement(By.id("logout")).findElement(By.id("logoutForm")).findElement(By.name("logoutButton")).click();
+	}
+
+	@Then("^The user is redirected to the homepage$")
+	public void the_user_is_redirected_to_the_homepage() throws Throwable {
+		assertEquals(HOMEPAGE+port, driver.getCurrentUrl());
+	}
+
+	@Then("^The user can not visit /schedule page$")
+	public void the_user_can_not_visit_schedule_page() throws Throwable {
+		driver.get(HOMEPAGE+port+"/schedule");
+		assertEquals(HOMEPAGE+port+"/login", driver.getCurrentUrl());
 	}
 
 	private void submitSchedule(WebElement div, String year, String month, String day, String hour, String minutes,
