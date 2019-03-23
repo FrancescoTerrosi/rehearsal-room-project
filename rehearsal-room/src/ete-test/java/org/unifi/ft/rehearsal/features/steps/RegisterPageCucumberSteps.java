@@ -40,10 +40,10 @@ public class RegisterPageCucumberSteps {
 	@Autowired
 	private IBandDetailsMongoRepository repository;
 
-	@BeforeClass
-	public static void setupClass() {
-		ChromeDriverManager.getInstance().setup();
-	}
+//	@BeforeClass
+//	public static void setupClass() {
+//		ChromeDriverManager.getInstance().setup();
+//	}
 	
 	@Before
 	public void setupDriver() {

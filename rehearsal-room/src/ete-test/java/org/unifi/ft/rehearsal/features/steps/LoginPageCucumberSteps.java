@@ -42,10 +42,10 @@ public class LoginPageCucumberSteps {
 	@Autowired
 	private BCryptPasswordEncoder encoder;
 	
-	@BeforeClass
-	public static void setupClass() {
-		ChromeDriverManager.getInstance().setup();
-	}
+//	@BeforeClass
+//	public static void setupClass() {
+//		ChromeDriverManager.getInstance().setup();
+//	}
 	
 	@Before
 	public void setupDriver() {
