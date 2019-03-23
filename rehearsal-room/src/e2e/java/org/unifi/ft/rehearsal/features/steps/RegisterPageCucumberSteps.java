@@ -2,8 +2,6 @@ package org.unifi.ft.rehearsal.features.steps;
 
 import static org.junit.Assert.*;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
 import org.junit.BeforeClass;
@@ -12,8 +10,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
