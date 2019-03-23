@@ -9,6 +9,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -47,8 +48,8 @@ public class RegisterPageCucumberSteps {
 	
 	@Before
 	public void setupDriver() {
-		repository.deleteAll();
 		driver = new ChromeDriver();
+		repository.deleteAll();
 	}
 
 	@After

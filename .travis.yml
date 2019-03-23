@@ -8,8 +8,10 @@ jdk:
 env:
   - DISPLAY=: 99.0 
 
-addons:
-  sauce_connect: true
+addons: 
+  sauce_connect:
+    username: $SAUCELABS_USERNAME
+    access_key: $SAUCELABS_ACCESS_KEY
 
   sonarcloud:
     organization: francescoterrosi-github
