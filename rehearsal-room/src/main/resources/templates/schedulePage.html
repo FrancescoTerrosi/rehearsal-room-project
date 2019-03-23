@@ -32,8 +32,8 @@
 	<h1>Schedule for your rehearsal room!</h1>
 </div>
 
-	<div id="error"> 
-		<div id="errorContainer" th:if="${info}">
+	<div id="infos"> 
+		<div id="infoContainer" th:if="${info}">
 		<h2>
 			<font color="red"><span th:text="${info}"></span></font><br /> <br />
 		</h2>
@@ -44,8 +44,6 @@
 
 
 	<form name='scheduleForm' th:action="@{/schedule}" method="post">
-
-
 		<fieldset>
 			<label for="year">Year:</label> <input type="text" id="year"
 				name="year" /> <label for="month">Month:</label> <input type="text"
@@ -58,7 +56,7 @@
 				<OPTION label="Room 2" value="SECONDROOM">Room 2</OPTION>
 				<OPTION label="Room 3" value="THIRDROOM">Room 3</OPTION>
 			</SELECT>
-			<button type="submit" name="submit" class="btn btn-success">Register</button>
+			<button type="submit" id="submit" name="submit" class="btn btn-success">Register</button>
 		</fieldset>
 	</form>
 </div>
