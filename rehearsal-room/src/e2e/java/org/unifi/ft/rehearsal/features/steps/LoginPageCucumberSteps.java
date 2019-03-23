@@ -68,6 +68,7 @@ public class LoginPageCucumberSteps {
 	@Given("^The DB is running with this user saved in$")
 	public void the_DB_is_running_with_this_user_saved_in() throws Throwable {
 		BandDetails b = new BandDetails("Username", encoder.encode("UserPassword"), "USER");
+		assertNotNull(repository);
 		repository.save(b);
 		assertEquals(1, repository.count());
 		assertEquals("Username", repository.findAll().get(0).getUsername());

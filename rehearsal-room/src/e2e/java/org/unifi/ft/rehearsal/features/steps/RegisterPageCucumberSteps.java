@@ -65,9 +65,7 @@ public class RegisterPageCucumberSteps {
 
 	@Given("^The DB is running with no user$")
 	public void the_DB_is_running() throws Throwable {
-		/*
-		 * DB is started by server
-		 */
+		assertNotNull(repository);
 		assertEquals(0, repository.count());
 	}
 
