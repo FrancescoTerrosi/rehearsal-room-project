@@ -47,10 +47,7 @@ public class IndexCucumberSteps {
 		final ChromeOptions chromeOptions = new ChromeOptions();
 		chromeOptions.addArguments("--headless");
 		chromeOptions.addArguments("--disable-gpu");
-		final DesiredCapabilities dc = new DesiredCapabilities();
-		dc.setJavascriptEnabled(true);
-		dc.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
-		driver = new ChromeDriver(dc);
+		driver = new ChromeDriver(chromeOptions);
 	}
 
 	@After
