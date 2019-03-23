@@ -2,8 +2,11 @@ package org.unifi.ft.rehearsal.features.steps;
 
 import static org.junit.Assert.*;
 
+import org.joda.time.DateTime;
 import org.junit.BeforeClass;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +14,16 @@ import org.springframework.boot.test.context.SpringBootContextLoader;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
+import org.unifi.ft.rehearsal.model.BandDetails;
+import org.unifi.ft.rehearsal.model.RehearsalRoom;
+import org.unifi.ft.rehearsal.model.Schedule;
 import org.unifi.ft.rehearsal.repository.mongo.IBandDetailsMongoRepository;
+import org.unifi.ft.rehearsal.repository.mongo.IScheduleMongoRepository;
+import org.unifi.ft.rehearsal.services.Scheduler;
+import org.unifi.ft.rehearsal.web.SchedulePageWebController;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
@@ -38,7 +46,10 @@ public class SchedulePageCucumberSteps {
 	private IBandDetailsMongoRepository userRepo;
 
 	@Autowired
-	private IBandDetailsMongoRepository scheduleRepo;
+	private IScheduleMongoRepository scheduleRepo;
+
+	@Autowired
+	private BCryptPasswordEncoder encoder;
 
 	@BeforeClass
 	public static void setupClass() {
@@ -68,29 +79,58 @@ public class SchedulePageCucumberSteps {
 		assertNotNull(scheduleRepo);
 	}
 
-	@WithMockUser("username")
+	@Given("^The user is registered into the system$")
+	public void theUserIsRegisteredIntoTheSystem() throws Throwable {
+		userRepo.save(createTestUser());
+	}
+
+	@Given("^The user is logged into the system$")
+	public void theUserIsLoggedIntoTheSystem() throws Throwable {
+		driver.get(HOMEPAGE+port+"/login");
+		driver.findElement(By.id("username")).sendKeys("BandName");
+		driver.findElement(By.id("password")).sendKeys("BandPw");
+		driver.findElement(By.id("submit")).click();
+	}
+
 	@When("^The user requests the /schedule url$")
 	public void the_user_requests_the_schedule_url() throws Throwable {
 		driver.get(HOMEPAGE+port+"/schedule");
-		System.out.println(driver.getCurrentUrl());
+		assertEquals(HOMEPAGE+port+"/schedule", driver.getCurrentUrl());
 	}
 
 	@When("^The user schedule for a free room in valid date$")
 	public void the_user_schedule_for_a_free_room_in_valid_date() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+		WebElement scheduleDiv = driver.findElement(By.id("scheduleContent"));
+		scheduleDiv.findElement(By.id("year")).sendKeys("2121");
+		scheduleDiv.findElement(By.id("month")).sendKeys("12");
+		scheduleDiv.findElement(By.id("day")).sendKeys("12");
+		scheduleDiv.findElement(By.id("hour")).sendKeys("12");
+		scheduleDiv.findElement(By.id("minutes")).sendKeys("12");
+		scheduleDiv.findElement(By.id("room")).sendKeys("FIRSTROOM");
+		scheduleDiv.findElement(By.id("submit")).click();
 	}
 
 	@Then("^The request is accepted$")
 	public void the_request_is_accepted() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+		assertEquals(SchedulePageWebController.SCHEDULE_SAVED_MESSAGE, driver.findElement(By.id("infos")).getText());
 	}
 
 	@Then("^The schedule is stored in the DB$")
 	public void the_schedule_is_stored_in_the_DB() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+		assertEquals(1, scheduleRepo.count());
+		DateTime start = new DateTime(2121,12,12,12,12,0);
+		DateTime end = start.plusHours(Scheduler.HOUR_DURATION).plusMinutes(Scheduler.MINUTE_DURATION);
+		Schedule s = scheduleRepo.findAll().get(0);
+		assertEquals(s.getBand(),"BandName");
+		assertEquals(s.getRoom(),RehearsalRoom.FIRSTROOM);
+		assertEquals(s.getStartDate(), start);
+		assertEquals(s.getEndDate(), end);
+	}
+
+
+	private BandDetails createTestUser() {
+		BandDetails toSave = new BandDetails("BandName", encoder.encode("BandPw"), "USER");
+		return toSave;
 	}
 
 }
