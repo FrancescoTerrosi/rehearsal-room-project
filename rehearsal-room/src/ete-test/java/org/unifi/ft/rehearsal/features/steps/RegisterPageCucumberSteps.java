@@ -11,6 +11,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 
-@SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @ContextConfiguration(loader = SpringBootContextLoader.class)
 public class RegisterPageCucumberSteps {
 
@@ -48,10 +49,13 @@ public class RegisterPageCucumberSteps {
 	public static void setupClass() {
 		ChromeDriverManager.getInstance().setup();
 	}
-	
+
 	@Before
 	public void setupDriver() {
-        driver = new ChromeDriver();
+		final ChromeOptions chromeOptions = new ChromeOptions();
+		chromeOptions.addArguments("--headless");
+		chromeOptions.addArguments("--disable-gpu");
+		driver = new ChromeDriver(chromeOptions);
 		repository.deleteAll();
 	}
 
