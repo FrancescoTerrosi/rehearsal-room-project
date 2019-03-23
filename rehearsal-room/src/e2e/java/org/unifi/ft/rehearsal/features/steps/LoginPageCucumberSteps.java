@@ -3,11 +3,11 @@ package org.unifi.ft.rehearsal.features.steps;
 import static org.junit.Assert.*;
 
 import org.junit.BeforeClass;
-import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootContextLoader;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,7 +19,6 @@ import org.unifi.ft.rehearsal.model.BandDetails;
 import org.unifi.ft.rehearsal.repository.mongo.IBandDetailsMongoRepository;
 import org.unifi.ft.rehearsal.web.LoginPageWebController;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
@@ -27,13 +26,14 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @ContextConfiguration(loader = SpringBootContextLoader.class)
 public class LoginPageCucumberSteps {
 
 	private static final String HOMEPAGE = "http://localhost:";
 
-	private int port = 11111;
+	@LocalServerPort
+	private int port;
 
 	private WebDriver driver;
 
@@ -42,15 +42,18 @@ public class LoginPageCucumberSteps {
 
 	@Autowired
 	private BCryptPasswordEncoder encoder;
-
+	
 	@BeforeClass
 	public static void setupClass() {
 		ChromeDriverManager.getInstance().setup();
 	}
-
+	
 	@Before
 	public void setupDriver() {
-		driver = new ChromeDriver();
+		final ChromeOptions chromeOptions = new ChromeOptions();
+		chromeOptions.addArguments("--headless");
+		chromeOptions.addArguments("--disable-gpu");
+		driver = new ChromeDriver(chromeOptions);
 		repository.deleteAll();
 	}
 
@@ -106,7 +109,7 @@ public class LoginPageCucumberSteps {
 	public void the_user_provides_a_password() throws Throwable {
 		driver.findElement(By.id("password")).sendKeys("UserPassword");
 	}
-	
+
 	@When("^The user provides a wrong password$")
 	public void the_user_provides_a_wrong_password() throws Throwable {
 		driver.findElement(By.id("password")).sendKeys("WrongPassword");
