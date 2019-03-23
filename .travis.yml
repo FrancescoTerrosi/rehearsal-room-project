@@ -2,17 +2,20 @@ language: java
 
 sudo: required
 
+dist: trusty
+
 jdk:
   - oraclejdk8
 
 env:
   - DISPLAY=: 99.0 
 
-addons: 
-  sauce_connect:
-    username: $SAUCELABS_USERNAME
-    access_key: $SAUCELABS_ACCESS_KEY
-
+addons:
+  apt:
+    sources:
+      - google-chrome
+    packages:
+      - google-chrome-stable
   sonarcloud:
     organization: francescoterrosi-github
     token:
@@ -23,6 +26,12 @@ cache:
   directories:
     - '$HOME/.m2/repository'
     - '$HOME/.sonar/cache'
+
+before_script:
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+  - npm i -g npm@^3
+  - sleep 3
 
 script:
   - mvn -f rehearsal-room/pom.xml clean verify -Pjacoco -Pintegration coveralls:report sonar:sonar

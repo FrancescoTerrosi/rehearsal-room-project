@@ -47,24 +47,14 @@ public class LoginPageCucumberSteps {
 	@Autowired
 	private BCryptPasswordEncoder encoder;
 	
-//	@BeforeClass
-//	public static void setupClass() {
-//		ChromeDriverManager.getInstance().setup();
-//	}
+	@BeforeClass
+	public static void setupClass() {
+		ChromeDriverManager.getInstance().setup();
+	}
 	
 	@Before
-	public void setupDriver() throws MalformedURLException {
-		String sauceUserName = "FrancescoTerrosi";
-        String sauceAccessKey = "b8b51937-e8e2-4afe-bdaa-11313171f17e";
-        String sauceURL = "https://ondemand.saucelabs.com/wd/hub";
-        DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("username", sauceUserName);
-        capabilities.setCapability("accessKey", sauceAccessKey);
-        capabilities.setCapability("browserName", "Chrome");
-        capabilities.setCapability("platform", "Windows 10");
-        capabilities.setCapability("version", "59.0");
-        capabilities.setCapability("build", "SauceBuild");
-        driver = new RemoteWebDriver(new URL(sauceURL), capabilities);
+	public void setupDriver() {
+        driver = new ChromeDriver();
 		repository.deleteAll();
 	}
 
