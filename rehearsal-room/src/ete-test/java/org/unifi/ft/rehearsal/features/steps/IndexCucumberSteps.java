@@ -31,10 +31,10 @@ public class IndexCucumberSteps {
 
 	private WebDriver driver;
 	
-//	@BeforeClass
-//	public static void setupClass() {
-//		ChromeDriverManager.getInstance().setup();
-//	}
+	@BeforeClass
+	public static void setupClass() {
+		ChromeDriverManager.getInstance().setup();
+	}
 	
 	@Before
 	public void setupDriver() {
