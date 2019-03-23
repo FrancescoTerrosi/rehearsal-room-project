@@ -2,6 +2,8 @@ package org.unifi.ft.rehearsal.features.steps;
 
 import static org.junit.Assert.*;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 import org.junit.BeforeClass;
@@ -10,6 +12,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -41,14 +44,24 @@ public class RegisterPageCucumberSteps {
 	@Autowired
 	private IBandDetailsMongoRepository repository;
 
-	@BeforeClass
-	public static void setupClass() {
-		ChromeDriverManager.getInstance().setup();
-	}
+//	@BeforeClass
+//	public static void setupClass() {
+//		ChromeDriverManager.getInstance().setup();
+//	}
 	
 	@Before
-	public void setupDriver() {
-		driver = new ChromeDriver();
+	public void setupDriver() throws MalformedURLException {
+        String sauceUserName = System.getenv("SAUCE_USERNAME");
+        String sauceAccessKey = System.getenv("SAUCE_ACCESS_KEY");
+        String sauceURL = System.getenv("SAUCE_URL");
+        DesiredCapabilities capabilities = new DesiredCapabilities();
+        capabilities.setCapability("username", sauceUserName);
+        capabilities.setCapability("accessKey", sauceAccessKey);
+        capabilities.setCapability("browserName", "Chrome");
+        capabilities.setCapability("platform", "Windows 10");
+        capabilities.setCapability("version", "59.0");
+        capabilities.setCapability("build", "SauceBuild");
+        driver = new RemoteWebDriver(new URL(sauceURL), capabilities);
 		repository.deleteAll();
 	}
 
