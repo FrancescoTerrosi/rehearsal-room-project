@@ -101,14 +101,9 @@ public class SchedulePageCucumberSteps {
 	@When("^The user schedule for a free room in valid date$")
 	public void the_user_schedule_for_a_free_room_in_valid_date() throws Throwable {
 		WebElement scheduleDiv = driver.findElement(By.id("scheduleContent"));
-		scheduleDiv.findElement(By.id("year")).sendKeys("2121");
-		scheduleDiv.findElement(By.id("month")).sendKeys("12");
-		scheduleDiv.findElement(By.id("day")).sendKeys("12");
-		scheduleDiv.findElement(By.id("hour")).sendKeys("12");
-		scheduleDiv.findElement(By.id("minutes")).sendKeys("12");
-		scheduleDiv.findElement(By.id("room")).sendKeys("FIRSTROOM");
-		scheduleDiv.findElement(By.id("submit")).click();
+		submitSchedule(scheduleDiv, "2121","12","12","12","12","FIRSTROOM");
 	}
+
 
 	@Then("^The request is accepted$")
 	public void the_request_is_accepted() throws Throwable {
@@ -127,6 +122,32 @@ public class SchedulePageCucumberSteps {
 		assertEquals(s.getEndDate(), end);
 	}
 
+	@When("^The user schedule for a free room in a day the does not exist$")
+	public void the_user_schedule_for_a_free_room_in_a_day_the_does_not_exist() throws Throwable {
+	    WebElement scheduleDiv = driver.findElement(By.id("scheduleContent"));
+	    submitSchedule(scheduleDiv, "2121", "2", "30", "12", "12", "FIRSTROOM");
+	}
+
+	@Then("^An invalid date message is shown$")
+	public void an_invalid_date_message_is_shown() throws Throwable {
+		assertEquals(SchedulePageWebController.NUMBER_ERROR_MESSAGE, driver.findElement(By.id("infos")).getText());
+	}
+
+	@Then("^The schedule is not stored in the DB$")
+	public void the_schedule_is_not_stored_in_the_DB() throws Throwable {
+		assertEquals(0, scheduleRepo.count());
+	}
+
+	private void submitSchedule(WebElement div, String year, String month, String day, String hour, String minutes,
+			String room) {
+		div.findElement(By.id("year")).sendKeys(year);
+		div.findElement(By.id("month")).sendKeys(month);
+		div.findElement(By.id("day")).sendKeys(day);
+		div.findElement(By.id("hour")).sendKeys(hour);
+		div.findElement(By.id("minutes")).sendKeys(minutes);
+		div.findElement(By.id("room")).sendKeys(room);
+		div.findElement(By.id("submit")).click();	
+	}
 
 	private BandDetails createTestUser() {
 		BandDetails toSave = new BandDetails("BandName", encoder.encode("BandPw"), "USER");
