@@ -111,6 +111,12 @@ public class SchedulePageWebController {
 			@RequestParam(value = "id", required = true) String id,
 			@SessionAttribute("user") String user,
 			ModelAndView model) {
+		handleError(id, model);
+		model.setViewName(SCHEDULE_PAGE);
+		return model;
+	}
+
+	private void handleError(String id, ModelAndView model) {
 		try {
 			scheduler.deleteSchedule(new BigInteger(id));
 			model.addObject(INFO, SCHEDULE_REMOVED_MESSAGE);
@@ -118,8 +124,6 @@ public class SchedulePageWebController {
 			model.addObject(INFO, NO_SCHEDULES_MESSAGE);
 			model.setStatus(HttpStatus.BAD_REQUEST);
 		}
-		model.setViewName(SCHEDULE_PAGE);
-		return model;
 	}
 
 	private ModelAndView addSchedulesToModel(List<Schedule> schedules, String div) {
