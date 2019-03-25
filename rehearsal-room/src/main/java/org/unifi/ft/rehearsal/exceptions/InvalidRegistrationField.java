@@ -2,9 +2,6 @@ package org.unifi.ft.rehearsal.exceptions;
 
 public class InvalidRegistrationField extends IllegalArgumentException {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public InvalidRegistrationField() {
