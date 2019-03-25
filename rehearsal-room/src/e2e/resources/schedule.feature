@@ -64,8 +64,18 @@ Feature: Scheduling
     And The user is registered into the system
     And The user is logged into the system
     When The user requests the /schedule url
-    And The user schedule for a free room but using illegale charachters
+    And The user schedule for a free room but using illegal charachters
     Then An invalid date message is shown
     And The schedule is not stored in the empty DB
+    
+  @tag7
+  Scenario: User logs out
+  	Given The server is running
+  	And The user is registered into the system
+    And The user is logged into the system
+    When The user requests the /schedule url
+    And The user clicks on the Logout button
+    Then The user is redirected to the homepage
+    And The user can not visit /schedule page
     
   
