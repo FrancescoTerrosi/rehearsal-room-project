@@ -2,7 +2,6 @@ package org.unifi.ft.rehearsal.features.steps;
 
 import static org.junit.Assert.*;
 
-import org.apache.catalina.startup.ClassLoaderFactory.Repository;
 import org.joda.time.DateTime;
 import org.junit.BeforeClass;
 import org.openqa.selenium.By;
@@ -137,7 +136,7 @@ public class SchedulePageCucumberSteps {
 		WebElement scheduleDiv = driver.findElement(By.id("scheduleContent"));
 		submitSchedule(scheduleDiv, "2015", "12", "12", "12", "12", "FIRSTROOM");
 	}
-
+	
 	@When("^The user schedule for a free room but using illegal charachters$")
 	public void theUserScheduleForAFreeRoomButUsingIllegalCharachters() throws Throwable {
 		WebElement scheduleDiv = driver.findElement(By.id("scheduleContent"));
@@ -280,12 +279,12 @@ public class SchedulePageCucumberSteps {
 
 	@When("^The user clicks on the Logout button$")
 	public void the_user_clicks_on_the_Logout_button() throws Throwable {
-		driver.findElement(By.id("logout")).findElement(By.id("logoutForm")).findElement(By.name("logoutButton")).click();
+		driver.findElement(By.id("logoutForm")).submit();
 	}
 
 	@Then("^The user is redirected to the homepage$")
 	public void the_user_is_redirected_to_the_homepage() throws Throwable {
-		assertEquals(HOMEPAGE+port, driver.getCurrentUrl());
+		assertEquals(HOMEPAGE+port+"/", driver.getCurrentUrl());
 	}
 
 	@Then("^The user can not visit /schedule page$")
