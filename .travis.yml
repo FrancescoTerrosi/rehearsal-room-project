@@ -40,8 +40,9 @@ before_script:
   - npm i -g npm@^3
   - sleep 3
   - git fetch --unshallow --quiet
+  - cd ./rehearsal-room
 
 script:
-  - mvn -f rehearsal-room/pom.xml clean verify -Pjacoco coveralls:report sonar:sonar
-  - mvn -f rehearsal-room/pom.xml verify -Pintegration
-  - mvn -f rehearsal-room/pom.xml verify -Pe2e
+  - mvn clean verify -Pjacoco coveralls:report sonar:sonar
+  - mvn verify -Pintegration
+  - mvn verify -Pe2e
