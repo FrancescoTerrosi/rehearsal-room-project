@@ -5,6 +5,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
+import java.math.BigInteger;
+
 import static org.mockito.BDDMockito.*;
 
 import org.junit.After;
@@ -13,10 +16,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.MultiValueMap;
 import org.unifi.ft.rehearsal.exceptions.UsernameAlreadyExistsException;
+import org.unifi.ft.rehearsal.model.BandDetails;
 import org.unifi.ft.rehearsal.exceptions.InvalidRegistrationField;
 import org.unifi.ft.rehearsal.exceptions.PasswordNotMatchingException;
 import org.unifi.ft.rehearsal.web.RegisterPageWebController;
@@ -47,7 +50,7 @@ public class RegisterPageWebControllerTest extends AbstractLoginRegisterUtilForT
 
 	@Test
 	public void testDoRegister() throws Exception {
-		UserDetails user = createUser("userName", "userPassword");
+		BandDetails user = createUser("userName", "userPassword", new BigInteger("1"));
 		params.add("username", "userName");
 		params.add("password", "userPassword");
 		params.add("confirmPassword", "userPassword");

@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import org.joda.time.DateTime;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.unifi.ft.rehearsal.annotations.Generated;
 
 @Document("Schedule")
 public class Schedule {
@@ -53,6 +54,7 @@ public class Schedule {
 	}
 
 	@Override
+	@Generated("HashCode")
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -64,6 +66,7 @@ public class Schedule {
 	}
 
 	@Override
+	@Generated("Equals")
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;

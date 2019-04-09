@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.unifi.ft.rehearsal.annotations.Generated;
 
 @Document("BandDetails")
 public class BandDetails implements UserDetails {
@@ -36,6 +37,10 @@ public class BandDetails implements UserDetails {
 	public BigInteger getId() {
 		return this.id;
 	}
+	
+	public void setId(BigInteger id) {
+		this.id = id;
+	}
 
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return AuthorityUtils.createAuthorityList(authorities);
@@ -58,6 +63,7 @@ public class BandDetails implements UserDetails {
 	}
 
 	@Override
+	@Generated("HashCode")
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -67,6 +73,7 @@ public class BandDetails implements UserDetails {
 	}
 
 	@Override
+	@Generated("Equals")
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;

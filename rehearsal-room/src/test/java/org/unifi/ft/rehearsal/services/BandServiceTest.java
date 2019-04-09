@@ -9,6 +9,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.math.BigInteger;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,19 +41,21 @@ public class BandServiceTest {
 	@Test
 	public void testValidRegistration() {
 		when(repository.findAll()).thenReturn(notEmptyList());
-		BandDetails c = createUser("bandName", "bandPassword");
+		BigInteger id = new BigInteger("1");
+		BandDetails c = createUser("bandName", "bandPassword", id);
 		when(repository.save(isA(BandDetails.class))).thenReturn(c);
 		when(encoder.encode(anyString())).thenReturn("bandPassword");
 		
-		UserDetails result = service.register("bandName","bandPassword","bandPassword");
+		BandDetails result = service.register("bandName","bandPassword","bandPassword");
 		assertEquals("bandName", result.getUsername());
 		assertEquals("bandPassword", result.getPassword());
+		assertEquals(id, result.getId());
 		verify(repository, times(1)).save(isA(BandDetails.class));
 	}
 
 	@Test(expected = UsernameAlreadyExistsException.class)
 	public void testInvalidRegistrationUsernameAlreadyExists() {
-		BandDetails c = createUser("band", "pass1");
+		BandDetails c = createUser("band", "pass1", new BigInteger("1"));
 		when(repository.findAll()).thenReturn(notEmptyList());
 		when(repository.save(isA(BandDetails.class))).thenReturn(c);
 		
@@ -139,15 +142,16 @@ public class BandServiceTest {
 	
 	private List<BandDetails> notEmptyList() {
 		List<BandDetails> result = new LinkedList<>();
-		result.add(createUser("band1","pass1"));
-		result.add(createUser("band2","pass2"));
-		result.add(createUser("band3","pass3"));
+		result.add(createUser("band1","pass1", new BigInteger("1")));
+		result.add(createUser("band2","pass2", new BigInteger("2")));
+		result.add(createUser("band3","pass3", new BigInteger("3")));
 		return result;
 }
 
-	private BandDetails createUser(String name, String password) {
+	private BandDetails createUser(String name, String password, BigInteger id) {
 		String[] authorities = {"USER"};
 		BandDetails result = new BandDetails(name,password,authorities);
+		result.setId(id);
 		return result;
 	}
 

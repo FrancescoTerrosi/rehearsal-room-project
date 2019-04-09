@@ -1,5 +1,8 @@
 package org.unifi.ft.rehearsal.exceptions;
 
+import org.unifi.ft.rehearsal.annotations.Generated;
+
+@Generated("UsernameException")
 public class UsernameAlreadyExistsException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;

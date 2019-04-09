@@ -9,14 +9,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import java.math.BigInteger;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.RequestBuilder;
+import org.unifi.ft.rehearsal.model.BandDetails;
 import org.unifi.ft.rehearsal.web.LoginPageWebController;
 
 @RunWith(SpringRunner.class)
@@ -33,7 +35,7 @@ public class LoginPageWebControllerTest extends AbstractLoginRegisterUtilForTest
 
 	@Test
 	public void testDoLogin() throws Exception {
-		UserDetails user = createUser("userName", encoder.encode("userPassword"));
+		BandDetails user = createUser("userName", encoder.encode("userPassword"), new BigInteger("1"));
 		given(getService().loadUserByUsername("userName")).willReturn(user);
 
 		RequestBuilder request = formLogin().user("username", "userName")
@@ -69,7 +71,7 @@ public class LoginPageWebControllerTest extends AbstractLoginRegisterUtilForTest
 	
 	@Test
 	public void testDoWrongPasswordLogin() throws Exception {
-		given(getService().loadUserByUsername("userName")).willReturn(createUser("username","userPassword"));
+		given(getService().loadUserByUsername("userName")).willReturn(createUser("username", "userPassword", new BigInteger("1")));
 		
 		RequestBuilder request = formLogin().user("username", "userName")
 				.password("password", "useryPassword");

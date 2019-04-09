@@ -1,5 +1,8 @@
 package org.unifi.ft.rehearsal.exceptions;
 
+import org.unifi.ft.rehearsal.annotations.Generated;
+
+@Generated("RoomException")
 public class RoomNotFreeException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;

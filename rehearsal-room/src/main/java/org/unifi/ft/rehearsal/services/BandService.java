@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,7 +35,7 @@ public class BandService implements UserDetailsService {
 		this.encoder = encoder;
 	}
 
-	public UserDetails register(String name, String password, String confirmPassword) {
+	public BandDetails register(String name, String password, String confirmPassword) {
 		checkValidParameters(name, password, confirmPassword);
 		if (!existsUserByUsername(name)) {
 			return handleRegistration(name, password, confirmPassword);
@@ -52,10 +51,9 @@ public class BandService implements UserDetailsService {
 		}
 	}
 
-	private UserDetails handleRegistration(String name, String password, String confirmPassword) {
+	private BandDetails handleRegistration(String name, String password, String confirmPassword) {
 		if (password.equals(confirmPassword)) {
-			BandDetails user = createUser(name, password);
-			repository.save(user);
+			BandDetails user = repository.save(createUser(name, password));
 			LOGGER.info("User " + name + " just joined our system!");
 			return user;
 		} else {
@@ -65,7 +63,7 @@ public class BandService implements UserDetailsService {
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String username) {
+	public BandDetails loadUserByUsername(String username) {
 		List<BandDetails> temp = repository.findAll();
 		for (BandDetails user : temp) {
 			if (user.getUsername().equals(username)) {

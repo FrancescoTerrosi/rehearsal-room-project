@@ -1,5 +1,8 @@
 package org.unifi.ft.rehearsal.exceptions;
 
+import org.unifi.ft.rehearsal.annotations.Generated;
+
+@Generated("RegistrationException")
 public class InvalidRegistrationField extends IllegalArgumentException {
 
 	private static final long serialVersionUID = 1L;

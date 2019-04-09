@@ -76,7 +76,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		authProvider.setPasswordEncoder(passwordEncoder());
 		return authProvider;
 	}
-	
+
 	private class RehearsalAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
 		@Override

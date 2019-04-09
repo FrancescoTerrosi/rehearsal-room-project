@@ -2,12 +2,13 @@ package org.unifi.ft.rehearsal.web;
 
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 
+import java.math.BigInteger;
+
 import org.junit.After;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -41,9 +42,10 @@ public abstract class AbstractLoginRegisterUtilForTest {
 		repository.deleteAll();
 	}
 	
-	protected UserDetails createUser(String name, String password) {
+	protected BandDetails createUser(String name, String password, BigInteger id) {
 		String[] authorities = { "USER" };
-		UserDetails user = new BandDetails(name, password, authorities);
+		BandDetails user = new BandDetails(name, password, authorities);
+		user.setId(id);
 		return user;
 	}
 	
