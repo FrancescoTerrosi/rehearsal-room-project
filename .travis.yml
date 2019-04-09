@@ -39,10 +39,9 @@ before_script:
   - sh -e /etc/init.d/xvfb start
   - npm i -g npm@^3
   - sleep 3
+  - git fetch --unshallow --quiet
 
 script:
-  - whereis google-chrome-stable
-  - whereis chromedriver
   - mvn -f rehearsal-room/pom.xml clean verify -Pjacoco coveralls:report sonar:sonar
   - mvn -f rehearsal-room/pom.xml verify -Pintegration
   - mvn -f rehearsal-room/pom.xml verify -Pe2e
