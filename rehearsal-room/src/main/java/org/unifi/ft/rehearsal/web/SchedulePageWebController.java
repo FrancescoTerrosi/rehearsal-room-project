@@ -136,29 +136,26 @@ public class SchedulePageWebController {
 		return model;
 	}
 
+
 	@ExceptionHandler(InvalidTimeException.class)
 	private ModelAndView handleInvalidTimeException() {
-		ModelAndView result = new ModelAndView();
-		result.setViewName(SCHEDULE_PAGE);
-		result.addObject(INFO, TIME_ERROR_MESSAGE);
-		result.setStatus(HttpStatus.BAD_REQUEST);
-		return result;
+		return addAttributeAndStatus(TIME_ERROR_MESSAGE);
 	}
 
 	@ExceptionHandler(RoomNotFreeException.class)
 	private ModelAndView handleRoomNotFreeException() {
-		ModelAndView result = new ModelAndView();
-		result.setViewName(SCHEDULE_PAGE);
-		result.addObject(INFO, ROOM_ERROR_MESSAGE);
-		result.setStatus(HttpStatus.BAD_REQUEST);
-		return result;
+		return addAttributeAndStatus(ROOM_ERROR_MESSAGE);
 	}
 
 	@ExceptionHandler({ NumberFormatException.class, IllegalFieldValueException.class })
 	private ModelAndView handleNumberFormatException() {
+		return addAttributeAndStatus(NUMBER_ERROR_MESSAGE);
+	}
+
+	private ModelAndView addAttributeAndStatus(String message) {
 		ModelAndView result = new ModelAndView();
 		result.setViewName(SCHEDULE_PAGE);
-		result.addObject(INFO, NUMBER_ERROR_MESSAGE);
+		result.addObject(INFO, message);
 		result.setStatus(HttpStatus.BAD_REQUEST);
 		return result;
 	}
