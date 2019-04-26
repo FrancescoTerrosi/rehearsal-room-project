@@ -26,7 +26,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private static final String HOMEPAGE = "/schedule";
 	private static final String PROTECTED = "/schedule/**";
-	private static final String[] PUBLIC_ACCESS_URIS = {"/", "/register", "/css/**", "/webjars/**"};
+	private static final String RESOURCES = "/resources/**";
+	private static final String[] PUBLIC_ACCESS_URIS = { "/", "/register"};
 
 	@Autowired
 	private BandService bandService;
@@ -34,31 +35,33 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
-		http.authorizeRequests()
+		http
+			.authorizeRequests().antMatchers(PROTECTED).authenticated()
 
-				.antMatchers(PROTECTED).authenticated()
+			.and()
+			
+			.formLogin().loginPage("/login").usernameParameter("username").passwordParameter("password")
+			.successHandler(new RehearsalAuthenticationSuccessHandler())
+			
+			.permitAll()
 
-				.and()
+			.and()
 
-				.formLogin().loginPage("/login")
-							.usernameParameter("username")
-							.passwordParameter("password").successHandler(new RehearsalAuthenticationSuccessHandler())
-							
-				.permitAll()
+			.authorizeRequests().antMatchers(PUBLIC_ACCESS_URIS).permitAll()
 
-				.and()
+			.and()
 
-				.logout().logoutSuccessUrl("/")
+			.logout().logoutSuccessUrl("/")
 
-				.permitAll();
-
+			.permitAll();
+		
 	}
-	
+
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers(PUBLIC_ACCESS_URIS);
+		web.ignoring().antMatchers(RESOURCES);
 	}
-	
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.authenticationProvider(authProvider());
@@ -85,7 +88,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			request.getSession().setAttribute("user", authentication.getName());
 			new DefaultRedirectStrategy().sendRedirect(request, response, HOMEPAGE);
 		}
-		
+
 	}
-	
+
 }

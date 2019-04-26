@@ -1,5 +1,6 @@
 package org.unifi.ft.rehearsal.web;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -57,7 +58,7 @@ public class RegisterPageWebControllerTest extends AbstractLoginRegisterUtilForT
 
 		given(getService().register("userName", "userPassword", "userPassword")).willReturn(user);
 
-		getMvc().perform(post("/register").params(params))
+		getMvc().perform(post("/register").params(params).with(csrf()))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(view().name("redirect:/"));
 
@@ -73,7 +74,7 @@ public class RegisterPageWebControllerTest extends AbstractLoginRegisterUtilForT
 		given(getService().register("userName", "userPassword", "userPassword"))
 				.willThrow(UsernameAlreadyExistsException.class);
 
-		getMvc().perform(post("/register").params(params))
+		getMvc().perform(post("/register").params(params).with(csrf()))
 				.andExpect(status().is4xxClientError())
 				.andExpect(model().attribute("error", RegisterPageWebController.REGISTRATION_USERNAME_ERROR));
 
@@ -89,7 +90,7 @@ public class RegisterPageWebControllerTest extends AbstractLoginRegisterUtilForT
 		given(getService().register("userName", "userPassword", "errorPassword"))
 				.willThrow(PasswordNotMatchingException.class);
 
-		getMvc().perform(post("/register").params(params))
+		getMvc().perform(post("/register").params(params).with(csrf()))
 				.andExpect(status().is4xxClientError())
 				.andExpect(model().attribute("error", RegisterPageWebController.REGISTRATION_PASSW_ERROR));
 
@@ -105,7 +106,7 @@ public class RegisterPageWebControllerTest extends AbstractLoginRegisterUtilForT
 		given(getService().register("", "userPassword", "confirmPassword"))
 				.willThrow(InvalidRegistrationField.class);
 
-		getMvc().perform(post("/register").params(params))
+		getMvc().perform(post("/register").params(params).with(csrf()))
 				.andExpect(status().is4xxClientError())
 				.andExpect(model().attribute("error", RegisterPageWebController.EMPTY_FIELDS_ERROR));
 
@@ -121,7 +122,7 @@ public class RegisterPageWebControllerTest extends AbstractLoginRegisterUtilForT
 		given(getService().register("userName", "", "confirmPassword"))
 				.willThrow(InvalidRegistrationField.class);
 
-		getMvc().perform(post("/register").params(params))
+		getMvc().perform(post("/register").params(params).with(csrf()))
 				.andExpect(status().is4xxClientError())
 				.andExpect(model().attribute("error", RegisterPageWebController.EMPTY_FIELDS_ERROR));
 
@@ -137,7 +138,7 @@ public class RegisterPageWebControllerTest extends AbstractLoginRegisterUtilForT
 		given(getService().register("userName", "userPassword", ""))
 				.willThrow(InvalidRegistrationField.class);
 
-		getMvc().perform(post("/register").params(params))
+		getMvc().perform(post("/register").params(params).with(csrf()))
 				.andExpect(status().is4xxClientError())
 				.andExpect(model().attribute("error", RegisterPageWebController.EMPTY_FIELDS_ERROR));
 
@@ -152,7 +153,7 @@ public class RegisterPageWebControllerTest extends AbstractLoginRegisterUtilForT
 		given(getService().register("u s e r n a m e", "userPassword", "confirmPassword"))
 				.willThrow(InvalidRegistrationField.class);
 
-		getMvc().perform(post("/register").params(params))
+		getMvc().perform(post("/register").params(params).with(csrf()))
 				.andExpect(status().is4xxClientError())
 				.andExpect(model().attribute("error", RegisterPageWebController.EMPTY_FIELDS_ERROR));
 
@@ -168,7 +169,7 @@ public class RegisterPageWebControllerTest extends AbstractLoginRegisterUtilForT
 		given(getService().register("userName", " ", " "))
 				.willThrow(InvalidRegistrationField.class);
 
-		getMvc().perform(post("/register").params(params))
+		getMvc().perform(post("/register").params(params).with(csrf()))
 				.andExpect(status().is4xxClientError())
 				.andExpect(model().attribute("error", RegisterPageWebController.EMPTY_FIELDS_ERROR));
 

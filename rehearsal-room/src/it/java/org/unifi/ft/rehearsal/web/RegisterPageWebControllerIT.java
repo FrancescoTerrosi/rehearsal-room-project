@@ -1,6 +1,7 @@
 package org.unifi.ft.rehearsal.web;
 
 import static org.junit.Assert.assertEquals;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -45,7 +46,7 @@ public class RegisterPageWebControllerIT extends AbstractLoginRegisterUtilForIT 
 		params.add("password", "userPassword");
 		params.add("confirmPassword", "userPassword");
 		
-		getMvc().perform(post(RegisterPageWebController.REGISTER_URI).params(params))
+		getMvc().perform(post(RegisterPageWebController.REGISTER_URI).params(params).with(csrf()))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(view().name("redirect:/"));
 		
@@ -61,7 +62,7 @@ public class RegisterPageWebControllerIT extends AbstractLoginRegisterUtilForIT 
 		params.add("password", "userPassword");
 		params.add("confirmPassword", "userPassword");
 		
-		getMvc().perform(post(RegisterPageWebController.REGISTER_URI).params(params))
+		getMvc().perform(post(RegisterPageWebController.REGISTER_URI).params(params).with(csrf()))
 				.andExpect(status().is4xxClientError())
 				.andExpect(model().attribute("error", RegisterPageWebController.REGISTRATION_USERNAME_ERROR));
 
@@ -74,7 +75,7 @@ public class RegisterPageWebControllerIT extends AbstractLoginRegisterUtilForIT 
 		params.add("password", "userPassword");
 		params.add("confirmPassword", "wrongPassword");
 		
-		getMvc().perform(post(RegisterPageWebController.REGISTER_URI).params(params))
+		getMvc().perform(post(RegisterPageWebController.REGISTER_URI).params(params).with(csrf()))
 				.andExpect(status().is4xxClientError())
 				.andExpect(model().attribute("error", RegisterPageWebController.REGISTRATION_PASSW_ERROR));
 
