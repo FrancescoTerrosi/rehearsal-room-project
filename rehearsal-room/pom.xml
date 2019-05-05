@@ -155,6 +155,8 @@
                 <exclude>org/unifi/ft/rehearsal/model/*</exclude>
                 <exclude>org/unifi/ft/rehearsal/RehearsalRoomApplication.class </exclude>
                 <exclude>org/unifi/ft/rehearsal/mongo/*</exclude>
+                <exclude>org/unifi/ft/rehearsal/*/*IT.class</exclude>
+                <exclude>org/unifi/ft/rehearsal/*/*E2ETest.class</exclude>
                 <eclude>org/unifi/ft/rehearsal/exceptions/*</eclude>
                 <exclude>org/unifi/ft/rehearsal/configurations/*</exclude>
               </excludes>
@@ -186,6 +188,10 @@
             <artifactId>pitest-maven</artifactId>
             <version>1.4.6</version>
             <configuration>
+              <excludedTestClasses>
+                <excludedTestClass>org.unifi.ft.rehearsal.**.*IT</excludedTestClass>
+                <excludedTestClass>org.unifi.ft.rehearsal.**.*E2ETest</excludedTestClass>
+              </excludedTestClasses>
               <targetClasses>
                 <param>org.unifi.ft.rehearsal.services.*</param>
                 <param>org.unifi.ft.rehearsal.web.*</param>
@@ -378,7 +384,16 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>**E2ETest.java</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
-  
+
 </project>

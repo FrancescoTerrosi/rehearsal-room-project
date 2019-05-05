@@ -8,8 +8,8 @@ import cucumber.api.junit.Cucumber;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features = "src/e2e/resources/index.feature")
-public class IndexEndToEndBDD {
+@CucumberOptions(features = "src/e2e/resources/schedule.feature")
+public class ScheduleE2ETest {
 	
 	@BeforeClass
 	public static void setupClass() {

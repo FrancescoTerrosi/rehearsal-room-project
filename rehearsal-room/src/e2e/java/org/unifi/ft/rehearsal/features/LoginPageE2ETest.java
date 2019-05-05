@@ -8,8 +8,8 @@ import cucumber.api.junit.Cucumber;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features = "src/e2e/resources/register.feature")
-public class RegisterPageEndToEndBDD {
+@CucumberOptions(features = "src/e2e/resources/login.feature")
+public class LoginPageE2ETest {
 
 	@BeforeClass
 	public static void setupClass() {
