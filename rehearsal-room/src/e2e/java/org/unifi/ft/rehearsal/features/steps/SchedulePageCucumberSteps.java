@@ -146,10 +146,10 @@ public class SchedulePageCucumberSteps {
 		DateTime start = new DateTime(2121, 12, 12, 12, 12, 0);
 		DateTime end = start.plusHours(Scheduler.HOUR_DURATION).plusMinutes(Scheduler.MINUTE_DURATION);
 		Schedule s = scheduleRepo.findAll().get(0);
-		assertEquals(s.getBand(), "BandName");
-		assertEquals(s.getRoom(), RehearsalRoom.FIRSTROOM);
-		assertEquals(s.getStartDate(), start);
-		assertEquals(s.getEndDate(), end);
+		assertEquals("BandName", s.getBand());
+		assertEquals(RehearsalRoom.FIRSTROOM, s.getRoom());
+		assertEquals(start, s.getStartDate());
+		assertEquals(end, s.getEndDate());
 	}
 
 	@Then("^An invalid date message is shown$")
@@ -187,9 +187,9 @@ public class SchedulePageCucumberSteps {
 	public void there_are_schedules_saved_on_that_day() throws Throwable {
 		assertEquals(1, scheduleRepo.count());
 		Schedule s = scheduleRepo.findAll().get(0);
-		assertEquals(s.getStartDate().getYear(), 2121);
-		assertEquals(s.getStartDate().getMonthOfYear(), 12);
-		assertEquals(s.getStartDate().getDayOfMonth(), 12);
+		assertEquals(2121, s.getStartDate().getYear());
+		assertEquals(12, s.getStartDate().getMonthOfYear());
+		assertEquals(12, s.getStartDate().getDayOfMonth());
 	}
 
 	@Then("^A list of saved schedules is shown$")

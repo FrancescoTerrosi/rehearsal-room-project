@@ -40,7 +40,7 @@ public class BandService implements UserDetailsService {
 		if (!existsUserByUsername(name)) {
 			return handleRegistration(name, password, confirmPassword);
 		} else {
-			LOGGER.warn(name + " - "+ALREADY_EXISTING_USERNAME);
+			LOGGER.warn(() -> name + " - "+ALREADY_EXISTING_USERNAME);
 			throw new UsernameAlreadyExistsException(ALREADY_EXISTING_USERNAME);
 		}
 	}
@@ -54,10 +54,10 @@ public class BandService implements UserDetailsService {
 	private BandDetails handleRegistration(String name, String password, String confirmPassword) {
 		if (password.equals(confirmPassword)) {
 			BandDetails user = repository.save(createUser(name, password));
-			LOGGER.info("User " + name + " just joined our system!");
+			LOGGER.info(() -> "User " + name + " just joined our system!");
 			return user;
 		} else {
-			LOGGER.warn(name + " - "+PASSW_NOT_MATCHING);
+			LOGGER.warn(() -> name + " - "+PASSW_NOT_MATCHING);
 			throw new PasswordNotMatchingException(PASSW_NOT_MATCHING);
 		}
 	}
@@ -70,7 +70,7 @@ public class BandService implements UserDetailsService {
 				return user;
 			}
 		}
-		LOGGER.warn(username + " - "+USER_NOT_FOUND);
+		LOGGER.warn(() -> username + " - "+USER_NOT_FOUND);
 		throw new UsernameNotFoundException(USER_NOT_FOUND);
 	}
 

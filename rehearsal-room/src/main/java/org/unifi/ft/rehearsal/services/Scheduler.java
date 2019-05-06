@@ -80,13 +80,13 @@ public class Scheduler {
 			repository.deleteById(id);
 			return optSchedule.get();
 		}
-		LOGGER.warn("schedule " +id+" "+SCHEDULE_NOT_FOUND);
+		LOGGER.warn(() -> "schedule " +id+" "+SCHEDULE_NOT_FOUND);
 		throw new ScheduleNotFoundException(SCHEDULE_NOT_FOUND);
 	}
 
 	public Schedule initAndSaveSchedule(String band, DateTime startDate, RehearsalRoom room) {
 		if (startDate.isBefore(DateTime.now().plusMinutes(5))) {
-			LOGGER.warn(band + " - " + REQUESTED_DATE_IS_BEFORE_NOW);
+			LOGGER.warn(() -> band + " - " + REQUESTED_DATE_IS_BEFORE_NOW);
 			throw new InvalidTimeException(REQUESTED_DATE_IS_BEFORE_NOW);
 		}
 		Schedule schedule = createSchedule(band, startDate, room);
@@ -96,10 +96,10 @@ public class Scheduler {
 	private Schedule saveSchedule(Schedule schedule) {
 		if (checkFreeRoom(schedule)) {
 			repository.save(schedule);
-			LOGGER.info(schedule.getBand() + " scheduled for room "+ schedule.getRoom() + " on: "+schedule.getStartDate().toString("yyyy/MM/dd - HH:mm"));
+			LOGGER.info(() -> schedule.getBand() + " scheduled for room "+ schedule.getRoom() + " on: "+schedule.getStartDate().toString("yyyy/MM/dd - HH:mm"));
 			return schedule;
 		} else {
-			LOGGER.warn(schedule.getBand() + " - " + ROOM_NOT_FREE);
+			LOGGER.warn(() -> schedule.getBand() + " - " + ROOM_NOT_FREE);
 			throw new RoomNotFreeException(ROOM_NOT_FREE);
 		}
 	}
