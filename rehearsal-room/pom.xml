@@ -299,7 +299,7 @@
                 <id>e2e-tests</id>
                 <configuration>
                   <includes>
-                    <include>**/*BDD.java</include>
+                    <include>**/*E2ETest.java</include>
                   </includes>
                 </configuration>
                 <goals>
