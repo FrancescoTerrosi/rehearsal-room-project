@@ -23,6 +23,7 @@
     <sonar.jacoco.reportPaths>target/jacoco.exec</sonar.jacoco.reportPaths>
     <sonar.junit.reportPaths>target/surefire-reports,target/failsafe-reports</sonar.junit.reportPaths>
     <sonar.exclusions>
+      src/main/java/org/unifi/ft/rehearsal/RehearsalRoomApplication.java,
       src/main/java/org/unifi/ft/rehearsal/model/*,
       src/main/java/org/unifi/ft/rehearsal/configurations/*,
       src/main/java/org/unifi/ft/rehearsal/exceptions/*
